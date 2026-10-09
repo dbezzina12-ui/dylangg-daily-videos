@@ -1,0 +1,73 @@
+name: Daily leaderboard video
+
+on:
+  push:
+    branches: [main]
+    paths: ['data/*.json']
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Day to render again (YYYY-MM-DD; data/<date>.json must exist)'
+        required: true
+
+concurrency:
+  group: daily-video
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  render-and-upload:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Pick the day
+        id: day
+        env:
+          DAY_INPUT: ${{ inputs.date }}
+        run: |
+          if [ -n "$DAY_INPUT" ]; then
+            f="data/$DAY_INPUT.json"
+          else
+            f=$(git diff --name-only HEAD~1 HEAD -- 'data/*.json' | sort | tail -n 1)
+          fi
+          if [ -z "$f" ] || [ ! -f "$f" ]; then echo "::error::no data file found ($f)"; exit 1; fi
+          echo "file=$f" >> "$GITHUB_OUTPUT"
+          echo "date=$(basename "$f" .json)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: kit/requirements.txt
+
+      - name: Install ffmpeg, Python packages and Chromium
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+          pip install -r kit/requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Render
+        run: python scripts/render_day.py "${{ steps.day.outputs.file }}" out
+
+      - name: Keep the video as a workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-${{ steps.day.outputs.date }}
+          path: out/
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Upload to Google Drive (1001 Clips)
+        env:
+          GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+          GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+          GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+          GDRIVE_FOLDER_ID: ${{ vars.GDRIVE_FOLDER_ID }}
+        run: python scripts/upload_drive.py "out/${{ steps.day.outputs.date }}.mp4"
