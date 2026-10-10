@@ -659,13 +659,19 @@ const REEL_CH = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789$#';
 const REELS = (() => { const r = rng(5); return CODE.split('').map((ch, i) => { const n = 14 + i * 3; const arr = []; for (let k = 0; k < n; k++) arr.push(REEL_CH[Math.floor(r() * REEL_CH.length)]); arr.push(ch); return arr; }); })();
 const BOKEH = (() => { const r = rng(3); const a = []; for (let i = 0; i < 46; i++) a.push({ x: r() * W, y: r() * H, s: 2 + r() * 5, v: 20 + r() * 50, ph: r() * 6, f: 1 + r() * 2 }); return a; })();
 function sceneEnd(g, t) {
-  g.fillStyle = '#050505'; g.fillRect(-200, -200, W + 400, H + 400);
+  const _PL = typeof PLATE !== 'undefined' && PLATE;
   const spot = 0.35 * clamp((t - TL.end + 0.05) / 0.3) + 0.65 * clamp((t - TL.end - 0.45) / 0.5); const bp = beatPulse(t, 4);
   const mcx = V ? 540 : 1500, mcy = P4 ? 1080 : V ? 1480 : 560;
-  radial(g, mcx, mcy, 1000, GOLD_RGB, (0.20 + 0.08 * bp) * spot);
-  sunburst(g, mcx, mcy, 1500, 20, (t - 14) * 0.12, GOLD_RGB, 0.055 * spot);
-  radial(g, V ? 540 : 520, V ? 640 : 620, 900, GOLD_RGB, 0.07);
-  vignette(g, 0.7);
+  if (_PL) {   // footage (spotlight stage) shows through; darken the text column so it reads
+    const lg = g.createLinearGradient(0, 0, W * 0.62, 0); lg.addColorStop(0, 'rgba(0,0,0,0.72)'); lg.addColorStop(0.75, 'rgba(0,0,0,0.45)'); lg.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = lg; g.fillRect(-200, -200, W * 0.62 + 200, H + 400);
+  } else {
+    g.fillStyle = '#050505'; g.fillRect(-200, -200, W + 400, H + 400);
+    radial(g, mcx, mcy, 1000, GOLD_RGB, (0.20 + 0.08 * bp) * spot);
+    sunburst(g, mcx, mcy, 1500, 20, (t - 14) * 0.12, GOLD_RGB, 0.055 * spot);
+    radial(g, V ? 540 : 520, V ? 640 : 620, 900, GOLD_RGB, 0.07);
+    vignette(g, 0.7);
+  }
   // bokeh
   g.save();
   for (const b of BOKEH) { const y = ((b.y - (t - 14) * b.v) % (H + 40) + H + 40) % (H + 40) - 20; const a = (0.25 + 0.35 * Math.sin(t * b.f + b.ph) ** 2) * clamp((t - TL.end) / 0.6);

@@ -78,6 +78,7 @@ def main():
     ap.add_argument('--top', default='', help='JSON list of up to 5 [name, wagered, prize] rows in rank order (standings)')
     ap.add_argument('--intro', type=int, default=None, help='intro style 0-3 (default: rotates with the date)')
     ap.add_argument('--date-name', action='store_true', help='name the 16:9 file just <today>.mp4 (4:5 becomes <today>-4x5.mp4)')
+    ap.add_argument('--no-plate', action='store_true', help='standings: ignore assets/plate.mp4 and use the drawn black stage')
     a = ap.parse_args()
 
     pool = round(a.pool)
@@ -95,6 +96,9 @@ def main():
 
     today = dt.date.fromisoformat(a.today)
     q = {'pool': pool, 'main': main_, 'raffle': raffle, 'multi': multi, 'date': label(today, True), 'round': a.round}
+    plate = os.path.join(HERE, 'assets', 'plate.mp4')
+    plate = plate if (a.style == 'standings' and not a.no_plate and os.path.exists(plate)) else None
+    if plate: q['plate'] = 1          # graphics render transparent and are composited over the Higgsfield footage plate
     if a.style == 'standings':
         q['top'] = json.dumps(top, separators=(',', ':'))
         day = today.toordinal()                     # the intro changes every day: 4 styles, 5 headlines for the slam style
@@ -113,16 +117,16 @@ def main():
     wav = os.path.join(a.out, 'audio.wav')
     subprocess.run([sys.executable, os.path.join(HERE, audio), wav, str(dur)], check=True)
 
-    res = {'ok': True, 'style': a.style, 'numbers': {'pool': pool, 'main': main_, 'raffle': raffle, 'multi': multi, 'top': top}, 'query': q, 'files': {}}
+    res = {'ok': True, 'style': a.style, 'plate': bool(plate), 'numbers': {'pool': pool, 'main': main_, 'raffle': raffle, 'multi': multi, 'top': top}, 'query': q, 'files': {}}
     for f in a.formats.split(','):
         tag = FORMATS[f]; query = urlencode({'fmt': f, **q})
         qa = os.path.join(a.out, f'qa-{tag}.png')
-        render.stills(qa, query, qt, cols=6 if f == 'p' else 3, thumb=540, page=page)
+        render.stills(qa, query, qt, cols=6 if f == 'p' else 3, thumb=540, page=page, plate=plate if f == 'h' else None)
         res['files'][f'qa-{tag}'] = qa
         if a.qa_only: continue
         fn = (f'{today.isoformat()}.mp4' if f == 'h' else f'{today.isoformat()}-{tag}.mp4') if a.date_name else f'Leaderboard-{name}-{today.isoformat()}-{tag}.mp4'
         mp4 = os.path.join(a.out, fn)
-        t0 = time.time(); render.video(mp4, wav, query, page=page)
+        t0 = time.time(); render.video(mp4, wav, query, page=page, plate=plate if f == 'h' else None)
         info = probe(mp4); info['render_s'] = round(time.time() - t0)
         if abs(info['duration'] - dur) > 0.2 or not info['audio']: res['ok'] = False
         res['files'][tag] = {'path': mp4, **info}

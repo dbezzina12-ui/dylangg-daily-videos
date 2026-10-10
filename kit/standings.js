@@ -21,6 +21,8 @@ const LEFT = Q.get('left') === null ? 6 : parseInt(Q.get('left'), 10);
 const ROUND = Q.get('round') === null ? '01' : Q.get('round');
 const INTRO = Math.max(0, parseInt(Q.get('intro') || '0', 10)) % 4;   // daily-rotating intro style
 const HEAD = Math.max(0, parseInt(Q.get('head') || '0', 10));           // headline pick for the slam intro
+const PLATE = Q.get('plate') === '1';   // plate mode: transparent graphics, composited over the Higgsfield footage by render.py
+if (PLATE) { document.documentElement.style.background = 'transparent'; document.body.style.background = 'transparent'; }
 const TOP = (() => {
   try { const a = JSON.parse(Q.get('top') || 'null'); if (Array.isArray(a)) return a.slice(0, 5).map(r => ({ name: String(r[0]), wag: +r[1], prize: +r[2] })); } catch (e) { }
   return [['Inne****', 276431.57, 4111], ['Jame********', 108574.22, 1762], ['AkaC***', 75255.58, 1174], ['Fros*********', 62400.94, 704], ['Span*****', 57289.29, 587]]
@@ -265,7 +267,14 @@ function gridFloor(g, t, a = 1) {
   g.fillStyle = hg; g.fillRect(0, hy - 140, W, 190);
   g.restore();
 }
-function stage(g, t, floor = 1, glow = 0.12) {
+function stage(g, t, floor = 1, glow = 0.12, dark = 0.5) {
+  if (PLATE) {   // footage shows through: only a soft dark scrim so type reads, plus a faint beat glow
+    const gr = g.createRadialGradient(W / 2, H / 2, H * 0.1, W / 2, H / 2, W * 0.75);
+    gr.addColorStop(0, `rgba(0,0,0,${dark})`); gr.addColorStop(1, `rgba(0,0,0,${dark * 0.35})`);
+    g.fillStyle = gr; g.fillRect(-200, -200, W + 400, H + 400);
+    radial(g, W / 2, H * 0.4, Math.max(W, H) * 0.6, GOLD_RGB, 0.05 * beatPulse(t, 4));
+    return;
+  }
   g.fillStyle = '#070707'; g.fillRect(-200, -200, W + 400, H + 400);
   radial(g, W / 2, H * 0.36, Math.max(W, H) * 0.7, GOLD_RGB, glow + 0.06 * beatPulse(t, 4));
   gridFloor(g, t, floor);
@@ -467,7 +476,7 @@ function poolCounter(g, t) {   // big centre -> header (right aligned)
   g.restore();
 }
 function scenePool(g, t) {
-  stage(g, t, t < TL.m0 ? 1 : lerp(1, 0.45, E.inOutSine(prog(t, TL.m0, 0.6))), 0.12);
+  stage(g, t, t < TL.m0 ? 1 : lerp(1, 0.45, E.inOutSine(prog(t, TL.m0, 0.6))), 0.12, t < TL.m0 ? 0.55 : lerp(0.55, 0.62, E.inOutSine(prog(t, TL.m0, 0.6))));
   const fade = 1 - E.inCubic(prog(t, TL.m0 - 0.05, 0.25));
   if (fade > 0) {
     g.save(); g.globalAlpha *= fade;
@@ -673,13 +682,19 @@ const REEL_CH = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789$#';
 const REELS = (() => { const r = rng(5); return CODE.split('').map((ch, i) => { const n = 14 + i * 3; const arr = []; for (let k = 0; k < n; k++) arr.push(REEL_CH[Math.floor(r() * REEL_CH.length)]); arr.push(ch); return arr; }); })();
 const BOKEH = (() => { const r = rng(3); const a = []; for (let i = 0; i < 46; i++) a.push({ x: r() * W, y: r() * H, s: 2 + r() * 5, v: 20 + r() * 50, ph: r() * 6, f: 1 + r() * 2 }); return a; })();
 function sceneEnd(g, t) {
-  g.fillStyle = '#050505'; g.fillRect(-200, -200, W + 400, H + 400);
+  const _PL = typeof PLATE !== 'undefined' && PLATE;
   const spot = 0.35 * clamp((t - TL.end + 0.05) / 0.3) + 0.65 * clamp((t - TL.end - 0.45) / 0.5); const bp = beatPulse(t, 4);
   const mcx = V ? 540 : 1500, mcy = P4 ? 1080 : V ? 1480 : 560;
-  radial(g, mcx, mcy, 1000, GOLD_RGB, (0.20 + 0.08 * bp) * spot);
-  sunburst(g, mcx, mcy, 1500, 20, (t - 14) * 0.12, GOLD_RGB, 0.055 * spot);
-  radial(g, V ? 540 : 520, V ? 640 : 620, 900, GOLD_RGB, 0.07);
-  vignette(g, 0.7);
+  if (_PL) {   // footage (spotlight stage) shows through; darken the text column so it reads
+    const lg = g.createLinearGradient(0, 0, W * 0.62, 0); lg.addColorStop(0, 'rgba(0,0,0,0.72)'); lg.addColorStop(0.75, 'rgba(0,0,0,0.45)'); lg.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = lg; g.fillRect(-200, -200, W * 0.62 + 200, H + 400);
+  } else {
+    g.fillStyle = '#050505'; g.fillRect(-200, -200, W + 400, H + 400);
+    radial(g, mcx, mcy, 1000, GOLD_RGB, (0.20 + 0.08 * bp) * spot);
+    sunburst(g, mcx, mcy, 1500, 20, (t - 14) * 0.12, GOLD_RGB, 0.055 * spot);
+    radial(g, V ? 540 : 520, V ? 640 : 620, 900, GOLD_RGB, 0.07);
+    vignette(g, 0.7);
+  }
   // bokeh
   g.save();
   for (const b of BOKEH) { const y = ((b.y - (t - 14) * b.v) % (H + 40) + H + 40) % (H + 40) - 20; const a = (0.25 + 0.35 * Math.sin(t * b.f + b.ph) ** 2) * clamp((t - TL.end) / 0.6);
@@ -784,7 +799,7 @@ function pushUp(g, t, t0, dur, drawOld, drawNew) {
 const DURATION = TL.DUR;
 function renderScene(g, t) {
   g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.filter = 'none'; g.shadowBlur = 0; g.shadowColor = 'rgba(0,0,0,0)';
-  g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+  if (PLATE) g.clearRect(0, 0, W, H); else { g.fillStyle = '#000'; g.fillRect(0, 0, W, H); }
   const sh = shake(t); g.translate(W / 2 + sh.x, H / 2 + sh.y); g.rotate(sh.r); g.translate(-W / 2, -H / 2);
   const B = BARS / 2;
   if (t < TL.x1 - B) sceneHook(g, t);
@@ -799,6 +814,15 @@ function renderScene(g, t) {
 }
 
 window.renderFrame = (t, N = 8, shutter = 0.5) => {
+  if (PLATE) {   // transparent motion blur: add each sub-frame at 1/N ('lighter' sums premultiplied colour and alpha)
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < N; i++) {
+      const ti = N === 1 ? t : t + ((i + 0.5) / N - 0.5) * shutter / FPS; FRAME_T = t;
+      renderScene(sctx, Math.max(0, ti));
+      ctx.globalAlpha = 1 / N; ctx.drawImage(SUB, 0, 0);
+    }
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; return true;
+  }
   for (let i = 0; i < N; i++) {
     const ti = N === 1 ? t : t + ((i + 0.5) / N - 0.5) * shutter / FPS; FRAME_T = t;
     renderScene(sctx, Math.max(0, ti));

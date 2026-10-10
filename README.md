@@ -6,6 +6,7 @@ Daily DylanGG "Live Standings" leaderboard video, rendered by GitHub Actions and
 
 1. Each morning (8:24 AM Toronto) Claude reads dylanjames.gg, checks the numbers and pushes `data/YYYY-MM-DD.json`.
 2. The push starts `.github/workflows/daily-video.yml`, which renders the 14 s 1920×1080 video with `kit/`, keeps it as a 7-day workflow artifact and uploads it to Drive (a same-named file is replaced, not duplicated).
+   The background is `kit/assets/plate.mp4`, a 14 s cinematic footage plate made once with Higgsfield (Seedance 2.5): vault door, gold coin avalanche, marble board room, hourglass, spotlight stage. The live numbers are drawn on top each day; no AI generation runs daily. To replace the plate, import a new one with **Actions → Import template asset**.
 3. Social HQ picks it up from 1001 Clips.
 
 To render a past day again: **Actions → Daily leaderboard video → Run workflow**, enter the date.

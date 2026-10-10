@@ -48,17 +48,51 @@ def open_page(p, port, query, w, h, page='index.html'):
     pg.goto(f'http://127.0.0.1:{port}/{page}?{query}')
     pg.wait_for_function('window.ready === true', timeout=60000)
     cdp = pg.context.new_cdp_session(pg)
+    if 'plate=1' in query:   # transparent page: graphics only, composited over the footage plate below
+        cdp.send('Emulation.setDefaultBackgroundColorOverride', {'color': {'r': 0, 'g': 0, 'b': 0, 'a': 0}})
     return b, pg, cdp
 
 
-def grab(cdp, w, h):
+def grab(cdp, w, h, alpha=False):
     d = cdp.send('Page.captureScreenshot', {'format': 'png', 'optimizeForSpeed': True,
                                             'clip': {'x': 0, 'y': 0, 'width': w, 'height': h, 'scale': 1}})
-    return cv2.imdecode(np.frombuffer(base64.b64decode(d['data']), np.uint8), cv2.IMREAD_COLOR)
+    return cv2.imdecode(np.frombuffer(base64.b64decode(d['data']), np.uint8), cv2.IMREAD_UNCHANGED if alpha else cv2.IMREAD_COLOR)
 
 
-def stills(out, query, times, n=8, cols=None, thumb=480, page='index.html'):
+# ------------------------------------------------------------------ footage plate (plate mode)
+PLATE_DIM = [(0.0, 0.92), (1.5, 0.86), (4.0, 0.62), (9.0, 0.88), (10.5, 0.95)]   # (start s, brightness) per plate shot
+
+
+def plate_grade(fr, t):
+    k = [v for t0, v in PLATE_DIM if t >= t0 - 1e-6][-1]
+    return cv2.convertScaleAbs(fr, alpha=k, beta=0)
+
+
+def composite(ov, base):
+    """ov: BGRA overlay (straight alpha) from the transparent page, base: BGR plate frame"""
+    if ov.shape[2] == 3: return ov
+    a = ov[:, :, 3:4].astype(np.float32) / 255.0
+    return (ov[:, :, :3].astype(np.float32) * a + base.astype(np.float32) * (1 - a)).astype(np.uint8)
+
+
+class Plate:
+    def __init__(s, path, w, h, fps=30):
+        s.cap = cv2.VideoCapture(path); s.w, s.h, s.fps, s.idx, s.last = w, h, fps, -1, None
+        s.n = int(s.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    def at(s, t):
+        want = min(int(round(t * s.fps)), max(0, s.n - 1))
+        if want != s.idx + 1: s.cap.set(cv2.CAP_PROP_POS_FRAMES, want)
+        ok, fr = s.cap.read()
+        if ok:
+            s.idx, s.last = want, fr
+            if fr.shape[1] != s.w or fr.shape[0] != s.h: s.last = cv2.resize(fr, (s.w, s.h), interpolation=cv2.INTER_AREA)
+        return plate_grade(s.last if s.last is not None else np.zeros((s.h, s.w, 3), np.uint8), t)
+
+
+def stills(out, query, times, n=8, cols=None, thumb=480, page='index.html', plate=None):
     w, h = size_of(query); cols = cols or (6 if w < h else 4)
+    pl = Plate(plate, w, h) if plate else None
     port = free_port(); srv = server(port)
     try:
         with sync_playwright() as p:
@@ -66,7 +100,7 @@ def stills(out, query, times, n=8, cols=None, thumb=480, page='index.html'):
             ims = []
             for t in times:
                 pg.evaluate(f'renderFrame({t},{n})')
-                im = grab(cdp, w, h); sc = thumb / w
+                im = composite(grab(cdp, w, h, alpha=True), pl.at(t)) if pl else grab(cdp, w, h); sc = thumb / w
                 im = cv2.resize(im, (int(w * sc), int(h * sc)), interpolation=cv2.INTER_AREA)
                 cv2.putText(im, f'{t:.2f}', (8, 26), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
                 ims.append(im)
@@ -104,8 +138,9 @@ class Post:
         return np.clip(out.astype(np.float32) + gr[..., None], 0, 255).astype(np.uint8)
 
 
-def video(out, audio, query, fps=30, crf=18, sub=8, page='index.html'):
+def video(out, audio, query, fps=30, crf=18, sub=8, page='index.html', plate=None):
     w, h = size_of(query)
+    pl = Plate(plate, w, h, fps) if plate else None
     port = free_port(); srv = server(port)
     try:
         with sync_playwright() as p:
@@ -123,7 +158,8 @@ def video(out, audio, query, fps=30, crf=18, sub=8, page='index.html'):
             for f in range(nfr):
                 t = f / fps
                 pg.evaluate(f'renderFrame({t},{sub if t < dur - 1.2 else max(2, sub // 2)})')
-                ff.stdin.write(post(grab(cdp, w, h), t, f).tobytes())
+                fr = composite(grab(cdp, w, h, alpha=True), pl.at(t)) if pl else grab(cdp, w, h)
+                ff.stdin.write(post(fr, t, f).tobytes())
                 if f % 60 == 0: print(f'{os.path.basename(out)}: frame {f}/{nfr}  {time.time() - st:.0f}s', flush=True)
             ff.stdin.close(); ff.wait(); b.close()
             if ff.returncode != 0: raise RuntimeError('ffmpeg failed')
