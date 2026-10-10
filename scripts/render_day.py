@@ -59,7 +59,7 @@ def candidates(d, prev, left, day):
     c = [
         ['+' + usd(pool - prev['pool']), since] if since else None,
         [f'{lead} LEADS', f'BY {usd_k(top[0][1] - top[1][1])}'] if len(top) >= 2 else None,
-        [f'{usd(pool)} POOL', 'AND CLIMBING' if since else 'NO MAX CAP'],
+        [f'{usd(pool)} POOL', 'AND CLIMBING'] if since else [usd(pool), 'IN THE POOL'],   # the pool card already says NO MAX CAP
         ([f'{left} DAY{"S" if left != 1 else ""} LEFT', 'TO CATCH UP'] if left >= 1 else ['FINAL DAY', 'OF THE ROUND']) if left is not None else None,
         [f'#1 IS ON {usd(top[0][2])}', 'RIGHT NOW'],
         [f'{usd_k(sum(r[1] for r in top))} WAGERED', 'BY THE TOP 5'],
