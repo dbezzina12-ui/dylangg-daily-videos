@@ -5,6 +5,7 @@
       --round 01 --ends 2026-10-15 --today 2026-10-10 \
       --top '[["Inne****",276431.57,4111],["Jame********",108574.22,1762],...]' --out /path/to/outdir
 
+--headline 'LINE ONE|LINE TWO' sets today's intro text (standings); without it the intro uses a built-in line.
 --style standings (default): "Live Standings" (14 s): pool odometer, top-5 board, days-left flip clock, end card.
 --style pool: "Pool Update" (13.5 s): pool counter, 3 ways to win with amounts, round end, end card.
 Writes <out>/Leaderboard-<Style>-<today>-16x9.mp4 and -4x5.mp4 (30 fps, AAC), QA contact sheets
@@ -12,7 +13,7 @@ Writes <out>/Leaderboard-<Style>-<today>-16x9.mp4 and -4x5.mp4 (30 fps, AAC), QA
 Exits with code 2 (renders nothing) if the numbers don't hold together: 90 / 5 / 5 split of the pool,
 and for standings a top list in rank order (wagered and prizes descending, prizes inside the main pool).
 """
-import argparse, datetime as dt, json, os, subprocess, sys, time
+import argparse, datetime as dt, json, os, re, subprocess, sys, time
 from urllib.parse import urlencode
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -55,6 +56,21 @@ def check_top(top, main):
     return errs
 
 
+HEAD_OK = re.compile(r"^[A-Z0-9 $,.!?'&+%*#:/-]+$")
+HEAD_MAX = 20
+
+
+def parse_headline(s):
+    """'LINE ONE|LINE TWO' -> (['LINE ONE', 'LINE TWO'], errors). 1-2 lines, short, plain characters the font has."""
+    lines = [x.strip().upper() for x in s.split('|') if x.strip()]
+    errs = []
+    if not 1 <= len(lines) <= 2: errs.append(f'headline needs 1 or 2 lines, got {len(lines)}')
+    for x in lines:
+        if len(x) > HEAD_MAX: errs.append(f'headline line {x!r} is longer than {HEAD_MAX} characters')
+        if not HEAD_OK.match(x): errs.append(f'headline line {x!r} has characters outside A-Z 0-9 $,.!?\'&+%*#:/-')
+    return lines, errs
+
+
 def probe(path):
     out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration,size:stream=codec_type,width,height',
                           '-of', 'json', path], capture_output=True, text=True, check=True).stdout
@@ -79,6 +95,7 @@ def main():
     ap.add_argument('--intro', type=int, default=None, help='intro style 0-3 (default: rotates with the date)')
     ap.add_argument('--date-name', action='store_true', help='name the 16:9 file just <today>.mp4 (4:5 becomes <today>-4x5.mp4)')
     ap.add_argument('--no-plate', action='store_true', help='standings: ignore assets/plate.mp4 and use the drawn black stage')
+    ap.add_argument('--headline', default='', help="standings: today's intro text, 'LINE ONE|LINE TWO' (1-2 lines, each <= 20 chars)")
     a = ap.parse_args()
 
     pool = round(a.pool)
@@ -91,6 +108,7 @@ def main():
         try: top = [[str(r[0]), float(r[1]), float(r[2])] for r in json.loads(a.top or '[]')][:5]
         except Exception as e: errs.append(f'--top is not valid JSON rows: {e}')
         errs += check_top(top, main_) if not errs else []
+        if a.headline: hl, he = parse_headline(a.headline); errs += he
     if errs and not a.force:
         print(json.dumps({'ok': False, 'errors': errs})); sys.exit(2)
 
@@ -104,6 +122,8 @@ def main():
         day = today.toordinal()                     # the intro changes every day: 4 styles, 5 headlines for the slam style
         q['intro'] = a.intro if a.intro is not None else day % 4
         q['head'] = (day // 4) % 5
+        if a.headline:
+            for i, x in enumerate(parse_headline(a.headline)[0]): q[f'h{i + 1}'] = x
     page, audio, dur, name, qt = (('standings.html', 'audio_standings.py', 14.0, 'Live-Standings', [0.8, 3.3, 6.0, 7.8, 10.2, 12.9])
                                   if a.style == 'standings' else
                                   ('index.html', 'audio.py', 13.5, 'Pool-Update', [0.9, 3.0, 4.6, 7.8, 9.8, 12.9]))

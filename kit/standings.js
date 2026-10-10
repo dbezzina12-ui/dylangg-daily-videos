@@ -21,6 +21,7 @@ const LEFT = Q.get('left') === null ? 6 : parseInt(Q.get('left'), 10);
 const ROUND = Q.get('round') === null ? '01' : Q.get('round');
 const INTRO = Math.max(0, parseInt(Q.get('intro') || '0', 10)) % 4;   // daily-rotating intro style
 const HEAD = Math.max(0, parseInt(Q.get('head') || '0', 10));           // headline pick for the slam intro
+const HL = [Q.get('h1'), Q.get('h2')].filter(s => s && s.trim()).map(s => s.trim().toUpperCase().slice(0, 22));   // today's headline (1-2 lines)
 const PLATE = Q.get('plate') === '1';   // plate mode: transparent graphics, composited over the Higgsfield footage by render.py
 if (PLATE) { document.documentElement.style.background = 'transparent'; document.body.style.background = 'transparent'; }
 const TOP = (() => {
@@ -335,26 +336,28 @@ function hookFrame(g, t, mainH, drawMain) {   // eyebrow + main block + live pil
 function hookSlam(g, t, l1, l2) {
   const TW = P4 ? 940 : 1240;
   const s = Math.min(P4 ? 230 : 300, TW / Math.max(lay('PBI', 100, -3, l1).w, lay('PBI', 100, -3, l2).w) * 100); const cap = capH('PB', s), gp = cap * 0.2;
-  hookFrame(g, t, cap * 2 + gp, (mt) => {
-    riseText(g, l1, W / 2, mt + cap, 'PBI', s, '#FFFFFF', -0.04, t, { ls: -3, align: 'center', stagger: 0.02, dur: 0.38, from: 1.2 });
-    riseText(g, l2, W / 2, mt + cap * 2 + gp, 'PBI', s, GOLD, 0.02, t, { ls: -3, align: 'center', stagger: 0.018, dur: 0.38, from: 1.2 });
+  hookFrame(g, t, l2 ? cap * 2 + gp : cap, (mt) => {
+    riseText(g, l1, W / 2, mt + cap, 'PBI', s, l2 ? '#FFFFFF' : GOLD, -0.04, t, { ls: -3, align: 'center', stagger: 0.02, dur: 0.38, from: 1.2 });
+    if (l2) riseText(g, l2, W / 2, mt + cap * 2 + gp, 'PBI', s, GOLD, 0.02, t, { ls: -3, align: 'center', stagger: 0.018, dur: 0.38, from: 1.2 });
   });
 }
 function hookType(g, t) {   // typewriter + blinking cursor + scanlines
-  const l1 = 'DAILY', l2 = 'BOARD CHECK', TW = P4 ? 900 : 1150;
-  const s = TW / lay('PB', 100, 2, l2).w * 100, cap = capH('PB', s), gp = cap * 0.22;
-  hookFrame(g, t, cap * 2 + gp, (mt) => {
-    const n1 = Math.min(l1.length, Math.max(0, Math.floor((t - 0.02) * 24) + 1)), n2 = Math.min(l2.length, Math.max(0, Math.floor((t - 0.28) * 24) + 1));
-    const L1 = lay('PB', s, 2, l1), L2 = lay('PB', s, 2, l2), x1 = W / 2 - L2.w / 2;
+  const l1 = HL.length ? HL[0] : 'DAILY', l2 = HL.length ? (HL[1] || '') : 'BOARD CHECK', TW = P4 ? 900 : 1150;
+  const s = Math.min(P4 ? 200 : 260, TW / Math.max(lay('PB', 100, 2, l1).w, lay('PB', 100, 2, l2).w) * 100), cap = capH('PB', s), gp = cap * 0.22;
+  const cps = Math.max(24, (l1.length + l2.length) / 0.95), t2 = 0.02 + l1.length / cps + 0.04;
+  hookFrame(g, t, l2 ? cap * 2 + gp : cap, (mt) => {
+    const n1 = Math.min(l1.length, Math.max(0, Math.floor((t - 0.02) * cps) + 1)), n2 = Math.min(l2.length, Math.max(0, Math.floor((t - t2) * cps) + 1));
+    const L1 = lay('PB', s, 2, l1), L2 = lay('PB', s, 2, l2), x1 = W / 2 - Math.max(L1.w, L2.w) / 2;
     if (n1 > 0) text(g, l1.slice(0, n1), x1, mt + cap, 'PB', s, '#FFFFFF', { ls: 2 });
-    if (n2 > 0) text(g, l2.slice(0, n2), x1, mt + cap * 2 + gp, 'PB', s, GOLD, { ls: 2 });
-    const onL2 = t >= 0.28, n = onL2 ? n2 : n1, LL = onL2 ? L2 : L1, cb = onL2 ? mt + cap * 2 + gp : mt + cap;
+    if (l2 && n2 > 0) text(g, l2.slice(0, n2), x1, mt + cap * 2 + gp, 'PB', s, GOLD, { ls: 2 });
+    const onL2 = l2 && t >= t2, n = onL2 ? n2 : n1, LL = onL2 ? L2 : L1, cb = onL2 ? mt + cap * 2 + gp : mt + cap;
     if (Math.floor(t * 4) % 2 === 0 || n < (onL2 ? l2.length : l1.length)) { g.fillStyle = GOLD; g.fillRect(x1 + LL.xs[n] + s * 0.06, cb - cap, s * 0.09, cap); }
   });
   g.save(); g.fillStyle = 'rgba(0,0,0,0.16)'; for (let y = (t * 120) % 6; y < H; y += 6) g.fillRect(0, y, W, 2); g.restore();
 }
 function hookScramble(g, t) {  // "how big is the pool today?" with the digits still spinning
-  const s = P4 ? 210 : 270, cap = capH('PB', s), q = 'HOW BIG IS THE POOL TODAY?', qs = P4 ? 50 : 62, qc = capH('PBI', qs), gq = P4 ? 40 : 34;
+  const q = HL.length ? HL.join(' ') : 'HOW BIG IS THE POOL TODAY?';
+  const s = P4 ? 210 : 270, cap = capH('PB', s), qs = Math.min(P4 ? 50 : 62, (W * 0.86) / lay('PBI', 100, 0, q).w * 100), qc = capH('PBI', qs), gq = P4 ? 40 : 34;
   hookFrame(g, t, qc + gq + cap, (mt) => {
     riseText(g, q, W / 2, mt + qc, 'PBI', qs, '#FFFFFF', -0.02, t, { align: 'center', stagger: 0.008, dur: 0.36 });
     const str = '$' + Math.floor(POOL).toLocaleString('en-US'); const L = lay('PB', s, 0, str); const x0 = W / 2 - L.w / 2, b = mt + qc + gq + cap;
@@ -370,9 +373,10 @@ function hookScramble(g, t) {  // "how big is the pool today?" with the digits s
   });
 }
 function hookCountdown(g, t) {   // days left as the hook
-  const ok = ENDS.length > 0 && LEFT >= 0; if (!ok) return hookSlam(g, t, ...HEADS[HEAD % HEADS.length]);
-  const big = LEFT === 0 ? 'LAST' : String(LEFT), r1 = LEFT === 0 ? 'DAY' : LEFT === 1 ? 'DAY LEFT' : 'DAYS LEFT', r2 = 'TO CLIMB THE BOARD';
-  const bs = P4 ? 300 : 420, bc = capH('PBI', bs), rs = P4 ? 92 : 120, r2s = P4 ? 40 : 48, rc = capH('PBI', rs), r2c = capH('PB', r2s);
+  const ok = ENDS.length > 0 && LEFT >= 0; if (!ok) return HL.length ? hookSlam(g, t, HL[0], HL[1] || '') : hookSlam(g, t, ...HEADS[HEAD % HEADS.length]);
+  const big = LEFT === 0 ? 'LAST' : String(LEFT), r1 = LEFT === 0 ? 'DAY' : LEFT === 1 ? 'DAY LEFT' : 'DAYS LEFT', r2 = HL.length ? HL.join(' ') : 'TO CLIMB THE BOARD';
+  const bs = P4 ? 300 : 420, bc = capH('PBI', bs), rs = P4 ? 92 : 120, rc = capH('PBI', rs);
+  const r2s = Math.min(P4 ? 40 : 48, (P4 ? 560 : 900) / lay('PB', 100, 4, r2).w * 100), r2c = capH('PB', r2s);
   const Lb = lay('PBI', bs, -6, big), Lr = Math.max(lay('PBI', rs, -2, r1).w, lay('PB', r2s, 4, r2).w), gapX = P4 ? 36 : 56;
   const tw = Lb.w + gapX + Lr; const x0 = W / 2 - tw / 2;
   hookFrame(g, t, bc, (mt) => {
@@ -386,7 +390,7 @@ function sceneHook(g, t) {
   if (INTRO === 1) return hookType(g, t);
   if (INTRO === 2) return hookScramble(g, t);
   if (INTRO === 3) return hookCountdown(g, t);
-  return hookSlam(g, t, ...HEADS[HEAD % HEADS.length]);
+  return HL.length ? hookSlam(g, t, HL[0], HL[1] || '') : hookSlam(g, t, ...HEADS[HEAD % HEADS.length]);
 }
 
 /* =====================================================================

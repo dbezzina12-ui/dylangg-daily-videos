@@ -27,7 +27,12 @@ The OAuth consent screen must be **In production**: in Testing, Google expires r
 ```json
 {"date": "2026-10-09", "pool": 13053, "main": 11748, "raffle": 652, "multi": 652,
  "round": "01", "ends": "2026-10-15",
- "top": [["Inne****", 276431.57, 4111], ["Jame********", 108574.22, 1762]]}
+ "top": [["Inne****", 276431.57, 4111], ["Jame********", 108574.22, 1762]],
+ "headline": ["INNE**** LEADS", "BY $168K"]}
 ```
 
 `top` rows are `[name as shown on the site, wagered, prize]` in rank order (up to 5). Omit `round`/`ends` when the round dates aren't known. `kit/make_daily.py` refuses numbers that don't split 90/5/5 or aren't in rank order, so nothing wrong reaches Drive.
+
+## Intro text (different every day)
+
+`headline` is the intro's text: 1-2 lines, each at most 20 characters of A-Z 0-9 and `$,.!?'&+%*#:/-`. The morning run writes a new one from that day's numbers. `scripts/render_day.py` uses it when it's valid and hasn't appeared in the last 14 data files. Otherwise it builds one from the numbers: pool growth since the previous file, the leader's margin, a new #1, days left, #1 and #5 prizes, top-5 wagered, raffle/multi. It rotates by date and skips anything used recently. The intro animation also rotates by date (slam, typewriter, scramble, countdown). It drops back to the slam when the headline would clash, e.g. a pool total on a scramble day.
