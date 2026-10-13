@@ -42,6 +42,14 @@ The OAuth consent screen must be **In production**: in Testing, Google expires r
 
 The uploader now also writes `YYYY-MM-DD.hq.json` into **1001 Clips**. It builds a short caption from the existing daily JSON (date, prize pool and displayed leader); Claude does not need to supply a social caption. The sidecar includes the verified Drive video ID and MD5, title, summary and source link. The caption itself omits links because the current X publishing connection does not support them.
 
+The `caption` is one or two short lines, e.g. "And today’s leaderboard is… 👀" / "$13,972 in the pool.", picked from a rotation of about 35 openings (leaderboard check-ins, prize-pool updates, pool growth, occasional leader mentions):
+
+- **Real numbers only.** Pool, leader and days left come from that day's file. It says the pool grew (and by how much) only when the pool is higher than the previous data file from the same round (same `round`, and `ends` doesn't differ). "Holding the top spot" / "new name at the top" compare with that same snapshot.
+- **No repeats.** An opening isn't reused within 7 days. The history is rebuilt from the earlier files in `data/`, so it's only as complete as that folder. The kind of caption rotates by date and avoids yesterday's kind. No links or hashtags, at most one emoji, and a question at most once a week.
+- **Tonight's stream** is mentioned only when the day's file has `"stream_tonight": true` (set it only when the schedule is confirmed), and never for an older video.
+- **Older videos** (a past date re-run) use their own date instead of "today", and drop "days left".
+- Reruns give the same caption.
+
 HQ imports the sidecar during **Sync Drive** and offers it as a draft in **Queue → Edit post → Use this caption**. The owner still approves the caption and posting time. Uploading does not publish a social post. Reruns replace the matching MP4 and sidecar, reject duplicate Drive filenames, and verify the uploaded size and MD5. If the video uploads but the metadata step fails, the next sync can use a clearly marked basic draft; rerunning the uploader repairs the metadata.
 
 Run uploader checks without credentials or external writes:
