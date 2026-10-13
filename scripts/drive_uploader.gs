@@ -5,7 +5,8 @@
  *
  * Requests (JSON POST):
  *   {key, name, size, mimeType}      -> starts an upload into 1001 Clips and returns a one-time uploadUrl.
- *                                       A file with the same name is replaced, not duplicated.
+ *                                       Videos and NAME.hq.json caption metadata only. A file with the
+ *                                       same name is replaced, not duplicated.
  *   {key, action: "history"}         -> recent daily data (pool, round, leader, headline...) for caption
  *                                       and headline variety.
  *   {key, action: "remember", entry} -> stores one day's data (the daily JSON) in that history.
@@ -50,6 +51,9 @@ function fileInfo(name) {
 function startUpload(req) {
   const name = String(req.name || 'hype_edit.mp4').slice(0, 200);
   const type = String(req.mimeType || 'video/mp4');
+  // Videos, plus the Social HQ caption sidecars (NAME.hq.json); nothing else.
+  const allowed = /^video\/[\w.+-]+$/.test(type) || (type === 'application/json' && /^[\w .-]+\.hq\.json$/.test(name));
+  if (!allowed || /[\/\\]/.test(name)) return reply({ ok: false, error: 'invalid file metadata' });
   const existing = findInFolder(name);
   if (existing.length > 1) return reply({ ok: false, error: 'more than one ' + name + ' in 1001 Clips; nothing replaced' });
 

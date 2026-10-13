@@ -23,7 +23,7 @@ python scripts/drive_hq_upload.py metadata data/2026-10-13.json            # cap
 - `upload` sends the MP4, then `YYYY-MM-DD.hq.json` carrying that upload's Drive ID and MD5, then saves the day's numbers in the uploader's history. If the video went up but the metadata didn't, rerun with `--video-id <Drive ID>` to add only the metadata.
 - The uploader keeps the last 45 days of numbers and headlines (Script Properties), which is the history the headline and caption rules use now that nothing is pushed here. `pull-history` copies them into `data/` without overwriting files already there.
 - With the current script, a rerun replaces the same-named file instead of making a duplicate (it refuses if 1001 Clips already holds two files with that name), and Drive's own MD5 is checked against the local file.
-- Older deployments (before the history and file actions) still take uploads: the video and metadata go up, captions use only the files in `data/`, and `metadata` stops with "needs the updated uploader script".
+- The previous deployment accepts videos only. With it, `upload` sends the video, then stops and names the `--video-id` to rerun with once this script is deployed; `metadata` stops with "needs the updated uploader script".
 
 To update the web app: paste `scripts/drive_uploader.gs` over the project's code, save, then **Deploy → Manage deployments → edit → Version: New version → Deploy**. The `/exec` URL and the saved key stay the same.
 

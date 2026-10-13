@@ -38,7 +38,9 @@ class FakeDrive:
                 return {'ok': False, 'error': f'no {payload["name"]} in 1001 Clips'}
             fid, md5 = self.in_drive[payload['name']]
             return {'ok': True, 'id': fid, 'name': payload['name'], 'size': '16', 'md5Checksum': md5}
-        # older uploader: anything else (including unknown actions) just opens an upload
+        # older uploader: anything else (including unknown actions) opens an upload, videos only
+        if not self.keeps_history and not payload.get('mimeType', 'video/mp4').startswith('video/'):
+            return {'ok': False, 'error': 'invalid file metadata'}
         return {'ok': True, 'uploadUrl': f'https://www.googleapis.com/upload/drive/v3/files?upload_id={len(self.requests)}',
                 'pending': payload.get('name')}
 
@@ -78,13 +80,14 @@ class DriveHqUploadTests(unittest.TestCase):
         self.assertEqual(drive.saved[-1]['date'], '2026-10-13')
         self.assertNotIn(KEY, out)
 
-    def test_older_uploader_without_history_still_uploads_both_files(self):
+    def test_older_uploader_still_takes_the_video_and_says_how_to_add_the_metadata(self):
         drive = FakeDrive(keeps_history=False)
-        with tempfile.TemporaryDirectory() as tmp:
-            _, out, _ = run_upload(drive, tmp)
-        self.assertEqual([f[0] for f in drive.files], ['2026-10-13.mp4', '2026-10-13.hq.json'])
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(RuntimeError) as err:
+            run_upload(drive, tmp)
+        self.assertEqual([f[0] for f in drive.files], ['2026-10-13.mp4'])
+        self.assertIn('deploy the updated scripts/drive_uploader.gs', str(err.exception))
+        self.assertIn('--video-id id_1', str(err.exception))
         self.assertFalse(any(r.get('action') == 'remember' for r in drive.requests))
-        self.assertIn('not kept by this uploader version', out)
 
     def test_video_already_in_drive_only_adds_metadata(self):
         drive = FakeDrive()

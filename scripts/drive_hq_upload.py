@@ -16,8 +16,8 @@
       Adds YYYY-MM-DD.hq.json for a YYYY-MM-DD.mp4 that's already in 1001 Clips, without the video file:
       the uploader looks up its Drive ID and MD5. Also stores the day's data in the history.
 
-Needs HYPE_UPLOAD_KEY in the environment. The key is never printed. Older uploader versions without
-history still work: the upload goes through and captions use whatever history is in data/.
+Needs HYPE_UPLOAD_KEY in the environment. The key is never printed. The metadata, history and file lookup
+need scripts/drive_uploader.gs deployed; an older uploader still takes the video, then this stops and says so.
 """
 import hashlib
 import json
@@ -117,7 +117,13 @@ def upload(video_path, data_path, video_id=None):
 
     metadata.update(driveFileId=vid['id'], mediaChecksum=vid['md5'])
     sidecar = json.dumps(metadata, ensure_ascii=False, indent=2).encode('utf-8')
-    meta = send(f'{video.stem}.hq.json', 'application/json', sidecar)
+    try:
+        meta = send(f'{video.stem}.hq.json', 'application/json', sidecar)
+    except RuntimeError as e:
+        why = ('the uploader only takes videos: deploy the updated scripts/drive_uploader.gs'
+               if 'invalid file metadata' in str(e) else str(e))
+        raise RuntimeError(f'{video.name} is in Drive ({vid["id"]}) but its caption metadata was not uploaded: {why}. '
+                           f'Then rerun with --video-id {vid["id"]}') from None
     print(f'metadata: {"replaced" if meta["replaced"] else "uploaded"} {video.stem}.hq.json ({meta["id"]})')
     print('caption: ' + metadata['caption'].replace('\n', ' / '))
 
