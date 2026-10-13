@@ -36,3 +36,16 @@ The OAuth consent screen must be **In production**: in Testing, Google expires r
 ## Intro text (different every day)
 
 `headline` is the intro's text: 1-2 lines, each at most 20 characters of A-Z 0-9 and `$,.!?'&+%*#:/-`. The morning run writes a new one from that day's numbers. `scripts/render_day.py` uses it when it's valid and hasn't appeared in the last 14 data files. Otherwise it builds one from the numbers: pool growth since the previous file, the leader's margin, a new #1, days left, #1 and #5 prizes, top-5 wagered, raffle/multi. It rotates by date and skips anything used recently. The intro animation also rotates by date (slam, typewriter, scramble, countdown). It drops back to the slam when the headline would clash, e.g. a pool total on a scramble day.
+
+
+## Social HQ caption metadata
+
+The uploader now also writes `YYYY-MM-DD.hq.json` into **1001 Clips**. It builds a short caption from the existing daily JSON (date, prize pool and displayed leader); Claude does not need to supply a social caption. The sidecar includes the verified Drive video ID and MD5, title, summary and source link. The caption itself omits links because the current X publishing connection does not support them.
+
+HQ imports the sidecar during **Sync Drive** and offers it as a draft in **Queue → Edit post → Use this caption**. The owner still approves the caption and posting time. Uploading does not publish a social post. Reruns replace the matching MP4 and sidecar, reject duplicate Drive filenames, and verify the uploaded size and MD5. If the video uploads but the metadata step fails, the next sync can use a clearly marked basic draft; rerunning the uploader repairs the metadata.
+
+Run uploader checks without credentials or external writes:
+
+```sh
+python -m unittest discover -s tests -v
+```
