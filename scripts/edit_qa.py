@@ -13,6 +13,13 @@ Prints PASS / WARN / FAIL lines and exits 1 on any FAIL.
 """
 import json, os, re, subprocess, sys
 import numpy as np
+def _wdev():  # CUDA (float16) when a GPU is present, else CPU int8
+    try:
+        import ctranslate2
+        if ctranslate2.get_cuda_device_count() > 0: return {"device": "cuda", "compute_type": "float16"}
+    except Exception: pass
+    return {"device": "cpu", "compute_type": "int8"}
+
 
 fails, warns = [], []
 def out(level, msg):
@@ -44,7 +51,7 @@ def main(video, work, max_mb=29.0):
     wav = subprocess.run(["ffmpeg", "-v", "quiet", "-i", video, "-vn", "-ac", "1", "-ar", "16000", "-f", "f32le", "-"],
                          capture_output=True).stdout
     x = np.frombuffer(wav, np.float32)
-    segs, _ = WhisperModel("small.en", device="cpu", compute_type="int8").transcribe(
+    segs, _ = WhisperModel("small.en", **_wdev()).transcribe(
         x, word_timestamps=True, vad_filter=True, condition_on_previous_text=False)
     words = [(w.start, re.sub(r"[^a-z0-9']", "", w.word.lower())) for s in segs for w in (s.words or [])]
     words = [(t, w) for t, w in words if w]
