@@ -12,7 +12,11 @@ for f in E.get("freezes", []):
     outs = sorted(set(round(s[0], 3) for s in fr))
     # the freeze in output time: the frames whose picture sits on f["src"] (voice_sync only lists frames where his voice plays)
     sync_all = [s for s in S]
-    t0 = min(outs) if outs else None
+    runs = []                                            # the engine freezes the LAST showing of the moment (the cold open can reuse it)
+    for o in outs:
+        if runs and o - runs[-1][-1] < 0.05: runs[-1].append(o)
+        else: runs.append([o])
+    t0 = runs[-1][0] if runs else None
     print(f'freeze {f["src"]}: {p["char"]}/{p["line"]} len {L:.2f}s, first out frame on it {t0}')
     if t0 is None: continue
     a, b = t0 + 0.18, t0 + 0.18 + L
