@@ -17,6 +17,9 @@ for f in E.get("freezes", []):
         if runs and o - runs[-1][-1] < 0.05: runs[-1].append(o)
         else: runs.append([o])
     t0 = runs[-1][0] if runs else None
+    TL = json.load(open(os.path.join(E["work"], "timeline.json")))       # the engine's own freeze times win (voice_sync has no
+    tf = [z["T0"] for z in TL.get("freezes", []) if abs(z["src"] - f["src"]) < 0.02]   # entries while his voice waits)
+    if tf: t0 = tf[-1]
     print(f'freeze {f["src"]}: {p["char"]}/{p["line"]} len {L:.2f}s, first out frame on it {t0}')
     if t0 is None: continue
     a, b = t0 + 0.18, t0 + 0.18 + L
