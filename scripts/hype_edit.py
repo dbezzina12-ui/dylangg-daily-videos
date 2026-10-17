@@ -727,8 +727,9 @@ def draw_pops(o, T, ow=None, oh=None):
 # on game shots whose picture is inside src0..src1 (source times) his webcam (face_rect of the SAME frame, so it is live) is shown:
 #   pip   - a white-framed webcam window, tilted in perspective, that swings in from the side, sways a little while the webcam
 #           view pushes in and pans across him, and swings back out (size = width as a share of the frame, default 0.36)
-#   ghost - his webcam cut out of its background (person matte) and laid big and semi-transparent over the board, rising from the
-#           bottom edge (size = height share, default 0.72; alpha default 0.55)
+#   ghost - his whole webcam laid big and semi-transparent over the win with soft oval edges, rising from the bottom edge
+#           (side "c" | "r" | "l", default "c"; size = height share, default 0.62; alpha default 0.45; "matte": true cuts him out
+#           of his background instead, which loses him when he leans out of frame)
 REACT = [dict(r) for r in EDL.get("reactions", [])]
 for r in REACT:
     idx = [i for i, (si_, t_, _) in enumerate(frames) if SHOTS[si_]["kind"] != "face" and r["src0"] <= t_ <= r["src1"]]
@@ -763,12 +764,15 @@ def draw_reactions(o, raw_, i):
         e_out = min(1.0, max(0.0, (r["_i1"] - i) / (0.25 * FPS))); e_out = e_out * e_out * (3 - 2 * e_out)
         sd = 1 if r.get("side", "r") == "r" else -1
         if r.get("style", "pip") == "ghost":
-            th = int(H_ * r.get("size", 0.72) * (1 + 0.05 * u)); tw = int(th * fw_ / fh_)
+            th = int(H_ * r.get("size", 0.62) * (1 + 0.05 * u)); tw = int(th * fw_ / fh_)
             big = cv2.resize(crop, (tw, th), interpolation=cv2.INTER_CUBIC)
-            m = cv2.resize(_face_matte(cv2.resize(crop, (fw_ * 2, fh_ * 2), interpolation=cv2.INTER_CUBIC), i), (tw, th))
-            vy = np.clip(np.linspace(0, 1, th) / 0.12, 0, 1) ** 2; vx = np.sin(np.linspace(0, np.pi, tw)) ** 0.35   # no hard webcam edges
-            al = m * np.outer(vy, vx) * r.get("alpha", 0.55) * min(e_in, e_out)
-            x0 = W_ - tw - int(0.01 * W_) if sd > 0 else int(0.01 * W_)
+            yy, xx = np.mgrid[0:th, 0:tw].astype(np.float32)
+            d_ = np.sqrt(((xx - tw / 2) / (tw / 2)) ** 2 + ((yy - th * 0.62) / (th * 0.62)) ** 2)
+            al = np.clip((1.0 - d_) / 0.35, 0, 1) ** 1.5                                          # soft oval, no webcam edges
+            if r.get("matte"): al = al * cv2.resize(_face_matte(cv2.resize(crop, (fw_ * 2, fh_ * 2), interpolation=cv2.INTER_CUBIC), i), (tw, th))
+            al = al * r.get("alpha", 0.45) * min(e_in, e_out)
+            sd_ = r.get("side", "c")
+            x0 = (W_ - tw) // 2 if sd_ == "c" else (W_ - tw - int(0.01 * W_) if sd_ == "r" else int(0.01 * W_))
             y0 = H_ - th + int((1 - e_in) * 0.25 * th) + int((1 - e_out) * 0.25 * th)              # rises in, sinks out
             if "pos" in r: x0, y0 = int(r["pos"][0] - tw / 2), int(r["pos"][1] - th / 2)
             _blit(out, big, al[..., None].astype(np.float32), x0, y0)
