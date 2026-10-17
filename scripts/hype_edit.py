@@ -767,8 +767,8 @@ def draw_reactions(o, raw_, i):
             th = int(H_ * r.get("size", 0.62) * (1 + 0.05 * u)); tw = int(th * fw_ / fh_)
             big = cv2.resize(crop, (tw, th), interpolation=cv2.INTER_CUBIC)
             yy, xx = np.mgrid[0:th, 0:tw].astype(np.float32)
-            d_ = np.sqrt(((xx - tw / 2) / (tw / 2)) ** 2 + ((yy - th * 0.62) / (th * 0.62)) ** 2)
-            al = np.clip((1.0 - d_) / 0.35, 0, 1) ** 1.5                                          # soft oval, no webcam edges
+            d_ = np.sqrt(((xx - tw / 2) / (tw * 0.56)) ** 2 + ((yy - th * 0.55) / (th * 0.62)) ** 2)
+            al = np.clip((1.0 - d_) / 0.3, 0, 1) ** 1.2                                           # soft oval, no webcam edges
             if r.get("matte"): al = al * cv2.resize(_face_matte(cv2.resize(crop, (fw_ * 2, fh_ * 2), interpolation=cv2.INTER_CUBIC), i), (tw, th))
             al = al * r.get("alpha", 0.45) * min(e_in, e_out)
             sd_ = r.get("side", "c")
