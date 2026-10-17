@@ -16,7 +16,8 @@ Rules, newest first (they override older notes where they conflict):
    (the hit landing, the multiplier/banner, the total): 2-6 s each, usually 2-4 per edit. His webcam (face_rect of the same
    frame, so it is live) swings in tilted, pushes in and pans across him, and swings out. Put "pos" (the window's centre) where
    it covers NO win amount, banner or the reels that matter (default right edge ~[1610, 640]; "side": "l" and a left pos when
-   the board sits right). Check the QA frames for it. Facecam shots stay as they are; never put a reaction over a face shot.
+   the board sits right). Check the QA frames for it, and look at face_rect crops through
+   the window first (scan_vod.py frame --crop): start it where his face is in the webcam (people lean out of frame when they pop off). Facecam shots stay as they are; never put a reaction over a face shot.
 1. ~40-55 s. Balance real gameplay and hype; never rushed, never every spin.
 2. NO fast-forwards/VHS x8 shots: cut dead spins out with glitch cuts. Each spin that hits plays from the reels dropping to its win.
 3. HIS VOICE PLAYS LIVE FOR THE WHOLE SHOT (Dylan, 2026-10-17: "during whatever clip is happening it should have the voice
