@@ -35,6 +35,10 @@ Rules, newest first (they override older notes where they conflict):
    he says just after the freeze point. Put each freeze in one of his pauses and set stems2 "sync_tol": 0.12 (leave "max_off"
    at its default: 1.0 re-syncs by skipping words); his voice then waits in that pause until the picture moves again. His
    voice never talks over a popup line.
+   OFF-TOPIC TALK (Dylan, 2026-10-17: "if it's weird chat banter then yes [silence it], if it's related to the slot keep it"):
+   private or off-topic talk (personal life, medical, sex jokes, weird chat banter, rants at chat) is silenced by splitting the
+   shot at his pauses and setting "voice": false on that part, never muted mid-sentence. Everything about the slot stays, even
+   repeats. Say what was silenced in edit_note.
 4. Camera: angled swing / tilt push-ins ON THE BOARD onto win amounts as they appear/count up (not only banners); pan/tilt across
    scatters as they land; alternate yaw sides. VS / expanding-wild games: close 2.2x zoom on each VS as it lands left->right, zoom
    OUT to ~1.72-1.78 as soon as multis display, pan reel to reel, BOARD for the count-up. Every zoom stays inside the game window
