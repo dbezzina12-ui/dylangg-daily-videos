@@ -733,7 +733,11 @@ def draw_pops(o, T, ow=None, oh=None):
 REACT = [dict(r) for r in EDL.get("reactions", [])]
 for r in REACT:
     idx = [i for i, (si_, t_, _) in enumerate(frames) if SHOTS[si_]["kind"] != "face" and r["src0"] <= t_ <= r["src1"]]
-    r["_i0"], r["_i1"] = (idx[0], idx[-1]) if idx else (1, 0)
+    runs_ = []                                          # the longest unbroken run only (a cold open reusing the moment isn't part of it)
+    for i in idx:
+        if runs_ and i == runs_[-1][1] + 1: runs_[-1][1] = i
+        else: runs_.append([i, i])
+    r["_i0"], r["_i1"] = max(runs_, key=lambda x: x[1] - x[0]) if runs_ else (1, 0)
 _rseg = {"sess": None, "prev": None, "k": None}
 def _face_matte(crop, key):
     if _rseg["k"] is not None and 0 <= key - _rseg["k"] < 2 and _rseg["prev"] is not None and _rseg["prev"].shape == crop.shape[:2]:
