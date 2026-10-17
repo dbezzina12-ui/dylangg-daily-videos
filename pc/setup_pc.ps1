@@ -3,7 +3,9 @@
 # Installs Python 3.12 + ffmpeg (with NVENC) via winget, then CUDA builds of torch / onnxruntime / faster-whisper.
 $ErrorActionPreference = "Stop"
 winget install -e --id Python.Python.3.12 --accept-package-agreements --accept-source-agreements
-winget install -e --id Gyan.FFmpeg --accept-package-agreements --accept-source-agreements
+# ffmpeg 9.x needs NVENC API 13.1 (driver 610+); 8.0.1 runs NVENC on the 572 driver. Pinned so winget upgrade keeps it.
+winget install -e --id Gyan.FFmpeg --version 8.0.1 --accept-package-agreements --accept-source-agreements
+winget pin add --id Gyan.FFmpeg --version 8.0.*
 winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements
 $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [Environment]::GetEnvironmentVariable("Path", "User")
 $root = "$env:USERPROFILE\hype"; New-Item -ItemType Directory -Force $root | Out-Null; Set-Location $root
@@ -20,7 +22,7 @@ ffmpeg -v error -f lavfi -i color=c=black:s=256x256:d=0.1 -c:v h264_nvenc -f nul
 & $py -c "import torch, onnxruntime as o, ctranslate2 as c; o.preload_dlls(); print('torch cuda', torch.cuda.is_available(), torch.cuda.get_device_name(0)); print('onnx', o.get_available_providers()); print('whisper cuda devices', c.get_cuda_device_count())"
 & $py -c "from faster_whisper import WhisperModel; WhisperModel('small.en', device='cuda', compute_type='float16'); print('whisper ready')"
 & $py -c "from audio_separator.separator import Separator; s = Separator(output_dir='.', model_file_dir='models'); s.load_model('model_bs_roformer_ep_317_sdr_12.9755.ckpt'); print('separator ready')"
-& $py -c "from rembg import new_session; new_session('isnet-general-use'); print('rembg ready')"
+& $py -c "import onnxruntime as o; o.preload_dlls(); from rembg import new_session; s = new_session('isnet-general-use'); p = s.inner_session.get_providers()[0]; print('rembg ready' if p == 'CUDAExecutionProvider' else 'rembg ON CPU: ' + p)"
 "setup done -> $root"
 # keep the PC awake overnight while plugged in (screen may still turn off)
 powercfg /change standby-timeout-ac 0; powercfg /change hibernate-timeout-ac 0

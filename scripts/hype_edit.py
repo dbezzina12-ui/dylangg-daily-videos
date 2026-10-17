@@ -501,7 +501,9 @@ def person_mask(img, key):
     if _seg["k"] is not None and key - _seg["k"] < 2 and _seg["prev"] is not None: return _seg["prev"]
     from rembg import new_session, remove
     from PIL import Image
-    if _seg["sess"] is None: _seg["sess"] = new_session("isnet-general-use")
+    if _seg["sess"] is None:
+        import onnxruntime; onnxruntime.preload_dlls()  # without torch imported, ORT can't find the pip CUDA/cuDNN DLLs and drops to CPU
+        _seg["sess"] = new_session("isnet-general-use")
     small = cv2.resize(np.clip(img, 0, 255).astype(np.uint8), (img.shape[1] // 2, img.shape[0] // 2), interpolation=cv2.INTER_AREA)
     m = np.asarray(remove(Image.fromarray(small[..., ::-1]), session=_seg["sess"], only_mask=True)).astype(np.float32) / 255.0
     m = cv2.resize(m, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_LINEAR)
