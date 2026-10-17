@@ -269,7 +269,8 @@ function gridFloor(g, t, a = 1) {
   g.restore();
 }
 function stage(g, t, floor = 1, glow = 0.12, dark = 0.5) {
-  if (PLATE) {   // footage shows through: only a soft dark scrim so type reads, plus a faint beat glow
+  if (WORLD >= 0) worldBg(g, t);
+  if (PLATE || WORLD >= 0) {   // footage shows through: only a soft dark scrim so type reads, plus a faint beat glow
     const gr = g.createRadialGradient(W / 2, H / 2, H * 0.1, W / 2, H / 2, W * 0.75);
     gr.addColorStop(0, `rgba(0,0,0,${dark})`); gr.addColorStop(1, `rgba(0,0,0,${dark * 0.35})`);
     g.fillStyle = gr; g.fillRect(-200, -200, W + 400, H + 400);
@@ -281,6 +282,155 @@ function stage(g, t, floor = 1, glow = 0.12, dark = 0.5) {
   gridFloor(g, t, floor);
   vignette(g, 0.62);
 }
+
+/* =====================================================================
+   WORLDS — drawn backgrounds that replace the footage plate (Dylan, 2026-10-17: "lose the premade visuals... too boring doing
+   the same ones everyday"). ?world=0|1|2 picks one, ?ws=<seed> varies it (render_day passes the date): 0 COIN STORM,
+   1 REEL WALL, 2 VAULT. Each has one hero object that plays every section: hook, pool (the counter slams at TL.c1),
+   board (rows land on beats), ends (days left), end card. Everything is a function of t.
+   ===================================================================== */
+const WORLD = Q.get('world') === null ? -1 : (parseInt(Q.get('world'), 10) % 3 + 3) % 3;
+const WSEED = parseInt(Q.get('ws') || '7', 10) | 0;
+const WDIR = (WSEED & 1) ? 1 : -1;                       // daily variant: spin / drift direction
+const sec = t => t < TL.x1 ? 'hook' : t < TL.m0 ? 'pool' : t < TL.x2 ? 'board' : t < TL.x3 ? 'ends' : 'end';
+function ell(g, x, y, rx, ry) { g.beginPath(); g.ellipse(x, y, Math.max(0.5, rx), Math.max(0.5, ry), 0, 0, Math.PI * 2); }
+
+/* ---------- 0  COIN STORM: a gold coin ---------- */
+function coin(g, x, y, r, phi, tilt, a, fog = 0) {
+  if (r < 1 || a <= 0.01) return;
+  const c = Math.cos(phi), cw = Math.max(0.06, Math.abs(c)), rx = r * cw, th = r * 0.13 * Math.sin(phi);
+  const k = 1 - fog;
+  g.save(); g.translate(x, y); g.rotate(tilt); g.globalAlpha *= a;
+  g.fillStyle = `rgb(${120 * k | 0},${74 * k | 0},${4 * k | 0})`;                     // rim
+  for (let i = 1; i <= 3; i++) { ell(g, th * i / 3, 0, rx, r); g.fill(); }
+  const hl = 0.5 + 0.5 * Math.sin(phi * 2 + 0.6);                                   // light sweeps across the face as it turns
+  const gr = g.createLinearGradient(-rx, -r, rx, r);
+  gr.addColorStop(0, `rgb(${255 * k | 0},${(214 + 30 * hl) * k | 0},${(77 + 120 * hl) * k | 0})`);
+  gr.addColorStop(0.45 + 0.2 * hl, `rgb(${238 * k | 0},${175 * k | 0},${14 * k | 0})`);
+  gr.addColorStop(1, `rgb(${170 * k | 0},${110 * k | 0},${0})`);
+  g.fillStyle = gr; ell(g, 0, 0, rx, r); g.fill();
+  g.strokeStyle = `rgba(${110 * k | 0},${66 * k | 0},0,0.7)`; g.lineWidth = Math.max(1, r * 0.05); ell(g, 0, 0, rx * 0.8, r * 0.8); g.stroke();
+  if (cw > 0.3 && r > 14) { g.scale(c > 0 ? cw : -cw, 1); font(g, 'PBI', r * 1.15, 0); g.textAlign = 'center'; g.fillStyle = `rgba(${150 * k | 0},${92 * k | 0},0,0.85)`; g.fillText('$', 0, r * 0.4); g.textAlign = 'left'; }
+  g.restore();
+}
+const COINS = (() => { const r = rng(WSEED * 31 + 11); const a = []; for (let i = 0; i < 70; i++) a.push({ x: (r() - 0.5) * 2.6, y: (r() - 0.5) * 1.8, z: r(), s: 0.8 + r() * 0.5, ph: r() * 6.28, w: 2 + r() * 5, tl: (r() - 0.5) * 0.8, vx: (r() - 0.5) * 2, vy: -0.3 - r() * 1.4 }); return a; })();
+function coinsBg(g, t) {
+  const s = sec(t), f = H * 0.9, bp = beatPulse(t, 5);
+  g.fillStyle = '#060504'; g.fillRect(-200, -200, W + 400, H + 400);
+  if (s === 'hook') {                                   // one hero coin turning slowly behind the headline, a few drifting past
+    radial(g, W / 2, H / 2, H, GOLD_RGB, 0.10 + 0.05 * bp);
+    for (const c of COINS.slice(0, 18)) { const z = 0.55 + 0.45 * c.z; coin(g, W / 2 + c.x * f / z * 0.6, H / 2 + ((c.y + t * 0.12 * c.s + 2) % 1.8 - 0.9) * f / z * 0.6, 34 * c.s / z, c.ph + t * c.w * 0.5, c.tl, 0.35, 0.55); }
+    coin(g, W / 2 + WDIR * W * 0.02 * t, H * 0.52, H * 0.46 * (1 + 0.04 * t), 0.5 + WDIR * t * 1.1, -0.12 * WDIR, 0.8, 0.2);
+    return;
+  }
+  if (s === 'pool') {                                   // coins rain at the camera; the slam blows them out
+    radial(g, W / 2, H * 0.45, H * 1.1, GOLD_RGB, 0.12 + 0.08 * bp);
+    const tb = t - TL.c1, blast = tb > 0 ? 1 + 3.5 * E.outCubic(clamp(tb / 0.5)) : 1;
+    const L = COINS.map(c => { let z = ((c.z - (t - TL.x1) * 0.55 * c.s) % 1 + 1) % 1 * 0.95 + 0.05; return { c, z }; }).sort((a, b) => b.z - a.z);
+    for (const { c, z } of L) coin(g, W / 2 + c.x * f / z * 0.45 * blast, H / 2 + c.y * f / z * 0.45 * blast, 40 * c.s / z, c.ph + t * c.w, c.tl + WDIR * t * 0.3, clamp((1 - z) * 2.4), z * 0.3);
+    if (tb > 0 && tb < 0.6) { g.strokeStyle = rgba(GOLD_RGB, 0.8 * (1 - tb / 0.6)); g.lineWidth = 18 * (1 - tb / 0.6); g.beginPath(); g.arc(W / 2, H / 2, 80 + tb * 2400, 0, 6.29); g.stroke(); }
+    return;
+  }
+  if (s === 'board') {                                  // far coins drifting down behind the board, a warm floor glow
+    radial(g, W / 2, H * 1.05, H * 0.9, GOLD_RGB, 0.16 + 0.05 * bp);
+    for (const c of COINS) { const z = 0.6 + 0.4 * c.z; const y = ((c.y + 0.9 + (t - TL.m0) * 0.10 * c.s) % 1.8) - 0.9; coin(g, W / 2 + (c.x + WDIR * 0.03 * t) * f / z * 0.55, H / 2 + y * f / z * 0.62, 26 * c.s / z, c.ph + t * c.w * 0.6, c.tl, 0.7, 0.45); }
+    return;
+  }
+  if (s === 'ends') {                                   // a vortex: coins orbit in to the card
+    radial(g, W / 2, H / 2, H, GOLD_RGB, 0.12 + 0.06 * bp);
+    COINS.forEach((c, i) => { const p = ((c.z + (t - TL.x2) * 0.4) % 1); const rr = (1 - p) * H * 0.95; const an = c.ph + WDIR * (t * 2.2 + p * 5);
+      coin(g, W / 2 + Math.cos(an) * rr * 1.4, H / 2 + Math.sin(an) * rr * 0.7, 18 + 36 * (1 - p), c.ph + t * c.w, an, clamp(p * 3) * 0.75, 0.35); });
+    return;
+  }
+  // end card: a fountain of coins from behind the mascot
+  const mx = V ? W / 2 : 1500, my = V ? H * 0.8 : H * 0.85;
+  COINS.forEach((c, i) => { const per = 1.6, t0 = TL.end + 0.4 + (i / COINS.length) * per; if (t < t0) return; const p = (t - t0) % per;
+    const vx = c.vx * 260, vy = -900 - 500 * Math.abs(c.vy); const x = mx + vx * p, y = my + vy * p + 900 * p * p;
+    coin(g, x, y, 16 + 22 * c.s, c.ph + t * c.w, c.tl, clamp(1.4 - p) * 0.8, 0.25); });
+}
+
+/* ---------- 1  REEL WALL: a slot reel ---------- */
+const SYMS = ['7', '$', '♦', '★', 'BAR', '♛', '7', '$', '♣', '♥'];
+const STRIPS = (() => { const r = rng(WSEED * 17 + 3); const a = []; for (let i = 0; i < 9; i++) { const s = ['$']; for (let k = 1; k < 24; k++) s.push(SYMS[Math.floor(r() * SYMS.length)]); a.push(s); } return a; })();
+function reelPos(i, t) {   // cells travelled by column i; stops land on '$' (index 0 forced) at the pool slam
+  const spin = 26, stopAt = TL.c0 + (i / 8) * (TL.c1 - TL.c0 - 0.05);                      // left to right, the last one on the slam
+  const land = Math.ceil(spin * stopAt / 24 + 2) * 24;                                   // whole turns, so row 0 sits on the payline
+  if (t < stopAt - 0.45) return spin * t;
+  if (t < stopAt) { const u = (t - (stopAt - 0.45)) / 0.45; const p0 = spin * (stopAt - 0.45); return p0 + (land - p0) * E.outBack(u, 1.6); }
+  if (t < TL.x2) return land + Math.max(0, t - TL.m0) * 0.5;
+  if (t < TL.x3) return land + (TL.x2 - TL.m0) * 0.5 + (t - TL.x2) * spin * (1 - 0.6 * prog(t, TL.x2, 1.4));
+  return land + (TL.x2 - TL.m0) * 0.5 + 18 + (t - TL.x3) * 0.6;
+}
+function reelsBg(g, t) {
+  const s = sec(t), bp = beatPulse(t, 5);
+  g.fillStyle = '#050403'; g.fillRect(-200, -200, W + 400, H + 400);
+  const cam = { hook: [-0.10, 1.25, 0], pool: [0, 1.0, 0], board: [0.07, 1.35, -0.05], ends: [-0.16, 1.5, 0.04], end: [0.12, 1.2, 0] }[s];
+  const push = s === 'pool' ? 1 + 0.06 * E.inOutSine(prog(t, TL.x1, TL.m0 - TL.x1)) : 1 + 0.02 * Math.sin(t * 0.7);
+  g.save(); g.translate(W / 2, H / 2); g.rotate(cam[0] * WDIR); g.scale(cam[1] * push, cam[1] * push); g.translate(-W / 2, -H / 2 + cam[2] * H);
+  g.globalAlpha = { hook: 1, pool: 1, board: 0.2, ends: 0.32, end: 0.26 }[s];       // the reels sit back where text has to read
+  const n = 9, cw = W / 7, ch = cw * 0.8, x0 = W / 2 - n * cw / 2;
+  for (let i = 0; i < n; i++) {
+    const pos = reelPos(i, t), x = x0 + i * cw;
+    g.fillStyle = '#100E0B'; g.fillRect(x, -H, cw, H * 3);
+    for (let k = -4; k <= 4; k++) {
+      const cell = Math.floor(pos) + k, off = pos - Math.floor(pos);
+      const sym = STRIPS[i][((cell % 24) + 24) % 24], yy = H / 2 - (k - off) * ch;
+      g.fillStyle = '#17140F'; roundRect(g, x + 10, yy - ch / 2 + 8, cw - 20, ch - 16, 18); g.fill();
+      const big = sym === 'BAR' ? 0.38 : 0.62, col = sym === '$' || sym === '7' ? GOLD : sym === '♛' ? GOLD_L : '#EDE6D6';
+      font(g, 'PBI', ch * big, 0); g.textAlign = 'center'; g.fillStyle = col; g.fillText(sym, x + cw / 2, yy + ch * big * 0.36); g.textAlign = 'left';
+    }
+    g.fillStyle = GOLD_D; g.fillRect(x - 3, -H, 6, H * 3);
+  }
+  const lit = s === 'pool' ? clamp((t - TL.c1) / 0.05) * Math.exp(-Math.max(0, t - TL.c1) * 1.2) : 0;      // payline lights on the slam
+  if (lit > 0) { g.fillStyle = rgba(GOLD_RGB, 0.35 * lit); g.fillRect(x0, H / 2 - ch / 2, n * cw, ch); g.strokeStyle = rgba([255, 211, 77], lit); g.lineWidth = 8; g.strokeRect(x0, H / 2 - ch / 2, n * cw, ch); }
+  g.restore();
+  const sh = g.createLinearGradient(0, 0, 0, H); sh.addColorStop(0, 'rgba(0,0,0,0.85)'); sh.addColorStop(0.3, 'rgba(0,0,0,0)'); sh.addColorStop(0.7, 'rgba(0,0,0,0)'); sh.addColorStop(1, 'rgba(0,0,0,0.85)');
+  g.fillStyle = sh; g.fillRect(-200, -200, W + 400, H + 400);                            // the drum curving away top and bottom
+  radial(g, W / 2, H / 2, H, GOLD_RGB, 0.06 + 0.06 * bp);
+}
+
+/* ---------- 2  VAULT: the vault door's tumbler rings ---------- */
+const RINGS = (() => { const r = rng(WSEED * 7 + 5); const a = []; for (let i = 0; i < 8; i++) a.push({ r: 0.16 + i * 0.12, w: 0.035 + r() * 0.03, n: 12 + Math.floor(r() * 4) * 6, sp: (0.3 + r() * 0.8) * (i % 2 ? 1 : -1), off: r() * 6.28 }); return a; })();
+function ringDraw(g, cx, cy, R, w, n, ang, a, notch = true) {
+  if (R < 2 || a <= 0.01) return;
+  g.save(); g.globalAlpha *= a; g.translate(cx, cy); g.rotate(ang);
+  g.strokeStyle = '#2A2215'; g.lineWidth = w; g.beginPath(); g.arc(0, 0, R, 0, 6.29); g.stroke();
+  g.strokeStyle = GOLD_D; g.lineWidth = Math.max(1, w * 0.12); g.beginPath(); g.arc(0, 0, R - w / 2, 0, 6.29); g.stroke(); g.beginPath(); g.arc(0, 0, R + w / 2, 0, 6.29); g.stroke();
+  g.strokeStyle = GOLD; g.lineWidth = Math.max(1, w * 0.1);
+  for (let k = 0; k < n; k++) { const an = k / n * 6.2832, l = k % 3 === 0 ? 0.42 : 0.22; g.beginPath(); g.moveTo(Math.cos(an) * (R - w * l), Math.sin(an) * (R - w * l)); g.lineTo(Math.cos(an) * (R + w * l), Math.sin(an) * (R + w * l)); g.stroke(); }
+  if (notch) { g.fillStyle = GOLD_L; g.beginPath(); g.arc(R, 0, w * 0.28, 0, 6.29); g.fill(); }
+  g.restore();
+}
+function vaultBg(g, t) {
+  const s = sec(t), bp = beatPulse(t, 5), S = Math.min(W, H);
+  g.fillStyle = '#050403'; g.fillRect(-200, -200, W + 400, H + 400);
+  radial(g, W / 2, H / 2, H * 0.9, GOLD_RGB, 0.10 + 0.07 * bp);
+  if (s === 'hook' || s === 'pool') {                   // rings spin, then all notches lock at 12 o'clock on the slam and fly past camera
+    const zoom = s === 'hook' ? 1.15 + 0.08 * t : 1.27 + 0.25 * E.inQuad(prog(t, TL.x1, TL.c1 - TL.x1));
+    const tb = t - TL.c1, out = tb > 0 ? E.inCubic(clamp(tb / 0.45)) : 0;
+    RINGS.forEach((q, i) => {
+      const lock = -Math.PI / 2, free = q.off + q.sp * WDIR * t * (s === 'pool' ? 3.2 : 1.2);
+      const k = s === 'pool' ? E.outBack(prog(t, TL.c1 - 0.5 + i * 0.04, 0.42), 1.4) : 0;
+      const ang = free + (lock - free) * k;
+      ringDraw(g, W / 2, H / 2, q.r * S * zoom * (1 + out * (3 + i * 0.6)), q.w * S * zoom * (1 + out * 3), q.n, ang, 0.9 * (1 - out * 0.7));
+    });
+    if (tb > 0 && tb < 0.5) { g.fillStyle = rgba([255, 230, 160], 0.5 * (1 - tb / 0.5)); g.beginPath(); g.arc(W / 2, H / 2, 40 + tb * 1600, 0, 6.29); g.fill(); }
+    return;
+  }
+  if (s === 'board' || s === 'end') {                   // flying slowly down the vault's ring tunnel (behind the mascot on the end card)
+    const cx = s === 'end' && !V ? 1500 : W / 2, cy = s === 'end' ? H * 0.5 : H * 0.45;
+    for (let j = 11; j >= 0; j--) {
+      const z = ((j - (t - TL.m0) * 0.55) % 12 + 12) % 12 / 12 * 2.4 + 0.18;
+      const q = RINGS[j % RINGS.length];
+      ringDraw(g, cx, cy, S * 0.42 / z, q.w * S * 1.4 / z, q.n, q.off + WDIR * q.sp * t * 0.6, clamp((2.6 - z) / 1.2) * 0.75, false);
+    }
+    return;
+  }
+  // ends: one big dial ticking round on every beat (the days counting down)
+  const step = Math.floor((t - TL.x2) / 0.5), fr = ((t - TL.x2) % 0.5) / 0.5, ang = -WDIR * (step + E.outBack(clamp(fr / 0.35), 2)) * 0.5236;
+  ringDraw(g, W / 2, H / 2, S * 0.62, S * 0.07, 60, ang, 0.8); ringDraw(g, W / 2, H / 2, S * 0.48, S * 0.04, 24, -ang * 0.5, 0.6); ringDraw(g, W / 2, H / 2, S * 0.78, S * 0.05, 36, ang * 0.3, 0.45);
+}
+function worldBg(g, t) { (WORLD === 0 ? coinsBg : WORLD === 1 ? reelsBg : vaultBg)(g, t); }
 
 /* ---------------- shutter transition: alternating gold / ink bars ---------------- */
 function shutter(g, t, tc, drawOld, drawNew) {
@@ -689,7 +839,8 @@ function sceneEnd(g, t) {
   const _PL = typeof PLATE !== 'undefined' && PLATE;
   const spot = 0.35 * clamp((t - TL.end + 0.05) / 0.3) + 0.65 * clamp((t - TL.end - 0.45) / 0.5); const bp = beatPulse(t, 4);
   const mcx = V ? 540 : 1500, mcy = P4 ? 1080 : V ? 1480 : 560;
-  if (_PL) {   // footage (spotlight stage) shows through; darken the text column so it reads
+  if (WORLD >= 0) worldBg(g, t);
+  if (_PL || WORLD >= 0) {   // footage / drawn world shows through; darken the text column so it reads
     const lg = g.createLinearGradient(0, 0, W * 0.62, 0); lg.addColorStop(0, 'rgba(0,0,0,0.72)'); lg.addColorStop(0.75, 'rgba(0,0,0,0.45)'); lg.addColorStop(1, 'rgba(0,0,0,0)');
     g.fillStyle = lg; g.fillRect(-200, -200, W * 0.62 + 200, H + 400);
   } else {

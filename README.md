@@ -6,7 +6,12 @@ Daily DylanGG "Live Standings" leaderboard video, uploaded to the **1001 Clips**
 
 1. Each morning (8:24 AM Toronto) the **Daily Live Standings Video (to Drive)** routine reads dylanjames.gg, checks the numbers and writes `data/YYYY-MM-DD.json`.
 2. It renders the 14 s 1920×1080 video with `scripts/render_day.py` (`kit/`).
-   The background is `kit/assets/plate.mp4`, a 14 s cinematic footage plate made once with Higgsfield (Seedance 2.5): vault door, gold coin avalanche, marble board room, hourglass, spotlight stage. The live numbers are drawn on top each day; no AI generation runs daily.
+   The background is drawn in code and rotates with the date (`--world auto` in `kit/make_daily.py`, worlds in `kit/standings.js`):
+   **coin storm** (a giant turning coin behind the headline, coins raining at the camera into the pool slam, a coin fountain on the end
+   card), **reel wall** (giant slot reels that land $ $ $ on the pool slam) and **vault** (tumbler rings that lock on the slam and open
+   into a ring tunnel). The date also varies directions and layouts, so no two days look the same. (Until 2026-10-17 it was one
+   Higgsfield footage plate, `kit/assets/plate.mp4`, every day; `--world plate` still uses it.)
+   The video opens with 1-2 s of a viral fail clip cut on its impact (`scripts/viral_intro.py`).
 3. `scripts/drive_hq_upload.py` uploads the video and its caption metadata to 1001 Clips through Dylan's Apps Script uploader (below). Nothing is pushed to GitHub.
 4. Social HQ picks both up from 1001 Clips.
 
