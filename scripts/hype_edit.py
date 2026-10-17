@@ -888,13 +888,26 @@ if S2:
         # his voice NEVER changes speed: words (from "words", [[start, end, text], ...] on the source timeline) are grouped into
         # phrases at pauses; each phrase starts where its first word lands in the cut and plays from the clean voice stem at 1.0x.
         # Muted words are dropped whole. A phrase that would overlap the previous one waits (up to max_delay) or is dropped.
-        Wd = json.load(open(S2["words"])); mutes = S2.get("mute", []); gap = S2.get("phrase_gap", 0.2)
-        lead, tail, mdel = 0.06, 0.12, S2.get("max_delay", 0.35)
+        Wd = json.load(open(S2["words"])); gap = S2.get("phrase_gap", 0.2)
+        # Dylan, 2026-10-17: "don't cut off their talking at all... even if I'm repeating myself play my whole voice clip".
+        # voice_full (default): no mutes, no trimmed tails, and a line that starts in a shot plays to the end of its sentence
+        # (words keep coming while the pauses stay short), even past the cut. "voice_full": false restores the old behaviour.
+        FULL = S2.get("voice_full", True)
+        mutes = [] if FULL else S2.get("mute", [])
+        lead, tail, mdel = 0.06, 0.12, (1e9 if FULL else S2.get("max_delay", 0.35))
         def muted(w): return any(m0 < w[1] and w[0] < m1 for m0, m1 in mutes)
-        sched = []                                                     # [T_start, [words...]] in output order
+        sched = []; used = set()                                       # [T_start, [words...]] in output order
         for si_, sh in enumerate(SHOTS):
             if sh.get("voice") is False: continue
             ws = [w for w in Wd if sh["a"] - 0.02 <= w[0] < sh["b"] - 0.05 and not muted(w)]
+            if FULL and ws:                                            # finish the sentence that is running at the cut
+                rest = [w for w in Wd if w[0] >= sh["b"] - 0.05]
+                for w in rest:
+                    if w[0] - ws[-1][1] <= S2.get("finish_gap", 0.6): ws.append(w)
+                    else: break
+            if FULL:                                                   # a finished sentence isn't replayed by the next shot (the cold open doesn't count)
+                ws = [w for w in ws if round(w[0], 2) not in used]
+                if si_ > 0: used.update(round(w[0], 2) for w in ws)
             phr = []
             for w in ws:
                 if phr and w[0] - phr[-1][-1][1] <= gap and not muted([phr[-1][-1][1], w[0]]): phr[-1].append(w)
@@ -918,17 +931,19 @@ if S2:
                 while prev and (re.sub(r"[^a-z']", "", prev[-1][2].lower()) in DANGLE or len(prev) == 1 and len(prev[0][2]) <= 3):
                     trimmed.append(prev.pop()[2])
             if over > 0: sched[k][0] = T + over; delayed += 1
-        Vo[:] = 0; placed = 0
+        Vo[:] = 0; placed = 0; cut_end = []
         for T, ph in sched:
             if not ph: continue
             a0, a1 = ph[0][0] - lead, ph[-1][1] + tail
             i0_ = int(T * SR); n = int((a1 - a0) * SR)
-            if i0_ >= ns or i0_ < 0: continue
+            if i0_ >= ns or i0_ < 0: cut_end.append(" ".join(w[2] for w in ph)); continue
+            if i0_ + n > ns: cut_end.append(" ".join(w[2] for w in ph))
             n = min(n, ns - i0_); seg = V_src[int(a0 * SR):int(a0 * SR) + n].astype(np.float32)
             f = min(int(0.012 * SR), n // 2)
             if f: seg[:f] *= np.linspace(0, 1, f)[:, None]; seg[-f:] *= np.linspace(1, 0, f)[:, None]
             Vo[i0_:i0_ + len(seg)] += seg; placed += 1
         print(f"voice overlay: {placed} phrases at 1.0x, {delayed} nudged later, {len(trimmed)} words trimmed: {' '.join(reversed(trimmed))}")
+        if cut_end: print(f"WARNING voice runs past the end of the edit (lengthen the last shot): {' | '.join(cut_end)}")
         vmask[:] = 1.0
     else:
         src_t = pos / SR

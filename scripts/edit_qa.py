@@ -13,13 +13,6 @@ Prints PASS / WARN / FAIL lines and exits 1 on any FAIL.
 """
 import json, os, re, subprocess, sys
 import numpy as np
-def _wdev():  # CUDA (float16) when a GPU is present, else CPU int8
-    try:
-        import ctranslate2
-        if ctranslate2.get_cuda_device_count() > 0: return {"device": "cuda", "compute_type": "float16"}
-    except Exception: pass
-    return {"device": "cpu", "compute_type": "int8"}
-
 
 fails, warns = [], []
 def out(level, msg):
@@ -51,7 +44,7 @@ def main(video, work, max_mb=29.0):
     wav = subprocess.run(["ffmpeg", "-v", "quiet", "-i", video, "-vn", "-ac", "1", "-ar", "16000", "-f", "f32le", "-"],
                          capture_output=True).stdout
     x = np.frombuffer(wav, np.float32)
-    segs, _ = WhisperModel("small.en", **_wdev()).transcribe(
+    segs, _ = WhisperModel("small.en", device="cpu", compute_type="int8").transcribe(
         x, word_timestamps=True, vad_filter=True, condition_on_previous_text=False)
     words = [(w.start, re.sub(r"[^a-z0-9']", "", w.word.lower())) for s in segs for w in (s.words or [])]
     words = [(t, w) for t, w in words if w]
@@ -61,7 +54,7 @@ def main(video, work, max_mb=29.0):
         for i in range(len(words) - n + 1):
             g = " ".join(w for _, w in words[i:i + n]); t = words[i][0]
             if g in seen and t - seen[g] > 2.0 and not any(g in r for r in reported):
-                reported.add(g); out("FAIL", f'"{g}" said twice ({seen[g]:.1f} s and {t:.1f} s)')
+                reported.add(g); out("INFO", f'"{g}" said twice (OK: Dylan wants every line in full) ({seen[g]:.1f} s and {t:.1f} s)')
             seen.setdefault(g, t)
     if not reported: out("PASS", "no repeated phrases")
 

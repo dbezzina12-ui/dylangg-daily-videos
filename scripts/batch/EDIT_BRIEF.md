@@ -12,8 +12,11 @@ freeze_popups, no_repeats, mask_captions, swing_moves, voice_real_speed, vs_slot
 Rules, newest first (they override older notes where they conflict):
 1. ~40-55 s. Balance real gameplay and hype; never rushed, never every spin.
 2. NO fast-forwards/VHS x8 shots: cut dead spins out with glitch cuts. Each spin that hits plays from the reels dropping to its win.
-3. HIS VOICE IS NEVER STRETCHED: "stems2" with "overlay": true and "words": voice_words.json (see the reference EDLs). Curate
-   whole-word "mute" ranges so the engine logs "0 words trimmed"; no phrase said twice (edit_qa fails on repeats).
+3. HIS VOICE IS NEVER STRETCHED AND NEVER CUT (Dylan, 2026-10-17: "don't cut off their talking at all... even if I'm repeating
+   myself play my whole voice clip"): "stems2" with "overlay": true and "words": voice_words.json. NO "mute" lists. The engine
+   ("voice_full", default on) plays every line to the end of its sentence, even past a cut, and never trims; repeats are fine.
+   Plan shot lengths around his talking: if render.log prints "WARNING voice runs past the end", lengthen the last shot.
+   Overlapping lines get pushed later ("nudged") instead of cut: keep big nudges (> ~1 s) rare by giving talky moments room.
 4. Camera: angled swing / tilt push-ins ON THE BOARD onto win amounts as they appear/count up (not only banners); pan/tilt across
    scatters as they land; alternate yaw sides. VS / expanding-wild games: close 2.2x zoom on each VS as it lands left->right, zoom
    OUT to ~1.72-1.78 as soon as multis display, pan reel to reel, BOARD for the count-up. Every zoom stays inside the game window
@@ -22,7 +25,9 @@ Rules, newest first (they override older notes where they conflict):
    ("freezes": [{"src": t, "dur": 1.5, "pop": "auto"}], "freeze_ring": 0.9), not on the final total.
 6. Word-by-word glitch captions behind him (face shot "mask_words") on his best hype line, on the side his head/arms are NOT on.
 7. End on the total. Closing facecam ONLY if he says "not bad" (or similar) or has a genuinely great reaction. No 18+ badge.
-8. Blackjack / keno / non-slot wins: follow the manifest's blackjack note (cards-follow camera, calm); keep rules 1, 3, 5, 7.
+8. Slow-mo: keep it short (a beat on a landing/hit, <= ~1.5 s output). The engine varispeeds the game audio under it
+   (no flanging); never slow a shot that carries important game sound for long. Freezes + camera moves are the main emphasis.
+9. Blackjack / keno / non-slot wins: follow the manifest's blackjack note (cards-follow camera, calm); keep rules 1, 3, 5, 7.
 
 ## Steps
 Run every long command (prep phases, render, QA) with run_in_background and timeout 7200000 (the max): they can wait a long
