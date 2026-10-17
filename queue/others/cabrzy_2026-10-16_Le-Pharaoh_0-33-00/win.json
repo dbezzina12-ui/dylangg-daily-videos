@@ -1,0 +1,36 @@
+{
+ "streamer": "cabrzy",
+ "rank": 4,
+ "date": "2026-10-16",
+ "game": "Le Pharaoh",
+ "provider": "Hacksaw",
+ "amount": 13942.0,
+ "bet": 20.0,
+ "multi": 697.0,
+ "bonus_start": "0:32:43",
+ "hit": "0:33:00",
+ "banner": "0:33:28",
+ "end": "0:33:40",
+ "tier": "edit",
+ "confidence": "confirmed",
+ "evidence": "confirm/f_03336.jpg, confirm/phar_hit.jpg, confirm/f_03213.jpg, confirm/f_03250.jpg",
+ "game_rect": [
+  557,
+  24,
+  1341,
+  858
+ ],
+ "face_rect": [
+  26,
+  24,
+  508,
+  322
+ ],
+ "reaction": "Lunges into the cam at the Total Win (0:33:28); chat 'WHAT A FUCKING PICK', 'what a call', 'W CALL' (viewer slot call).",
+ "notes": "$5,000 Super bonus buy at 0:32:13 ('...But choose wisely', 250x of $20; balance 164,395.85 -> 159,395.85). Picked Super Luck of the Pharaoh; rainbow coins land at 0:33:00 -> EPIC WIN 10,640 -> TOTAL WIN 13,942.00 in 12 free spins. 697x the base bet (2.8x the buy cost). Game shows '$' but the wallet is C$.",
+ "cur": "$",
+ "pick": true,
+ "status": "queued-other",
+ "time_basis": "true",
+ "id": "cabrzy_2026-10-16_Le-Pharaoh_0-33-00"
+}

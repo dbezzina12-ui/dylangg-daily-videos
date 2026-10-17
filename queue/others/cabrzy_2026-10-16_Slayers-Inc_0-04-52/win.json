@@ -1,0 +1,31 @@
+{
+ "streamer": "cabrzy",
+ "rank": 2,
+ "date": "2026-10-16",
+ "game": "Slayers Inc",
+ "provider": "Hacksaw",
+ "amount": 32440.0,
+ "bet": 200.0,
+ "multi": 162.0,
+ "bonus_start": "0:04:28",
+ "hit": "0:04:52",
+ "banner": "0:05:00",
+ "end": "0:05:35",
+ "tier": "edit",
+ "confidence": "confirmed",
+ "evidence": "confirm/slay0_hit.jpg, confirm/f_00530.jpg, confirm/f_00453.jpg, confirm/fullcam.jpg",
+ "game_rect": [
+  276,
+  0,
+  1366,
+  860
+ ],
+ "face_rect": null,
+ "reaction": "No facecam during the bonus (starting-soon screen with countdown). Right after, 0:06:30-0:09:20 full-screen cam: laughing, stands up (0:07:00), pulls sweater over his face (0:07:30), loudest audio of the stream (chat clips 'BRICKED' 0:07:38, 'WOAH BULDGE' 0:08:40).",
+ "notes": "Played under the 'starting soon' countdown; timer hits 00:00:00 at 0:04:48 then 5x+4x+10x wild reels line up (0:04:52) -> SUPER MEGA WIN $30,400 (0:05:00), TOTAL WIN $32,440 in 10 free spins (0:05:28). Trigger spin with FS symbols at ~0:01:45; he idled on the intro screen 0:02:00-0:04:24. Layout differs here: game_rect is for this intro layout, no face. Main layout afterwards: game [557,24,1341,858], face [26,24,508,322].",
+ "cur": "$",
+ "pick": true,
+ "status": "queued-other",
+ "time_basis": "true",
+ "id": "cabrzy_2026-10-16_Slayers-Inc_0-04-52"
+}

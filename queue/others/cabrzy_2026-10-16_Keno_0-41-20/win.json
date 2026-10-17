@@ -1,0 +1,36 @@
+{
+ "streamer": "cabrzy",
+ "rank": 1,
+ "date": "2026-10-16",
+ "game": "Keno",
+ "provider": "Roobet Originals",
+ "amount": 203750.0,
+ "bet": 2500.0,
+ "multi": 81.5,
+ "bonus_start": "0:39:30",
+ "hit": "0:41:20",
+ "banner": "0:41:21",
+ "end": "0:41:30",
+ "tier": "edit",
+ "confidence": "confirmed",
+ "evidence": "confirm/f_04121.jpg, confirm/keno_hit.jpg, confirm/keno_bal.jpg",
+ "game_rect": [
+  557,
+  24,
+  1341,
+  858
+ ],
+ "face_rect": [
+  26,
+  24,
+  508,
+  322
+ ],
+ "reaction": "Calm: talking to cam, no big physical reaction; chat 'nvm just hit fuck', 'LETS GOOOO', 'W' spam. Chat clip '81x KENO $203,750'.",
+ "notes": "Currency C$ (Roobet wallet in CAD). High risk, 3 picks (11, 15, 27), all 3 hit = 81.50x on C$2,500. Balance C$20,148.67 -> C$221,398.67 at 0:41:29 (after next C$2,500 bet). Biggest win of the stream.",
+ "cur": "$",
+ "pick": true,
+ "status": "queued-other",
+ "time_basis": "true",
+ "id": "cabrzy_2026-10-16_Keno_0-41-20"
+}
