@@ -978,7 +978,9 @@ if S2:
         for w0, w1, _ in Wd:
             talking[max(0, int((w0 - 0.08) * FPS)):min(nb, int((w1 + 0.15) * FPS) + 1)] = True
             inword[max(0, int(w0 * FPS) + 1):min(nb, int(w1 * FPS))] = True        # the frame where two words touch stays free
-        tol, max_tail, max_off = S2.get("sync_tol", 0.12), S2.get("voice_tail", 0.45), S2.get("max_off", 1.0)
+        # defaults = the PC redo Dylan called "fucking perfect" (Xposed 848k): plain 1.0x through the shot, 0.25 s fade at a cut, no
+        # re-sync. "sync_tol": 0.12 + "max_off": 1.0 turn on waiting in pauses / skipping to catch up after slow-mo or ramps.
+        tol, max_tail, max_off = S2.get("sync_tol", 99.0), S2.get("voice_tail", 0.25), S2.get("max_off", 99.0)
         def seam(b):   # between two words, at a dip in his level (a breath): a 20 ms crossfade here is inaudible
             return 0 <= b < nb and not inword[b] and edb[b] <= edb[max(0, b - 3):b + 4].min() + 2.0
         def gap(v, off=0.0):

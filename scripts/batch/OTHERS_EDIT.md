@@ -24,3 +24,4 @@ Follow EDIT_BRIEF.md (SP/batch/EDIT_BRIEF.md) for everything, EXCEPT:
    Upload with drive_upload.py, then MOVE it into the "Other streamers" folder: parentId 163AljHBEEjf_o019WU3Adj6uwba40XeS.
 7. Record: the win is a doc on the picks page (collection "wins", doc_id = your id). Get it, then update with status "edited",
    drive_id, edit_name, duration, edit_note (with if_version).
+- REACTIONS: same as EDIT_BRIEF rule 0 (tilted picture-in-picture of their webcam on the big hits); verify face_rect first.

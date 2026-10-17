@@ -10,17 +10,23 @@ Read both fully before writing yours, plus the manifest notes in
 SP/artifact-files/e859168a-e8f3-430f-9e98-7ba0494cd658/manifest.json (keys LOCKED_STYLE_v4, show_the_slot, cold_open, framing,
 freeze_popups, no_repeats, mask_captions, swing_moves, voice_real_speed, vs_slots, endings, every_win_reads, blackjack).
 Rules, newest first (they override older notes where they conflict):
+0. SHOW HIS REACTION ON THE BIG HITS (Dylan, 2026-10-17: "I can hear him reacting but can't see him"; he picked the solid tilted
+   picture-in-picture over a see-through face because the see-through one blocks the wins): add "reactions" entries,
+   {"src0": a, "src1": b, "style": "pip", "side": "r", "size": 0.29, "pos": [x, y]}, on the GAME shots where he reacts out loud
+   (the hit landing, the multiplier/banner, the total): 2-6 s each, usually 2-4 per edit. His webcam (face_rect of the same
+   frame, so it is live) swings in tilted, pushes in and pans across him, and swings out. Put "pos" (the window's centre) where
+   it covers NO win amount, banner or the reels that matter (default right edge ~[1610, 640]; "side": "l" and a left pos when
+   the board sits right). Check the QA frames for it. Facecam shots stay as they are; never put a reaction over a face shot.
 1. ~40-55 s. Balance real gameplay and hype; never rushed, never every spin.
 2. NO fast-forwards/VHS x8 shots: cut dead spins out with glitch cuts. Each spin that hits plays from the reels dropping to its win.
 3. HIS VOICE PLAYS LIVE FOR THE WHOLE SHOT (Dylan, 2026-10-17: "during whatever clip is happening it should have the voice
    still active... if the voice is there for the whole clip it doesn't [sound terrible]. If we need to fade it out we can also do
    that"): "stems2" with "overlay": true and "words": voice_words.json, NO "mute" lists. The engine ("voice_mode": "live", the
-   default) plays his voice stem continuously at 1.0x through every shot, in sync with the picture, exactly as it was live, and at
-   a cut it lets the word running finish and fades it under the next shot. No phrases are picked out, queued or replayed, so there
-   is no drift. Slow-mo and freezes: his voice runs on at 1.0x, then waits in his next pause until the picture catches up. Speed
-   ramps (> 1.0x): his voice falls behind, then re-syncs in a gap between words once it is ~1 s out, so a ramp over his talking
-   skips some of what he said there: keep ramps over stretches where he isn't saying anything that matters. HYPE_SYNC_ONLY=1
-   writes work/voice_sync.json ([out time, picture time, voice time]) and exits in ~30 s, to check a cut before rendering. So what
+   default) plays his voice stem continuously at 1.0x through every shot, from the shot's first frame, exactly as it was live,
+   and at a cut lets the word running finish (max 0.25 s) and fades it out. No phrases are picked out, queued or replayed. This is
+   what the PC's Xposed 848k redo did and Dylan called it perfect. Slow-mo, freezes and ramps shift his voice against the picture a
+   little (it keeps playing at 1.0x); "sync_tol": 0.12 + "max_off": 1.0 make it wait in his pauses / skip ahead between words to
+   catch up instead. HYPE_SYNC_ONLY=1 writes work/voice_sync.json ([out time, picture time, voice time]) and exits in ~30 s. So what
    you HEAR is decided by the cut: choose shot ranges where what he says fits the moment (the hype on the hit, not a Discord plug),
    end shots in his pauses where you can, and give the last shot room for his last line. "voice": false on a shot silences him
    there (use it for the cold open if its talking clashes with the story). "voice_mode": "phrases" restores the old phrase engine.

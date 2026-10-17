@@ -6,7 +6,8 @@ need to fade it out we can also do that." The engine (scripts/hype_edit.py, `git
 at 1.0x through every shot, in sync with the picture, fading out under the next shot at a cut (scripts/batch/EDIT_BRIEF.md rule 3).
 It ignores "mute" lists. scripts/edit_qa.py only reports repeats as INFO. Slowed game audio is varispeed (no flanging).
 
-Redo every edit in redo_list.json "pc_redo" with the SAME cut (same shots, camera, captions, popups/voice-over), only the voice changes:
+Redo every edit in redo_list.json "pc_redo" with the SAME cut (same shots, camera, captions, popups/voice-over), only the voice changes,
+plus his REACTION on the big hits (tilted picture-in-picture, scripts/batch/EDIT_BRIEF.md rule 0, Dylan 2026-10-17):
 - Picks page: https://claude.ai/artifact/VmrEDckdntHVjxLSLUxYbY, collection "wins". Each redo doc has status "redo" and editor "pc".
   Set status "editing" when you start one, "edited" when the new file is delivered (keep drive_id / edit_name updated).
 - Your own edits: reuse your out\ / work files and EDLs. Cloud-made edits (listed in "cloud_files_in_repo"): their mk.py, edl.json,
