@@ -22,4 +22,7 @@ plus his REACTION on the big hits (tilted picture-in-picture, scripts/batch/EDIT
   carries off-topic chat (a plug, a long side story) over the big moment, move that shot's start/end a little rather than mute it.
 - Same file name as before. Upload and replace the old Drive file (For review: 1hNx_qyumtB4paJxSHAkBNhAkcd3rhXeM; Other streamers:
   163AljHBEEjf_o019WU3Adj6uwba40XeS) once HYPE_UPLOAD_KEY is set; until then keep the files in out\redo\ and note
-  "Drive upload pending" on the doc. Biggest wins first.
+  "Drive upload pending" on the doc.
+- ORDER (Dylan, 2026-10-17: "other streamers is secondary"): all of Dylan's own edits first, biggest first; other streamers
+  (ids starting xposed_/yassuo_/cabrzy_) only after his are done. Re-check a doc's status right before claiming it: the cloud
+  redoes the edits it made (Outsourced 2, Keno 10-07, Raven's Revenge, Sofa Surfer, Retro Sweets, VIP Blackjack 09-28).
