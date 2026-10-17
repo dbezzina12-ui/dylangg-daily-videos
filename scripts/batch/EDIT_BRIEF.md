@@ -31,6 +31,10 @@ Rules, newest first (they override older notes where they conflict):
    you HEAR is decided by the cut: choose shot ranges where what he says fits the moment (the hype on the hit, not a Discord plug),
    end shots in his pauses where you can, and give the last shot room for his last line. "voice": false on a shot silences him
    there (use it for the cold open if its talking clashes with the story). "voice_mode": "phrases" restores the old phrase engine.
+   FREEZES + POPUPS (found on the PC redos): his voice keeps running through a freeze, so a popup line can land on whatever
+   he says just after the freeze point. Put each freeze in one of his pauses and set stems2 "sync_tol": 0.12 (leave "max_off"
+   at its default: 1.0 re-syncs by skipping words); his voice then waits in that pause until the picture moves again. His
+   voice never talks over a popup line.
 4. Camera: angled swing / tilt push-ins ON THE BOARD onto win amounts as they appear/count up (not only banners); pan/tilt across
    scatters as they land; alternate yaw sides. VS / expanding-wild games: close 2.2x zoom on each VS as it lands left->right, zoom
    OUT to ~1.72-1.78 as soon as multis display, pan reel to reel, BOARD for the count-up. Every zoom stays inside the game window
