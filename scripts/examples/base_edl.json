@@ -1,0 +1,488 @@
+{
+ "game_rect": [
+  38,
+  230,
+  1288,
+  695
+ ],
+ "face_rect": [
+  1245,
+  695,
+  675,
+  385
+ ],
+ "formats": [
+  "x"
+ ],
+ "sfx_dir": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/artifact-files/e859168a-e8f3-430f-9e98-7ba0494cd658",
+ "sfx_map": {
+  "glitch": "sounds/glitch-effects/glitch-1.mp3",
+  "whip": "sounds/whooshes/whoosh-short-2.mp3",
+  "impact": "sounds/impact-hits/deep-hit-3.mp3",
+  "flash": "sounds/camera-effects/vintage-flash.mp3",
+  "riser": "sounds/risers/riser-2.mp3"
+ },
+ "fx": {
+  "hit": 0.55,
+  "trans": 0.6
+ },
+ "popups": {
+  "dir": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/popups/pack",
+  "size": 0.4,
+  "gain": 0.8,
+  "corner": "br"
+ },
+ "src": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/oct14/clip.mp4",
+ "out": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/oct14/hype_edit_backtoback_v1.mp4",
+ "work": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/oct14/work_v1",
+ "shots": [
+  {
+   "kind": "game",
+   "a": 290.32,
+   "b": 291.12,
+   "speeds": [
+    [
+     290.32,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     290.32,
+     700,
+     560,
+     1.8
+    ],
+    [
+     291.12,
+     700,
+     560,
+     1.95
+    ]
+   ],
+   "out": "whip",
+   "hits": [
+    [
+     290.45,
+     0.8,
+     true
+    ]
+   ],
+   "blur": [
+    {
+     "rect": [
+      436,
+      698,
+      534,
+      145
+     ],
+     "t": [
+      290.3,
+      999
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 123.6,
+   "b": 127.7,
+   "speeds": [
+    [
+     123.6,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     123.6,
+     "BOARD"
+    ],
+    [
+     126.15,
+     "BOARD"
+    ],
+    [
+     126.3,
+     682,
+     520,
+     1.45
+    ],
+    [
+     127.7,
+     682,
+     520,
+     1.55
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     126.22,
+     0.8
+    ]
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 161.95,
+   "b": 164.0,
+   "speeds": [
+    [
+     161.95,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     161.95,
+     "BOARD"
+    ],
+    [
+     162.85,
+     "BOARD"
+    ],
+    [
+     163.0,
+     682,
+     500,
+     1.35
+    ],
+    [
+     164.0,
+     682,
+     500,
+     1.45
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     162.92,
+     1.0,
+     true
+    ]
+   ]
+  },
+  {
+   "kind": "face",
+   "a": 164.0,
+   "b": 165.45,
+   "speeds": [
+    [
+     164.0,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     164.0,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     165.45,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "flash"
+  },
+  {
+   "kind": "game",
+   "a": 240.3,
+   "b": 242.18,
+   "speeds": [
+    [
+     240.3,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     240.3,
+     "BOARD"
+    ],
+    [
+     241.5,
+     "BOARD"
+    ],
+    [
+     241.65,
+     682,
+     540,
+     1.3
+    ],
+    [
+     242.18,
+     682,
+     540,
+     1.34
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     241.6,
+     0.6
+    ]
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 257.4,
+   "b": 259.8,
+   "speeds": [
+    [
+     257.4,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     257.4,
+     "BOARD"
+    ],
+    [
+     259.8,
+     "BOARD"
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     259.55,
+     0.6
+    ]
+   ]
+  },
+  {
+   "kind": "face",
+   "a": 259.8,
+   "b": 262.5,
+   "speeds": [
+    [
+     259.8,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     259.8,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     262.5,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 266.0,
+   "b": 270.7,
+   "speeds": [
+    [
+     266.0,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     266.0,
+     "BOARD"
+    ],
+    [
+     269.4,
+     "BOARD"
+    ],
+    [
+     269.55,
+     682,
+     540,
+     1.3
+    ],
+    [
+     270.7,
+     682,
+     540,
+     1.4
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     269.5,
+     0.8
+    ]
+   ]
+  },
+  {
+   "kind": "face",
+   "a": 283.3,
+   "b": 284.5,
+   "speeds": [
+    [
+     283.3,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     283.3,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     284.5,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 284.5,
+   "b": 287.1,
+   "speeds": [
+    [
+     284.5,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     284.5,
+     "BOARD"
+    ],
+    [
+     285.3,
+     "BOARD"
+    ],
+    [
+     285.45,
+     682,
+     540,
+     1.3
+    ],
+    [
+     287.1,
+     682,
+     540,
+     1.4
+    ]
+   ],
+   "out": "flash",
+   "hits": [
+    [
+     285.4,
+     1.0,
+     true
+    ]
+   ],
+   "tension": true
+  },
+  {
+   "kind": "game",
+   "a": 289.9,
+   "b": 291.85,
+   "speeds": [
+    [
+     289.9,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     289.9,
+     "BOARD"
+    ],
+    [
+     290.4,
+     "BOARD"
+    ],
+    [
+     290.55,
+     700,
+     600,
+     1.35
+    ],
+    [
+     291.85,
+     700,
+     600,
+     1.45
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     290.45,
+     1.25,
+     true
+    ]
+   ]
+  },
+  {
+   "kind": "face",
+   "a": 291.85,
+   "b": 293.75,
+   "speeds": [
+    [
+     291.85,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     291.85,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     293.75,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "end"
+  }
+ ],
+ "extra_sfx": [],
+ "stems": {
+  "game": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/oct14/stems/mix_(Instrumental)_UVR-MDX-NET-Voc_FT.wav",
+  "keep_speed": 1.02,
+  "mute": [],
+  "keep": [],
+  "fade": 0.08,
+  "voice_gain": 1.0
+ },
+ "freezes": [
+  {
+   "src": 241.78,
+   "dur": 0.8,
+   "pop": null,
+   "push": 0.04
+  },
+  {
+   "src": 285.7,
+   "dur": "auto",
+   "pop": {
+    "char": "frog",
+    "line": "big_money"
+   }
+  }
+ ]
+}
