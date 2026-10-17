@@ -1,0 +1,32 @@
+{
+ "T0": 5005.0,
+ "T1": 5122.0,
+ "clip_times": {
+  "bonus_start": 20.0,
+  "hit": 35.0,
+  "banner": 37.0,
+  "end": 105.0
+ },
+ "win": {
+  "amount": 4000,
+  "banner": "1:24:02",
+  "bet": 2000,
+  "bonus_start": "1:23:45",
+  "confidence": "confirmed",
+  "cur": "$",
+  "date": "2026-09-28",
+  "end": "1:25:10",
+  "evidence": "confirm/f_bj1.jpg",
+  "game": "Roo's VIP Blackjack 2 (live)",
+  "hit": "1:24:00",
+  "multi": 2,
+  "notes": "CAD, live blackjack at the end of the stream. A CA$2,000 main bet (CA$2,200 total with the side bet) wins: 'YOU WIN CA$4,000.00' (that figure includes the stake, so the profit is ~CA$2,000). Balance after the hand: CA$4,001.31. Chat: '12k incoming'. The next hand (below) also wins. Pair the two as one edit.",
+  "pick": true,
+  "provider": "Pragmatic Play Live",
+  "status": "new",
+  "tier": "edit",
+  "time_basis": "true",
+  "id": "2026-09-28_Roo-s-VIP-Blackjack-2-live_1-24-00",
+  "second_hand": "2026-09-28_Roo-s-VIP-Blackjack-2-live_1-24-32 (next hand, CA$1,600 bet -> $3,200 at 1:24:32); make ONE edit of both hands and mark both docs"
+ }
+}

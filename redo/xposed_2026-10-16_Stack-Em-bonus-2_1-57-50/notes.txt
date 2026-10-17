@@ -1,0 +1,40 @@
+Xposed 2026-10-16, Stack'Em (Hacksaw) bonus 2, $848,100 (1,131x on $750), natural trigger (other-streamer overnight batch edit, 2026-10-17)
+
+What happened (clip t = stream t - 1:54:52, T0 6892; read off the page):
+- 0-18: VOD audio is near-silent (DMCA mute or just quiet) - not used.
+- 20.8-26.3: "Please just pay me fucking two hundred and fucking fifteen thousand dollars" (base game, $750 autospins).
+- 28.25 base tumble pays 4,950; 29.25 the mascot throws his hat = bonus trigger; 30-31.5 iris into the bonus (1x).
+- ~63-74.4: stream audio silent again (VOD mute); 73.0 a ? box flies to the middle, flips X (73.5) then 5 (74.75) and the
+  multiplier climbs 66x -> 330x (75.5-78.5) - his voice is back from 74.4 ("good, perfect, perfect... nice, bro").
+- 83.5 187.50 x 330 = 61,875; 85.75 MEGA WIN 62,325 ("we have all the rainbow, that's 60 grand already").
+- 120.5 3,750; 123.5 375 x 381 = 142,875; 125.0 SUPER MEGA WIN 146,625 ("oh yes, yes! ... let's fucking go!").
+- 158.5 SUPER MEGA 77,625 (not used); 176.75 75 x 442 = 33,150 ("SNAKES! SNAKES!"); 181.5 750 x 442 = 331,500 ("OH MY GOD!");
+  180.5-183.5 he lunges into the cam; 184.25 EPIC WIN 364,837.50; 185.0 fist pump; 195.5 BIG WIN 35,550 (not used).
+- 210.45 TOTAL WIN $848,100.00 lands in the game bar (bar fades ~211.3), "oh, what a hit! ... what a fucking hit!";
+  212.5 iris out; 214.4-217.4 "Ladies and gentlemen, THE MAN!" laughing and waving.
+
+Edit (mk.py -> edl.json):
+cold open (EPIC WIN 364,837.50 blurred, swing, whip) -> hook face "pay me fucking two hundred and fucking fifteen thousand dollars"
+(word captions PAY ME / TWO HUNDRED / FIFTEEN / THOUSAND, left of his head) -> trigger spin (tilt onto the 4,950, pan to the hat
+throw) -> mystery box X then 5, tilt up onto the multiplier climbing 66x -> 330x -> 61,875 push-in -> MEGA WIN 62,325 swing ->
+146k spin (3,750, push onto 142,875, SUPER MEGA WIN swing) -> the big spin (33,150 then 331,500 push-ins, slow-mo, FREEZE on the
+331,500, pop null) -> his lunge "YEAH!" -> EPIC WIN swing -> fist pump "let's go!" -> last spin, tilt down onto TOTAL WIN
+$848,100.00 in the game bar (0.6x) + VO "He just hit eight hundred forty-eight grand!" + gold "$848,100" slam at the top ->
+closing face "Ladies and gentlemen, THE MAN!".
+Calls I made:
+- Stack'Em is a narrow tower in the middle of the game window, so BOARD is set explicitly ("board": [740, 432, 1.64]: hearts +
+  multiplier + the whole tower, above the game bar). The full game window (z 1.33) would show the page above/below.
+- The game's own bar (balance / TOTAL WIN) is part of the game window here (bottom at y ~830 < 856), and Stack'Em has no
+  end-of-bonus total banner, so the ending tilts down onto the bar's TOTAL WIN; every other zoom stays above the bar (y 768).
+- VO at the total (the line is about the total), not on the 331,500 freeze. Gold caption at the top so it doesn't cover the bar.
+- Mystery-box shot starts at 73.3: ~1.1 s of it falls in the muted stretch (until 74.4), covered by the X slam hit; no song bed needed.
+- Kept one "oh my god" (on the 331,500) and one "let's go" + "let's fucking go"; every other repeat muted (whole words).
+- Voice words: the clean-voice re-transcription (VAD) dropped all his yelling at 175-187 and 208-218; I merged the mix
+  transcript back in and hand-fixed timings from a no-VAD pass on the voice stem (originals: voice_words_prep2.json,
+  voice_words_mix.json).
+- Closing facecam kept: genuine big reaction (laughing, waving) + a real closing line.
+- The webcam is only ~400x225, so face shots are soft; kept short.
+Render v1 (43.8 s): closing face started while he was leaning out of the top of the webcam (headless chest shot) -> v2: closing face
+215.75-217.45 ("THE MAN!" only; "ladies and gentlemen" dropped), fist-pump face ends 186.55. v2 render log: "0 words trimmed".
+QA v2: 0 fail, 0 warn (VO in the transcript: "you just hit eight hundred forty eight grand"). Duration 42.1 s.
+Delivered: Drive 17wICljKmIBpEdNwn1mogADA4tI-U9003 (Other streamers folder), picks page status edited (v3).

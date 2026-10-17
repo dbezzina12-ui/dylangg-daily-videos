@@ -1,0 +1,21 @@
+{
+ "amount": 3465,
+ "banner": "0:32:32",
+ "bet": 0.6,
+ "bonus_start": "0:31:08",
+ "confidence": "confirmed",
+ "cur": "$",
+ "date": "2026-09-25",
+ "end": "0:32:40",
+ "evidence": "confirm/s_x16.jpg",
+ "game": "Sofa Surfer",
+ "hit": "0:32:08",
+ "multi": 5775,
+ "notes": "Bonus Buy 2 (240 at 0.60 bet; balance 2,826.67 -> 2,586.67), 12 free games. Multiplier climbs x3 -> x13 -> x16 -> x18 (Mega Win 144 at 0:31:38); spin 8/12 pays Knockout Win 2,937.60 (popup 0:32:14), win 516.60 -> 3,454.20. Final 'Congratulations you won 3,465.00' at 0:32:34. Loud spike at 0:32:00.",
+ "pick": true,
+ "provider": "unknown",
+ "status": "new",
+ "tier": "edit",
+ "time_basis": "true",
+ "id": "2026-09-25_Sofa-Surfer_0-32-08"
+}

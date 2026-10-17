@@ -1,0 +1,64 @@
+2026-10-17 03:26:06.748 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/sep/r0.wav
+2026-10-17 03:26:09.156 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/sep, output_format: WAV
+2026-10-17 03:26:09.157 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 03:26:09.157 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 03:26:09.157 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 03:26:09.157 - INFO - separator - Python Version: 3.13.16
+2026-10-17 03:26:09.157 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 03:26:09.215 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 03:26:09.216 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 03:26:09.217 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 03:26:09.217 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 03:26:10.953 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 03:26:10.953 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 03:26:10.953 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 03:26:10.953 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/sep/r0.wav
+2026-10-17 03:26:10.953 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/sep/r0.wav
+2026-10-17 03:26:10.954 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 03:26:10.954 - INFO - common_separator - Detected input bit depth: 16-bit
+2026-10-17 03:26:11.806 - WARNING - mdxc_separator - Audio duration (9.00s) is less than 10 seconds.
+2026-10-17 03:26:11.807 - WARNING - mdxc_separator - Automatically enabling override_model_segment_size for better processing of short audio.
+  0%|          | 0/7 [00:00<?, ?it/s] 14%|█▍        | 1/7 [00:12<01:16, 12.73s/it] 29%|██▊       | 2/7 [00:25<01:03, 12.62s/it] 43%|████▎     | 3/7 [00:37<00:50, 12.53s/it] 57%|█████▋    | 4/7 [00:50<00:37, 12.66s/it] 71%|███████▏  | 5/7 [01:02<00:25, 12.50s/it] 86%|████████▌ | 6/7 [01:16<00:12, 12.80s/it]100%|██████████| 7/7 [01:29<00:00, 12.86s/it]100%|██████████| 7/7 [01:29<00:00, 12.73s/it]
+2026-10-17 03:27:40.953 - INFO - mdxc_separator - Saving Instrumental stem to r0_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 03:27:40.953 - INFO - common_separator - Audio duration is 0.00 hours (9.00 seconds).
+2026-10-17 03:27:40.953 - INFO - common_separator - Using pydub for writing.
+2026-10-17 03:27:40.954 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 03:27:41.062 - INFO - mdxc_separator - Saving Vocals stem to r0_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 03:27:41.063 - INFO - common_separator - Audio duration is 0.00 hours (9.00 seconds).
+2026-10-17 03:27:41.063 - INFO - common_separator - Using pydub for writing.
+2026-10-17 03:27:41.064 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 03:27:41.370 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 03:27:41.370 - INFO - separator - Separation duration: 00:01:30
+2026-10-17 03:27:41.370 - INFO - cli - Separation complete! Output file(s): r0_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r0_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+2026-10-17 03:27:42.723 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/sep/r1.wav
+2026-10-17 03:27:45.096 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/sep, output_format: WAV
+2026-10-17 03:27:45.096 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 03:27:45.096 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 03:27:45.096 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 03:27:45.097 - INFO - separator - Python Version: 3.13.16
+2026-10-17 03:27:45.097 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 03:27:45.151 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 03:27:45.153 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 03:27:45.154 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 03:27:45.154 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 03:27:47.001 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 03:27:47.002 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 03:27:47.002 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 03:27:47.002 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/sep/r1.wav
+2026-10-17 03:27:47.002 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/sep/r1.wav
+2026-10-17 03:27:47.002 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 03:27:47.002 - INFO - common_separator - Detected input bit depth: 16-bit
+  0%|          | 0/13 [00:00<?, ?it/s]  8%|▊         | 1/13 [00:45<09:04, 45.36s/it] 15%|█▌        | 2/13 [01:27<07:59, 43.56s/it] 23%|██▎       | 3/13 [02:10<07:13, 43.34s/it] 31%|███       | 4/13 [02:53<06:27, 43.09s/it] 38%|███▊      | 5/13 [03:36<05:44, 43.07s/it] 46%|████▌     | 6/13 [04:21<05:06, 43.78s/it] 54%|█████▍    | 7/13 [05:05<04:23, 43.88s/it] 62%|██████▏   | 8/13 [05:49<03:39, 43.81s/it] 69%|██████▉   | 9/13 [06:31<02:53, 43.27s/it] 77%|███████▋  | 10/13 [07:14<02:09, 43.11s/it] 85%|████████▍ | 11/13 [08:00<01:28, 44.08s/it] 92%|█████████▏| 12/13 [08:58<00:48, 48.42s/it]100%|██████████| 13/13 [09:44<00:00, 47.67s/it]100%|██████████| 13/13 [09:44<00:00, 44.98s/it]
+2026-10-17 03:37:32.840 - INFO - mdxc_separator - Saving Instrumental stem to r1_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 03:37:32.840 - INFO - common_separator - Audio duration is 0.02 hours (54.60 seconds).
+2026-10-17 03:37:32.840 - INFO - common_separator - Using pydub for writing.
+2026-10-17 03:37:32.846 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 03:37:33.134 - INFO - mdxc_separator - Saving Vocals stem to r1_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 03:37:33.134 - INFO - common_separator - Audio duration is 0.02 hours (54.60 seconds).
+2026-10-17 03:37:33.134 - INFO - common_separator - Using pydub for writing.
+2026-10-17 03:37:33.140 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 03:37:33.593 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 03:37:33.598 - INFO - separator - Separation duration: 00:09:46
+2026-10-17 03:37:33.598 - INFO - cli - Separation complete! Output file(s): r1_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r1_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+voice peak -6.0 game peak -8.7
+stems ready: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/stems/voice.wav /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09/stems/game.wav | ranges [(19.4, 26.4), (37.6, 90.2)]

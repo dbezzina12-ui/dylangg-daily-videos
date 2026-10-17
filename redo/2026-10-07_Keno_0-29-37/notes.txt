@@ -1,0 +1,14 @@
+2026-10-07 Keno $2,590 (259x on C$10, 4/4 picks high risk) - "2026-10-07 Keno 2590 hype edit.mp4", 39.1 s, Drive id 1HbLO5vKrdcdv29fD2JRI_2o40TRRsopB (For review)
+Clip: stream 0:26:33 + 226 s (clip t = stream t - 1593). Real moments (from frames; win.json was ~1 s late): bet change High 183.3, 2x->C$10 183.8,
+round starts 184.3, hits 8@184.9 5@185.2 7@185.7 10@185.95, 259x box 186.1, balance C$1,601.95 -> C$4,181.95 at ~186.0.
+Layout: game_rect set to [38,175,1202,750] (Roobet window incl. header, left of the webcam at x 1240); keno board locked at [680,560,1.78],
+slot reels at [680,535,2.0] (above the Raven's Revenge balance bar).
+Structure: blurred cold open on the 259x box -> Raven's Revenge story (not doing it today / 10 SUPER FS buy / nothing's paying / face "we're
+down four" / "+2FS ... we lost it all" / TOTAL WIN 184.80 "money back again... fuck") -> lobby -> Keno picks -> static close-up on the bet
+change -> round (0.55x slow-mo on the 4th pick, freeze + popup on the box) -> face "BANG! Fucking bang!" -> THE punch-in on the balance pill
+("we're back") -> face "WE'RE FUCKING BACK" captions -> face "what an absolute fucking snipe" -> angled push-in on the 259x box (end, no voice).
+Decisions: auto popup picked chef "Ze money, she is beautiful!" (2.1 s, ran over his "BANG!") -> set frog "Let's gooo!" (1.0 s), history fixed.
+Whisper was early on 4 words (What 114.30, They 145.78, Lost 123.88, BANG 186.65), corrected from voice-stem loudness. Muted: seed-reset chatter
+101.5-111.3, 2nd "nothing's paying", 2nd "fucking bang" (189.3-190.4), five "hold on"s 178-181.4, "can I get it back to back" 193.1-194.5.
+No closing facecam (no "not bad" after the win; ended on the total). sfx_auto_level per keno_feedback; no song.
+QA: 0 fail 0 warn, render log "0 words trimmed". Possible nitpicks: 39 s (just under the 40 s target); BACK caption is wide and sits near his face.

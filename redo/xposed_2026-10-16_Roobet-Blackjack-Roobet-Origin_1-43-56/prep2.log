@@ -1,0 +1,96 @@
+2026-10-17 05:08:19.709 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r0.wav
+2026-10-17 05:08:22.386 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep, output_format: WAV
+2026-10-17 05:08:22.386 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 05:08:22.387 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 05:08:22.387 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 05:08:22.387 - INFO - separator - Python Version: 3.13.16
+2026-10-17 05:08:22.387 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 05:08:22.465 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 05:08:22.466 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 05:08:22.467 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 05:08:22.467 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 05:08:25.181 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 05:08:25.182 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 05:08:25.182 - INFO - separator - Load model duration: 00:00:02
+2026-10-17 05:08:25.182 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r0.wav
+2026-10-17 05:08:25.182 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r0.wav
+2026-10-17 05:08:25.182 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 05:08:25.182 - INFO - common_separator - Detected input bit depth: 16-bit
+2026-10-17 05:08:26.046 - WARNING - mdxc_separator - Audio duration (8.00s) is less than 10 seconds.
+2026-10-17 05:08:26.046 - WARNING - mdxc_separator - Automatically enabling override_model_segment_size for better processing of short audio.
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:13<01:07, 13.46s/it] 33%|███▎      | 2/6 [00:26<00:53, 13.40s/it] 50%|█████     | 3/6 [00:40<00:40, 13.57s/it] 67%|██████▋   | 4/6 [00:54<00:27, 13.59s/it] 83%|████████▎ | 5/6 [01:08<00:13, 13.87s/it]100%|██████████| 6/6 [01:22<00:00, 13.85s/it]100%|██████████| 6/6 [01:22<00:00, 13.73s/it]
+2026-10-17 05:09:48.435 - INFO - mdxc_separator - Saving Instrumental stem to r0_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 05:09:48.436 - INFO - common_separator - Audio duration is 0.00 hours (8.00 seconds).
+2026-10-17 05:09:48.436 - INFO - common_separator - Using pydub for writing.
+2026-10-17 05:09:48.437 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 05:09:48.542 - INFO - mdxc_separator - Saving Vocals stem to r0_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 05:09:48.542 - INFO - common_separator - Audio duration is 0.00 hours (8.00 seconds).
+2026-10-17 05:09:48.542 - INFO - common_separator - Using pydub for writing.
+2026-10-17 05:09:48.543 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 05:09:48.868 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 05:09:48.868 - INFO - separator - Separation duration: 00:01:23
+2026-10-17 05:09:48.868 - INFO - cli - Separation complete! Output file(s): r0_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r0_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+2026-10-17 05:09:50.301 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r1.wav
+2026-10-17 05:09:52.911 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep, output_format: WAV
+2026-10-17 05:09:52.911 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 05:09:52.911 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 05:09:52.911 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 05:09:52.911 - INFO - separator - Python Version: 3.13.16
+2026-10-17 05:09:52.911 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 05:09:52.965 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 05:09:52.966 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 05:09:52.967 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 05:09:52.967 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 05:09:55.015 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 05:09:55.015 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 05:09:55.015 - INFO - separator - Load model duration: 00:00:02
+2026-10-17 05:09:55.015 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r1.wav
+2026-10-17 05:09:55.015 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r1.wav
+2026-10-17 05:09:55.016 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 05:09:55.016 - INFO - common_separator - Detected input bit depth: 16-bit
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:45<00:45, 45.84s/it]100%|██████████| 2/2 [01:31<00:00, 45.91s/it]100%|██████████| 2/2 [01:31<00:00, 45.90s/it]
+2026-10-17 05:11:27.697 - INFO - mdxc_separator - Saving Instrumental stem to r1_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 05:11:27.698 - INFO - common_separator - Audio duration is 0.00 hours (10.80 seconds).
+2026-10-17 05:11:27.698 - INFO - common_separator - Using pydub for writing.
+2026-10-17 05:11:27.699 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 05:11:27.816 - INFO - mdxc_separator - Saving Vocals stem to r1_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 05:11:27.817 - INFO - common_separator - Audio duration is 0.00 hours (10.80 seconds).
+2026-10-17 05:11:27.817 - INFO - common_separator - Using pydub for writing.
+2026-10-17 05:11:27.819 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 05:11:28.134 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 05:11:28.134 - INFO - separator - Separation duration: 00:01:33
+2026-10-17 05:11:28.134 - INFO - cli - Separation complete! Output file(s): r1_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r1_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+2026-10-17 05:11:29.532 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r2.wav
+2026-10-17 05:11:32.180 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep, output_format: WAV
+2026-10-17 05:11:32.180 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 05:11:32.180 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 05:11:32.180 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 05:11:32.180 - INFO - separator - Python Version: 3.13.16
+2026-10-17 05:11:32.181 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 05:11:32.239 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 05:11:32.240 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 05:11:32.240 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 05:11:32.241 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 05:11:34.165 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 05:11:34.165 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 05:11:34.165 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 05:11:34.165 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r2.wav
+2026-10-17 05:11:34.165 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/sep/r2.wav
+2026-10-17 05:11:34.166 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 05:11:34.166 - INFO - common_separator - Detected input bit depth: 16-bit
+2026-10-17 05:11:35.086 - WARNING - mdxc_separator - Audio duration (4.70s) is less than 10 seconds.
+2026-10-17 05:11:35.086 - WARNING - mdxc_separator - Automatically enabling override_model_segment_size for better processing of short audio.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:13<00:27, 13.73s/it] 67%|██████▋   | 2/3 [00:27<00:13, 13.97s/it]100%|██████████| 3/3 [00:41<00:00, 13.72s/it]100%|██████████| 3/3 [00:41<00:00, 13.77s/it]
+2026-10-17 05:12:16.392 - INFO - mdxc_separator - Saving Instrumental stem to r2_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 05:12:16.392 - INFO - common_separator - Audio duration is 0.00 hours (4.70 seconds).
+2026-10-17 05:12:16.392 - INFO - common_separator - Using pydub for writing.
+2026-10-17 05:12:16.393 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 05:12:16.480 - INFO - mdxc_separator - Saving Vocals stem to r2_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 05:12:16.481 - INFO - common_separator - Audio duration is 0.00 hours (4.70 seconds).
+2026-10-17 05:12:16.481 - INFO - common_separator - Using pydub for writing.
+2026-10-17 05:12:16.481 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 05:12:16.759 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 05:12:16.759 - INFO - separator - Separation duration: 00:00:42
+2026-10-17 05:12:16.759 - INFO - cli - Separation complete! Output file(s): r2_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r2_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+voice peak -0.1 game peak -10.7
+stems ready: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/stems/voice.wav /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/stems/game.wav | ranges [(10.5, 16.5), (73.0, 81.8), (94.5, 97.2)]

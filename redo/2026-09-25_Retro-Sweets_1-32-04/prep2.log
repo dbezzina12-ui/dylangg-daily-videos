@@ -1,0 +1,126 @@
+2026-10-17 01:16:06.912 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r0.wav
+2026-10-17 01:16:09.238 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep, output_format: WAV
+2026-10-17 01:16:09.238 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 01:16:09.238 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 01:16:09.238 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 01:16:09.239 - INFO - separator - Python Version: 3.13.16
+2026-10-17 01:16:09.239 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 01:16:09.298 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 01:16:09.299 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 01:16:09.299 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 01:16:09.300 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 01:16:10.995 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 01:16:10.995 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 01:16:10.995 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 01:16:10.995 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r0.wav
+2026-10-17 01:16:10.995 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r0.wav
+2026-10-17 01:16:10.995 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 01:16:10.995 - INFO - common_separator - Detected input bit depth: 16-bit
+2026-10-17 01:16:11.744 - WARNING - mdxc_separator - Audio duration (8.40s) is less than 10 seconds.
+2026-10-17 01:16:11.744 - WARNING - mdxc_separator - Automatically enabling override_model_segment_size for better processing of short audio.
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:13<01:09, 13.84s/it] 33%|███▎      | 2/6 [00:35<01:13, 18.33s/it] 50%|█████     | 3/6 [00:53<00:54, 18.16s/it] 67%|██████▋   | 4/6 [01:06<00:32, 16.35s/it] 83%|████████▎ | 5/6 [01:19<00:14, 14.95s/it]100%|██████████| 6/6 [01:31<00:00, 13.98s/it]100%|██████████| 6/6 [01:31<00:00, 15.24s/it]
+2026-10-17 01:17:43.169 - INFO - mdxc_separator - Saving Instrumental stem to r0_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:17:43.169 - INFO - common_separator - Audio duration is 0.00 hours (8.40 seconds).
+2026-10-17 01:17:43.169 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:17:43.170 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:17:43.285 - INFO - mdxc_separator - Saving Vocals stem to r0_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:17:43.285 - INFO - common_separator - Audio duration is 0.00 hours (8.40 seconds).
+2026-10-17 01:17:43.285 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:17:43.286 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:17:43.542 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 01:17:43.542 - INFO - separator - Separation duration: 00:01:32
+2026-10-17 01:17:43.542 - INFO - cli - Separation complete! Output file(s): r0_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r0_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+2026-10-17 01:17:44.619 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r1.wav
+2026-10-17 01:17:46.960 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep, output_format: WAV
+2026-10-17 01:17:46.960 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 01:17:46.960 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 01:17:46.960 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 01:17:46.961 - INFO - separator - Python Version: 3.13.16
+2026-10-17 01:17:46.961 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 01:17:47.013 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 01:17:47.014 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 01:17:47.015 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 01:17:47.015 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 01:17:48.680 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 01:17:48.681 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 01:17:48.681 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 01:17:48.681 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r1.wav
+2026-10-17 01:17:48.681 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r1.wav
+2026-10-17 01:17:48.681 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 01:17:48.681 - INFO - common_separator - Detected input bit depth: 16-bit
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:45<02:16, 45.38s/it] 50%|█████     | 2/4 [01:30<01:30, 45.34s/it] 75%|███████▌  | 3/4 [02:15<00:45, 45.20s/it]100%|██████████| 4/4 [02:59<00:00, 44.61s/it]100%|██████████| 4/4 [02:59<00:00, 44.86s/it]
+2026-10-17 01:20:48.830 - INFO - mdxc_separator - Saving Instrumental stem to r1_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:20:48.831 - INFO - common_separator - Audio duration is 0.00 hours (16.50 seconds).
+2026-10-17 01:20:48.831 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:20:48.832 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:20:48.962 - INFO - mdxc_separator - Saving Vocals stem to r1_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:20:48.962 - INFO - common_separator - Audio duration is 0.00 hours (16.50 seconds).
+2026-10-17 01:20:48.962 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:20:48.964 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:20:49.276 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 01:20:49.276 - INFO - separator - Separation duration: 00:03:00
+2026-10-17 01:20:49.276 - INFO - cli - Separation complete! Output file(s): r1_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r1_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+2026-10-17 01:20:50.303 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r2.wav
+2026-10-17 01:20:52.517 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep, output_format: WAV
+2026-10-17 01:20:52.517 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 01:20:52.517 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 01:20:52.517 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 01:20:52.517 - INFO - separator - Python Version: 3.13.16
+2026-10-17 01:20:52.517 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 01:20:52.568 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 01:20:52.569 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 01:20:52.569 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 01:20:52.569 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 01:20:54.322 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 01:20:54.322 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 01:20:54.322 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 01:20:54.322 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r2.wav
+2026-10-17 01:20:54.322 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r2.wav
+2026-10-17 01:20:54.323 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 01:20:54.323 - INFO - common_separator - Detected input bit depth: 16-bit
+2026-10-17 01:20:55.060 - WARNING - mdxc_separator - Audio duration (5.80s) is less than 10 seconds.
+2026-10-17 01:20:55.060 - WARNING - mdxc_separator - Automatically enabling override_model_segment_size for better processing of short audio.
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:13<00:39, 13.04s/it] 50%|█████     | 2/4 [00:25<00:25, 12.79s/it] 75%|███████▌  | 3/4 [00:38<00:12, 12.69s/it]100%|██████████| 4/4 [00:50<00:00, 12.63s/it]100%|██████████| 4/4 [00:50<00:00, 12.69s/it]
+2026-10-17 01:21:45.831 - INFO - mdxc_separator - Saving Instrumental stem to r2_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:21:45.832 - INFO - common_separator - Audio duration is 0.00 hours (5.80 seconds).
+2026-10-17 01:21:45.832 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:21:45.832 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:21:45.913 - INFO - mdxc_separator - Saving Vocals stem to r2_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:21:45.913 - INFO - common_separator - Audio duration is 0.00 hours (5.80 seconds).
+2026-10-17 01:21:45.913 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:21:45.914 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:21:46.167 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 01:21:46.168 - INFO - separator - Separation duration: 00:00:51
+2026-10-17 01:21:46.168 - INFO - cli - Separation complete! Output file(s): r2_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r2_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+2026-10-17 01:21:47.319 - INFO - cli - Separator version 0.47.0 beginning with input path(s): /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r3.wav
+2026-10-17 01:21:49.446 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep, output_format: WAV
+2026-10-17 01:21:49.447 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 01:21:49.447 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 01:21:49.447 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 01:21:49.447 - INFO - separator - Python Version: 3.13.16
+2026-10-17 01:21:49.447 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 01:21:49.496 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 01:21:49.497 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 01:21:49.498 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 01:21:49.498 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 01:21:51.108 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 01:21:51.108 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 01:21:51.108 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 01:21:51.108 - INFO - separator - Processing file: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r3.wav
+2026-10-17 01:21:51.108 - INFO - separator - Starting separation process for audio_file_path: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/sep/r3.wav
+2026-10-17 01:21:51.109 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 01:21:51.109 - INFO - common_separator - Detected input bit depth: 16-bit
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:43<05:03, 43.36s/it] 25%|██▌       | 2/8 [01:26<04:20, 43.42s/it] 38%|███▊      | 3/8 [02:10<03:37, 43.57s/it] 50%|█████     | 4/8 [02:53<02:53, 43.46s/it] 62%|██████▎   | 5/8 [03:37<02:10, 43.48s/it] 75%|███████▌  | 6/8 [04:20<01:26, 43.37s/it] 88%|████████▊ | 7/8 [05:03<00:43, 43.08s/it]100%|██████████| 8/8 [05:47<00:00, 43.52s/it]100%|██████████| 8/8 [05:47<00:00, 43.44s/it]
+2026-10-17 01:27:39.369 - INFO - mdxc_separator - Saving Instrumental stem to r3_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:27:39.370 - INFO - common_separator - Audio duration is 0.01 hours (32.70 seconds).
+2026-10-17 01:27:39.370 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:27:39.372 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:27:39.581 - INFO - mdxc_separator - Saving Vocals stem to r3_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:27:39.581 - INFO - common_separator - Audio duration is 0.01 hours (32.70 seconds).
+2026-10-17 01:27:39.581 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:27:39.584 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:27:39.963 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 01:27:39.965 - INFO - separator - Separation duration: 00:05:48
+2026-10-17 01:27:39.965 - INFO - cli - Separation complete! Output file(s): r3_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r3_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+voice peak -5.5 game peak -7.7
+stems ready: /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/stems/voice.wav /tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-09-25_Retro-Sweets_1-32-04/stems/game.wav | ranges [(18.4, 24.8), (62.5, 77.0), (96.7, 100.5), (121.7, 152.4)]

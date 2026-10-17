@@ -1,0 +1,94 @@
+2026-10-17 00:52:10.778 - INFO - cli - Separator version 0.47.0 beginning with input path(s): ./sep/r0.wav
+2026-10-17 00:52:13.513 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: ./sep, output_format: WAV
+2026-10-17 00:52:13.513 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 00:52:13.513 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 00:52:13.513 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 00:52:13.513 - INFO - separator - Python Version: 3.13.16
+2026-10-17 00:52:13.513 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 00:52:13.570 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 00:52:13.571 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 00:52:13.572 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 00:52:13.572 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 00:52:15.873 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 00:52:15.873 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 00:52:15.873 - INFO - separator - Load model duration: 00:00:02
+2026-10-17 00:52:15.873 - INFO - separator - Processing file: ./sep/r0.wav
+2026-10-17 00:52:15.874 - INFO - separator - Starting separation process for audio_file_path: ./sep/r0.wav
+2026-10-17 00:52:15.874 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 00:52:15.874 - INFO - common_separator - Detected input bit depth: 16-bit
+2026-10-17 00:52:16.700 - WARNING - mdxc_separator - Audio duration (4.70s) is less than 10 seconds.
+2026-10-17 00:52:16.700 - WARNING - mdxc_separator - Automatically enabling override_model_segment_size for better processing of short audio.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [01:25<02:51, 85.83s/it] 67%|██████▋   | 2/3 [01:39<00:43, 43.56s/it]100%|██████████| 3/3 [01:52<00:00, 29.57s/it]100%|██████████| 3/3 [01:52<00:00, 37.57s/it]
+2026-10-17 00:54:09.433 - INFO - mdxc_separator - Saving Instrumental stem to r0_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 00:54:09.434 - INFO - common_separator - Audio duration is 0.00 hours (4.70 seconds).
+2026-10-17 00:54:09.434 - INFO - common_separator - Using pydub for writing.
+2026-10-17 00:54:09.434 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 00:54:09.515 - INFO - mdxc_separator - Saving Vocals stem to r0_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 00:54:09.515 - INFO - common_separator - Audio duration is 0.00 hours (4.70 seconds).
+2026-10-17 00:54:09.515 - INFO - common_separator - Using pydub for writing.
+2026-10-17 00:54:09.516 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 00:54:09.776 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 00:54:09.776 - INFO - separator - Separation duration: 00:01:53
+2026-10-17 00:54:09.776 - INFO - cli - Separation complete! Output file(s): r0_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r0_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+2026-10-17 00:54:10.954 - INFO - cli - Separator version 0.47.0 beginning with input path(s): ./sep/r1.wav
+2026-10-17 00:54:13.080 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: ./sep, output_format: WAV
+2026-10-17 00:54:13.080 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 00:54:13.080 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 00:54:13.080 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 00:54:13.081 - INFO - separator - Python Version: 3.13.16
+2026-10-17 00:54:13.081 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 00:54:13.135 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 00:54:13.136 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 00:54:13.136 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 00:54:13.137 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 00:54:14.900 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 00:54:14.900 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 00:54:14.900 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 00:54:14.900 - INFO - separator - Processing file: ./sep/r1.wav
+2026-10-17 00:54:14.900 - INFO - separator - Starting separation process for audio_file_path: ./sep/r1.wav
+2026-10-17 00:54:14.901 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 00:54:14.901 - INFO - common_separator - Detected input bit depth: 16-bit
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:45<03:48, 45.69s/it] 33%|███▎      | 2/6 [02:56<06:23, 95.97s/it] 50%|█████     | 3/6 [03:39<03:35, 71.71s/it] 67%|██████▋   | 4/6 [04:23<02:01, 60.63s/it] 83%|████████▎ | 5/6 [05:06<00:54, 54.50s/it]100%|██████████| 6/6 [05:51<00:00, 51.09s/it]100%|██████████| 6/6 [05:51<00:00, 58.57s/it]
+2026-10-17 01:00:07.169 - INFO - mdxc_separator - Saving Instrumental stem to r1_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:00:07.170 - INFO - common_separator - Audio duration is 0.01 hours (24.50 seconds).
+2026-10-17 01:00:07.170 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:00:07.171 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:00:07.330 - INFO - mdxc_separator - Saving Vocals stem to r1_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:00:07.330 - INFO - common_separator - Audio duration is 0.01 hours (24.50 seconds).
+2026-10-17 01:00:07.330 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:00:07.332 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:00:07.673 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 01:00:07.674 - INFO - separator - Separation duration: 00:05:52
+2026-10-17 01:00:07.674 - INFO - cli - Separation complete! Output file(s): r1_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r1_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+2026-10-17 01:00:08.630 - INFO - cli - Separator version 0.47.0 beginning with input path(s): ./sep/r2.wav
+2026-10-17 01:00:10.907 - INFO - separator - Separator version 0.47.0 instantiating with output_dir: ./sep, output_format: WAV
+2026-10-17 01:00:10.907 - INFO - separator - Using model directory from model_file_dir parameter: /tmp/audio-separator-models
+2026-10-17 01:00:10.907 - INFO - separator - Operating System: Linux #1 SMP PREEMPT_DYNAMIC @0
+2026-10-17 01:00:10.907 - INFO - separator - System: Linux Node: vm Release: 6.18.44-fc-v139 Machine: x86_64 Proc: x86_64
+2026-10-17 01:00:10.908 - INFO - separator - Python Version: 3.13.16
+2026-10-17 01:00:10.908 - INFO - separator - PyTorch Version: 2.14.1+cu130
+2026-10-17 01:00:10.960 - INFO - separator - FFmpeg installed: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-17 01:00:10.961 - INFO - separator - ONNX Runtime CPU package installed with version: 1.29.0
+2026-10-17 01:00:10.961 - INFO - separator - No hardware acceleration could be configured, running in CPU mode
+2026-10-17 01:00:10.962 - INFO - separator - Loading model model_bs_roformer_ep_317_sdr_12.9755.ckpt...
+2026-10-17 01:00:12.651 - INFO - mdxc_separator - MDXC Separator initialisation complete
+2026-10-17 01:00:12.651 - INFO - separator - Roformer loading stats: {'new_implementation_success': 1, 'total_failures': 0}
+2026-10-17 01:00:12.651 - INFO - separator - Load model duration: 00:00:01
+2026-10-17 01:00:12.651 - INFO - separator - Processing file: ./sep/r2.wav
+2026-10-17 01:00:12.651 - INFO - separator - Starting separation process for audio_file_path: ./sep/r2.wav
+2026-10-17 01:00:12.652 - INFO - common_separator - Input audio subtype: PCM_16
+2026-10-17 01:00:12.652 - INFO - common_separator - Detected input bit depth: 16-bit
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:43<03:35, 43.05s/it] 33%|███▎      | 2/6 [01:26<02:52, 43.22s/it] 50%|█████     | 3/6 [02:09<02:09, 43.16s/it] 67%|██████▋   | 4/6 [02:52<01:26, 43.26s/it] 83%|████████▎ | 5/6 [03:37<00:43, 43.76s/it]100%|██████████| 6/6 [04:20<00:00, 43.46s/it]100%|██████████| 6/6 [04:20<00:00, 43.40s/it]
+2026-10-17 01:04:33.859 - INFO - mdxc_separator - Saving Instrumental stem to r2_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:04:33.859 - INFO - common_separator - Audio duration is 0.01 hours (24.50 seconds).
+2026-10-17 01:04:33.859 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:04:33.861 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:04:34.057 - INFO - mdxc_separator - Saving Vocals stem to r2_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav...
+2026-10-17 01:04:34.057 - INFO - common_separator - Audio duration is 0.01 hours (24.50 seconds).
+2026-10-17 01:04:34.057 - INFO - common_separator - Using pydub for writing.
+2026-10-17 01:04:34.059 - INFO - common_separator - Writing output with 16-bit depth
+2026-10-17 01:04:34.403 - INFO - common_separator - Clearing input audio file paths, sources and stems...
+2026-10-17 01:04:34.403 - INFO - separator - Separation duration: 00:04:21
+2026-10-17 01:04:34.403 - INFO - cli - Separation complete! Output file(s): r2_(Instrumental)_model_bs_roformer_ep_317_sdr_12.wav r2_(Vocals)_model_bs_roformer_ep_317_sdr_12.wav
+voice peak -6.1 game peak -7.2
+stems ready: ./stems/voice.wav ./stems/game.wav | ranges [(9.0, 11.7), (21.5, 44.0), (51.0, 73.5)]

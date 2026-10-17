@@ -1,0 +1,656 @@
+{
+ "face_rect": [
+  1245,
+  695,
+  675,
+  385
+ ],
+ "formats": [
+  "x"
+ ],
+ "sfx_dir": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/artifact-files/e859168a-e8f3-430f-9e98-7ba0494cd658",
+ "sfx_map": {
+  "glitch": "sounds/glitch-effects/glitch-1.mp3",
+  "whip": "sounds/whooshes/whoosh-short-2.mp3",
+  "impact": "sounds/impact-hits/deep-hit-3.mp3",
+  "flash": "sounds/camera-effects/vintage-flash.mp3",
+  "riser": "sounds/risers/riser-2.mp3"
+ },
+ "fx": {
+  "hit": 0.55,
+  "trans": 0.6
+ },
+ "popups": {
+  "dir": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/popups/pack",
+  "size": 0.4,
+  "gain": 0.8,
+  "corner": "br"
+ },
+ "game_rect": [
+  38,
+  175,
+  1202,
+  750
+ ],
+ "src": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-10-07_Keno_0-29-37/clip.mp4",
+ "out": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-10-07_Keno_0-29-37/edit.mp4",
+ "work": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-10-07_Keno_0-29-37/work",
+ "shots": [
+  {
+   "kind": "game",
+   "a": 186.3,
+   "b": 187.1,
+   "speeds": [
+    [
+     186.3,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     186.3,
+     790,
+     505,
+     2.2,
+     0,
+     -10,
+     4
+    ],
+    [
+     187.1,
+     790,
+     505,
+     2.35,
+     0,
+     -6,
+     2
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     186.35,
+     0.8,
+     true
+    ]
+   ],
+   "voice": false,
+   "blur": [
+    {
+     "rect": [
+      740,
+      450,
+      185,
+      125
+     ],
+     "t": [
+      186.0,
+      999
+     ],
+     "sigma": 40,
+     "darken": 0.25
+    }
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 93.55,
+   "b": 95.95,
+   "speeds": [
+    [
+     93.55,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     93.55,
+     680,
+     535,
+     2.0
+    ],
+    [
+     95.95,
+     680,
+     535,
+     2.0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 106.55,
+   "b": 107.55,
+   "speeds": [
+    [
+     106.55,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     106.55,
+     680,
+     535,
+     2.0
+    ],
+    [
+     107.55,
+     680,
+     535,
+     2.0
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     106.62,
+     0.5
+    ]
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 114.22,
+   "b": 118.2,
+   "speeds": [
+    [
+     114.22,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     114.22,
+     680,
+     535,
+     2.0
+    ],
+    [
+     118.2,
+     680,
+     535,
+     2.0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "face",
+   "a": 123.82,
+   "b": 126.95,
+   "speeds": [
+    [
+     123.82,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     123.82,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     126.95,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 145.5,
+   "b": 148.85,
+   "speeds": [
+    [
+     145.5,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     145.5,
+     680,
+     535,
+     2.0
+    ],
+    [
+     148.85,
+     680,
+     535,
+     2.0
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     145.95,
+     0.4
+    ]
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 170.25,
+   "b": 173.45,
+   "speeds": [
+    [
+     170.25,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     170.25,
+     680,
+     535,
+     2.0
+    ],
+    [
+     173.45,
+     680,
+     535,
+     2.0
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     171.45,
+     0.5
+    ]
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 178.7,
+   "b": 182.3,
+   "speeds": [
+    [
+     178.7,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     178.7,
+     680,
+     560,
+     1.78
+    ],
+    [
+     182.3,
+     680,
+     560,
+     1.78
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 183.0,
+   "b": 184.25,
+   "speeds": [
+    [
+     183.0,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     183.0,
+     345,
+     415,
+     3.2
+    ],
+    [
+     184.25,
+     345,
+     415,
+     3.2
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     183.8,
+     0.4
+    ]
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 184.25,
+   "b": 186.6,
+   "speeds": [
+    [
+     184.25,
+     1.0
+    ],
+    [
+     185.72,
+     0.55
+    ],
+    [
+     186.15,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     184.25,
+     680,
+     560,
+     1.78
+    ],
+    [
+     186.6,
+     680,
+     560,
+     1.78
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     184.92,
+     0.3
+    ],
+    [
+     185.22,
+     0.3
+    ],
+    [
+     185.7,
+     0.35
+    ],
+    [
+     185.93,
+     0.7
+    ],
+    [
+     186.1,
+     1.0,
+     true
+    ]
+   ],
+   "tension": true
+  },
+  {
+   "kind": "face",
+   "a": 186.6,
+   "b": 189.2,
+   "speeds": [
+    [
+     186.6,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     186.6,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     189.2,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 189.2,
+   "b": 191.6,
+   "speeds": [
+    [
+     189.2,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     189.2,
+     680,
+     560,
+     1.78
+    ],
+    [
+     190.75,
+     680,
+     560,
+     1.78
+    ],
+    [
+     190.92,
+     645,
+     384,
+     2.6
+    ],
+    [
+     191.6,
+     645,
+     384,
+     2.68
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     190.92,
+     0.6
+    ]
+   ]
+  },
+  {
+   "kind": "face",
+   "a": 191.6,
+   "b": 193.12,
+   "speeds": [
+    [
+     191.6,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     191.6,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     193.12,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "glitch",
+   "mask_words": [
+    {
+     "text": "WE'RE",
+     "src": 192.0,
+     "color": [
+      255,
+      255,
+      255
+     ],
+     "x": 0.2,
+     "size": 230
+    },
+    {
+     "text": "FUCKING",
+     "src": 192.16,
+     "color": [
+      255,
+      40,
+      90
+     ],
+     "x": 0.2,
+     "size": 150
+    },
+    {
+     "text": "BACK",
+     "src": 192.49,
+     "color": [
+      255,
+      214,
+      40
+     ],
+     "x": 0.2,
+     "size": 260
+    }
+   ]
+  },
+  {
+   "kind": "face",
+   "a": 197.6,
+   "b": 200.2,
+   "speeds": [
+    [
+     197.6,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     197.6,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     200.2,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 187.9,
+   "b": 190.9,
+   "speeds": [
+    [
+     187.9,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     187.9,
+     680,
+     560,
+     1.78
+    ],
+    [
+     188.05,
+     680,
+     560,
+     1.78
+    ],
+    [
+     188.3,
+     745,
+     515,
+     1.95,
+     0,
+     14,
+     5
+    ],
+    [
+     188.9,
+     760,
+     512,
+     2.03,
+     0,
+     12,
+     4
+    ],
+    [
+     190.9,
+     785,
+     509,
+     2.14,
+     0,
+     11,
+     3
+    ]
+   ],
+   "out": "end",
+   "hits": [
+    [
+     188.3,
+     1.1,
+     true
+    ]
+   ],
+   "voice": false
+  }
+ ],
+ "age_tag": null,
+ "freeze_ring": 0.9,
+ "freezes": [
+  {
+   "src": 186.3,
+   "dur": 1.5,
+   "pop": {
+    "char": "frog",
+    "line": "lets_go"
+   }
+  }
+ ],
+ "sfx_auto_level": {
+  "over_db": 4,
+  "max_boost_db": 30,
+  "roles": [
+   "glitch",
+   "whip",
+   "_x"
+  ]
+ },
+ "stems2": {
+  "voice": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-10-07_Keno_0-29-37/stems/voice.wav",
+  "game": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-10-07_Keno_0-29-37/stems/game.wav",
+  "voice_max_speed": 2.0,
+  "duck_db": 8,
+  "overlay": true,
+  "words": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/2026-10-07_Keno_0-29-37/voice_words.json",
+  "mute": [
+   [
+    101.5,
+    111.3
+   ],
+   [
+    178.0,
+    181.4
+   ],
+   [
+    118.2,
+    119.3
+   ],
+   [
+    189.3,
+    190.4
+   ],
+   [
+    193.1,
+    194.5
+   ]
+  ],
+  "max_delay": 0.8
+ }
+}

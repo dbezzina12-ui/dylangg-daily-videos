@@ -1,0 +1,905 @@
+{
+ "formats": [
+  "x"
+ ],
+ "sfx_dir": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/artifact-files/e859168a-e8f3-430f-9e98-7ba0494cd658",
+ "sfx_map": {
+  "glitch": "sounds/glitch-effects/glitch-1.mp3",
+  "whip": "sounds/whooshes/whoosh-short-2.mp3",
+  "impact": "sounds/impact-hits/deep-hit-3.mp3",
+  "flash": "sounds/camera-effects/vintage-flash.mp3",
+  "riser": "sounds/risers/riser-2.mp3"
+ },
+ "popups": {
+  "dir": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/popups/pack",
+  "size": 0.4,
+  "gain": 0.8,
+  "corner": "br"
+ },
+ "game_rect": [
+  28,
+  48,
+  1440,
+  808
+ ],
+ "face_rect": [
+  1489,
+  50,
+  400,
+  225
+ ],
+ "fx": {
+  "hit": 0.55,
+  "trans": 0.7
+ },
+ "src": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/clip.mp4",
+ "out": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/edit.mp4",
+ "work": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/work",
+ "shots": [
+  {
+   "kind": "game",
+   "a": 77.15,
+   "b": 77.95,
+   "speeds": [
+    [
+     77.15,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     77.15,
+     830,
+     362,
+     2.35,
+     0,
+     -10,
+     4
+    ],
+    [
+     77.95,
+     830,
+     360,
+     2.5,
+     0,
+     -6,
+     2
+    ]
+   ],
+   "out": "whip",
+   "hits": [
+    [
+     77.2,
+     0.8,
+     true
+    ]
+   ],
+   "voice": false,
+   "blur": [
+    {
+     "rect": [
+      640,
+      362,
+      150,
+      34
+     ],
+     "t": [
+      76.0,
+      79.0
+     ],
+     "sigma": 40,
+     "darken": 0.25
+    },
+    {
+     "rect": [
+      975,
+      362,
+      120,
+      34
+     ],
+     "t": [
+      76.0,
+      79.0
+     ],
+     "sigma": 40,
+     "darken": 0.25
+    },
+    {
+     "rect": [
+      340,
+      165,
+      110,
+      150
+     ],
+     "t": [
+      76.0,
+      79.0
+     ],
+     "sigma": 40,
+     "darken": 0.25
+    }
+   ]
+  },
+  {
+   "kind": "face",
+   "a": 10.95,
+   "b": 13.75,
+   "speeds": [
+    [
+     10.95,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     10.95,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     13.75,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "glitch",
+   "mask_words": [
+    {
+     "text": "LOSE",
+     "src": 12.42,
+     "color": [
+      255,
+      255,
+      255
+     ],
+     "x": 0.2,
+     "size": 300
+    },
+    {
+     "text": "MY WHOLE",
+     "src": 12.56,
+     "color": [
+      40,
+      230,
+      255
+     ],
+     "x": 0.2,
+     "size": 170
+    },
+    {
+     "text": "FUCKING",
+     "src": 12.84,
+     "color": [
+      255,
+      40,
+      90
+     ],
+     "x": 0.2,
+     "size": 170
+    },
+    {
+     "text": "BALANCE",
+     "src": 13.2,
+     "color": [
+      255,
+      214,
+      40
+     ],
+     "x": 0.2,
+     "size": 160
+    }
+   ]
+  },
+  {
+   "kind": "game",
+   "a": 29.45,
+   "b": 30.45,
+   "speeds": [
+    [
+     29.45,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     29.45,
+     870,
+     330,
+     2.2,
+     0,
+     0,
+     0
+    ],
+    [
+     30.45,
+     870,
+     330,
+     2.3,
+     0,
+     0,
+     0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 62.35,
+   "b": 63.35,
+   "speeds": [
+    [
+     62.35,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     62.35,
+     615,
+     430,
+     2.0,
+     0,
+     0,
+     0
+    ],
+    [
+     63.35,
+     615,
+     430,
+     2.6,
+     0,
+     0,
+     0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 64.3,
+   "b": 65.6,
+   "speeds": [
+    [
+     64.3,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     64.3,
+     470,
+     250,
+     2.7,
+     0,
+     0,
+     0
+    ],
+    [
+     65.6,
+     470,
+     250,
+     2.8,
+     0,
+     0,
+     0
+    ]
+   ],
+   "out": "glitch",
+   "cam_interp": "smooth"
+  },
+  {
+   "kind": "game",
+   "a": 65.6,
+   "b": 70.75,
+   "speeds": [
+    [
+     65.6,
+     1.0
+    ],
+    [
+     70.05,
+     0.6
+    ],
+    [
+     70.4,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     65.6,
+     760,
+     345,
+     2.0,
+     0,
+     0,
+     0
+    ],
+    [
+     66.1,
+     1000,
+     260,
+     2.6,
+     0,
+     0,
+     0
+    ],
+    [
+     66.45,
+     872,
+     468,
+     2.8,
+     0,
+     0,
+     0
+    ],
+    [
+     67.0,
+     868,
+     245,
+     2.8,
+     0,
+     0,
+     0
+    ],
+    [
+     67.45,
+     872,
+     468,
+     2.8,
+     0,
+     0,
+     0
+    ],
+    [
+     67.8,
+     860,
+     350,
+     2.4,
+     0,
+     0,
+     0
+    ],
+    [
+     68.55,
+     880,
+     250,
+     2.8,
+     0,
+     0,
+     0
+    ],
+    [
+     69.2,
+     900,
+     250,
+     2.85,
+     0,
+     0,
+     0
+    ],
+    [
+     69.7,
+     915,
+     250,
+     2.9,
+     0,
+     0,
+     0
+    ],
+    [
+     70.1,
+     930,
+     248,
+     3.0,
+     0,
+     0,
+     0
+    ],
+    [
+     70.25,
+     935,
+     245,
+     3.25,
+     0,
+     8,
+     4
+    ],
+    [
+     70.45,
+     930,
+     248,
+     3.3,
+     0,
+     6,
+     3
+    ],
+    [
+     70.75,
+     850,
+     360,
+     2.3,
+     0,
+     2,
+     1
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     70.22,
+     0.7
+    ]
+   ],
+   "cam_interp": "smooth"
+  },
+  {
+   "kind": "game",
+   "a": 71.1,
+   "b": 73.6,
+   "speeds": [
+    [
+     71.1,
+     1.0
+    ],
+    [
+     72.8,
+     0.6
+    ],
+    [
+     73.35,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     71.1,
+     760,
+     345,
+     2.0,
+     0,
+     0,
+     0
+    ],
+    [
+     71.5,
+     1000,
+     266,
+     2.5,
+     0,
+     0,
+     0
+    ],
+    [
+     72.0,
+     872,
+     468,
+     2.8,
+     0,
+     0,
+     0
+    ],
+    [
+     72.5,
+     868,
+     245,
+     2.8,
+     0,
+     0,
+     0
+    ],
+    [
+     72.85,
+     872,
+     468,
+     2.9,
+     0,
+     0,
+     0
+    ],
+    [
+     73.15,
+     800,
+     430,
+     2.7,
+     0,
+     0,
+     0
+    ],
+    [
+     73.3,
+     790,
+     420,
+     2.7,
+     0,
+     -12,
+     6
+    ],
+    [
+     73.6,
+     785,
+     415,
+     2.95,
+     0,
+     -8,
+     3
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     73.27,
+     1.1,
+     true
+    ]
+   ],
+   "cam_interp": "smooth"
+  },
+  {
+   "kind": "face",
+   "a": 73.5,
+   "b": 75.3,
+   "speeds": [
+    [
+     73.5,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     73.5,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     75.3,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "glitch"
+  },
+  {
+   "kind": "game",
+   "a": 75.3,
+   "b": 77.45,
+   "speeds": [
+    [
+     75.3,
+     1.0
+    ],
+    [
+     76.95,
+     0.6
+    ],
+    [
+     77.3,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     75.3,
+     800,
+     400,
+     2.3,
+     0,
+     0,
+     0
+    ],
+    [
+     75.75,
+     868,
+     245,
+     2.8,
+     0,
+     0,
+     0
+    ],
+    [
+     76.05,
+     880,
+     250,
+     2.9,
+     0,
+     0,
+     0
+    ],
+    [
+     76.65,
+     900,
+     250,
+     2.9,
+     0,
+     0,
+     0
+    ],
+    [
+     76.95,
+     915,
+     250,
+     3.0,
+     0,
+     0,
+     0
+    ],
+    [
+     77.1,
+     920,
+     250,
+     3.25,
+     0,
+     -8,
+     4
+    ],
+    [
+     77.3,
+     915,
+     252,
+     3.3,
+     0,
+     -6,
+     3
+    ],
+    [
+     77.45,
+     880,
+     330,
+     2.7,
+     0,
+     -3,
+     2
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     77.1,
+     0.8
+    ]
+   ],
+   "cam_interp": "smooth"
+  },
+  {
+   "kind": "face",
+   "a": 77.45,
+   "b": 79.0,
+   "speeds": [
+    [
+     77.45,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     77.45,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     79.0,
+     "FACE",
+     1.12,
+     0
+    ]
+   ],
+   "out": "flash"
+  },
+  {
+   "kind": "game",
+   "a": 79.0,
+   "b": 81.6,
+   "speeds": [
+    [
+     79.0,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     79.0,
+     760,
+     328,
+     1.95,
+     0,
+     12,
+     4
+    ],
+    [
+     79.6,
+     760,
+     320,
+     2.02,
+     0,
+     10,
+     3
+    ],
+    [
+     81.6,
+     760,
+     310,
+     2.1,
+     0,
+     8,
+     2
+    ]
+   ],
+   "out": "glitch",
+   "hits": [
+    [
+     79.08,
+     1.2,
+     true
+    ]
+   ],
+   "voice": false,
+   "cam_interp": "smooth"
+  },
+  {
+   "kind": "face",
+   "a": 94.9,
+   "b": 96.9,
+   "speeds": [
+    [
+     94.9,
+     1.0
+    ]
+   ],
+   "cam": [
+    [
+     94.9,
+     "FACE",
+     1.0,
+     0
+    ],
+    [
+     96.9,
+     "FACE",
+     1.1,
+     0
+    ]
+   ],
+   "out": "end",
+   "mask_words": [
+    {
+     "text": "MAKE",
+     "src": 95.36,
+     "color": [
+      255,
+      255,
+      255
+     ],
+     "x": 0.22,
+     "size": 280
+    },
+    {
+     "text": "MY OWN",
+     "src": 95.66,
+     "color": [
+      40,
+      230,
+      255
+     ],
+     "x": 0.22,
+     "size": 210
+    },
+    {
+     "text": "FUCKING",
+     "src": 96.08,
+     "color": [
+      255,
+      40,
+      90
+     ],
+     "x": 0.22,
+     "size": 170
+    },
+    {
+     "text": "WIN",
+     "src": 96.44,
+     "color": [
+      255,
+      214,
+      40
+     ],
+     "x": 0.22,
+     "size": 330
+    }
+   ]
+  }
+ ],
+ "age_tag": null,
+ "freeze_ring": 0.9,
+ "freezes": [
+  {
+   "src": 73.35,
+   "dur": 1.5,
+   "pop": null
+  }
+ ],
+ "music": {
+  "file": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/artifact-files/e859168a-e8f3-430f-9e98-7ba0494cd658/sounds/songs/keno-money.mp3",
+  "at": 14.38,
+  "align_src": 73.27,
+  "end_src": 73.5,
+  "end_style": "tapestop",
+  "end_fade": 0.9,
+  "gain_db": -4
+ },
+ "sfx_auto_level": {
+  "over_db": 4,
+  "max_boost_db": 30,
+  "roles": [
+   "glitch",
+   "whip",
+   "_x"
+  ]
+ },
+ "extra_sfx": [
+  {
+   "file": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/vo.wav",
+   "src": 79.12,
+   "gain": 1.0
+  }
+ ],
+ "overlays": [
+  {
+   "src": 79.12,
+   "from": 0,
+   "to": 1488632,
+   "fmt": "+C${:,}",
+   "count": 0.45,
+   "pos": [
+    610,
+    900
+   ],
+   "size": 130,
+   "font": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/artifact-files/e859168a-e8f3-430f-9e98-7ba0494cd658/tools/Poppins-BoldItalic.ttf",
+   "color": [
+    60,
+    230,
+    120
+   ],
+   "stroke": [
+    0,
+    60,
+    24
+   ],
+   "wash": [
+    0,
+    34,
+    10
+   ],
+   "darken": 0.25,
+   "focus": [
+    610,
+    860
+   ],
+   "until_src": 81.6
+  }
+ ],
+ "stems2": {
+  "voice": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/stems/voice.wav",
+  "game": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/stems/game.wav",
+  "voice_max_speed": 2.0,
+  "duck_db": 8,
+  "overlay": true,
+  "words": "/tmp/claude-0/-home-user-dylangg-daily-videos/c57cb05e-857a-55e7-80f9-9455f18314fd/scratchpad/batch/xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56/voice_words.json",
+  "mute": [
+   [
+    74.95,
+    76.0
+   ],
+   [
+    77.12,
+    77.95
+   ]
+  ],
+  "max_delay": 0.8
+ }
+}

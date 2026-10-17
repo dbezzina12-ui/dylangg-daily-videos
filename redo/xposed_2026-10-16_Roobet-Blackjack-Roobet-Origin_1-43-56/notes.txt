@@ -1,0 +1,36 @@
+Xposed 2026-10-16, Roobet Originals blackjack, +C$1,488,632 on one hand (other-streamer overnight batch edit, 2026-10-17)
+
+What happened (clip t = stream t - 1:42:45, read off the page):
+- 10-17: raging at a bonus that paid 100x ("I'm gonna lose my whole fucking balance now, I'm gonna lose fucking everything"), then keno.
+- The stream audio is MUTED in the VOD from ~1:43:10 to 1:43:58 (clip 25-73.4): keno and the whole blackjack build-up have no sound.
+- 61.8 lobby -> Blackjack; 64.3-65.6 maxes all three bets (C$283,549 main + C$35,443.62 Perfect Pairs + C$35,443.62 21+3);
+  balance C$1,212,190 -> C$857,753.
+- Hand 1 (65.6-70.7): 9+10 = 19, dealer 2,3,8,2,7 = 22 BUST -> balance C$1,424,851.
+- Hand 2 (71.1-77.3): 10s, 10s (PERFECT PAIR lights at 73.25 = C$921,534.12), dealer J; audio comes back at 73.4 as he lunges
+  ("fuck you ... that's a million! that's a million!"), stands on 20, dealer 4, A, 2 = 17, his hand turns green 77.0;
+  balance C$1,070,415.63 -> C$2,559,047.75. Screams into the cam 77.5-78.6 ("let's go"), leaves the frame, back at 85.5.
+- 94.9-96.9 "I'll make my own fucking win." (the 'ILL MAKE MY OWN WIN' chat clip).
+
+Edit (mk.py -> edl.json), 27.1 s:
+cold open (the winning hand, PP/21+3 payouts + bet fields blurred, swing, whip) -> hook face "That's fucking crazy. I'm gonna lose
+my whole fucking balance now" (word captions LOSE / MY WHOLE / FUCKING / BALANCE, left of his head) -> one dead keno round ->
+push onto the BLACKJACK tile -> bet fields maxed -> hand 1 with the cards-follow camera, slow-mo + push on the bust 7 ->
+hand 2 deal, tilt-push onto the 10-10 + PERFECT PAIRS badge, freeze (pop null) -> his lunge -> stand, dealer 4, A, 2 = 17 (slow-mo
+push on the 2) with his "that's a million!" -> the scream -> table with the balance at the top, angled push-in, VO
+"ONE POINT FIVE MILLION. ON ONE HAND!" + "+C$1,488,632" green slam (bottom-left, clear of the PP payout and the balance) ->
+closing face "I'll make my own fucking win" (word captions MAKE / MY OWN / FUCKING / WIN).
+Calls I made:
+- Length 27 s instead of ~40: the real material is ~14 s of blackjack plus reactions; padding with more silent keno would have
+  been dead air. Extended the clip back 22 s to get the rage hook (the setup that pays off in "I'll make my own fucking win").
+- Song bed: Keno Money (as in the phone blackjack/keno edits) under the silent stretch. Its first drop (14.38) is on the PERFECT
+  PAIRS flash, and it tape-stops into his live lunge. gain -4 dB, sfx_auto_level on. The song starts under the hook face.
+- No feed_interp (Roobet Originals is a native 60 fps page, not a ~22 fps live table). fx hit 0.55 / trans 0.7.
+- Voice words hand-fixes (voice-stem energy + a no-VAD re-transcription): I'll 95.00, make 95.32, added "that's a million"
+  76.04-77.12 (whisper with VAD missed it). Mutes: 74.95-76.0 ("motherfu- fuck you", "fuck you" already in the face shot) and
+  his second "that's a million" 77.12-77.95. Cold open and the VO shot are voice=False. Original words in voice_words_prep2.json.
+- face_rect [1489,50,400,225] (inside the webcam box, above its gold stripe); game_rect [28,48,1440,808] verified.
+- The facecam is only ~400x225 in the stream, so the face shots are soft when upscaled.
+Render: v0 failed on a pop_picks.json race between parallel parts (re-ran). v1: 1.7 s near-silent dip under the dealer reveal
+(untranscribed yells) + the cold open cut the dealer cards -> v2: added the yell words, reframed. v2 render log: "0 words trimmed".
+QA v2: 0 fail, 0 warn (VO line in the transcript: "1 5 million on one hand").
+Delivered: Drive 1Br1M8FKJGVPTk2uKt8d6ExRYto_kPXYz (Other streamers folder), picks page status edited (v3).

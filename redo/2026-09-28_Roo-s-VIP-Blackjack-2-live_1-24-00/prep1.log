@@ -1,0 +1,3 @@
+[h264 @ 0x56137d9b4280] co located POCs unavailable
+wrote ./clip.mp4 (117 s from 1:23:25)
+ready: .  clip 117 s from 1:23:25; win moments on the clip timeline: {'bonus_start': 20.0, 'hit': 35.0, 'banner': 37.0, 'end': 105.0}

@@ -1,0 +1,31 @@
+{
+ "T0": 2033.0,
+ "T1": 2216.0,
+ "clip_times": {
+  "bonus_start": 20.0,
+  "hit": 76.0,
+  "banner": 88.0,
+  "end": 171.0
+ },
+ "win": {
+  "amount": 2576,
+  "banner": "0:35:21",
+  "bet": 1,
+  "bonus_start": "0:34:13",
+  "confidence": "confirmed",
+  "cur": "$",
+  "date": "2026-09-16",
+  "end": "0:36:44",
+  "evidence": "confirm/nl_hit.jpg, confirm/nl_scan.jpg, confirm/nl_extra.jpg, confirm/nl_extra2.jpg",
+  "game": "Outsourced 2: Balkan Engineering",
+  "hit": "0:35:09",
+  "multi": 2576,
+  "notes": "$235 bonus buy at $1. Last spin at 0:35:20-0:35:21: 78.00 hit, then the board-wide xWays collapse takes TOTAL WIN $114.05 -> $3,000.05 (0:35:21); 'GUD ENUFF 2954.60' 0:35:30, red TOTAL WIN banner 0:35:33 (count-up, game total $3,016.85 = 3016x). He then buys 3 'Extra Spins' at $170 each (deducted from the total; GUD ENUFF 393.80 at 0:35:56, 400.40 at 0:36:20) and finishes at $2,576.00 (0:36:52). Best edit: cut at the 0:35:33 banner ($3,016.85).",
+  "pick": true,
+  "provider": "Nolimit City",
+  "status": "new",
+  "tier": "edit",
+  "time_basis": "true",
+  "id": "2026-09-16_Outsourced-2-Balkan-Engineering_0-35-09"
+ }
+}

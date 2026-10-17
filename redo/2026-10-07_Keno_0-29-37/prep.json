@@ -1,0 +1,31 @@
+{
+ "T0": 1593.0,
+ "T1": 1819.0,
+ "clip_times": {
+  "bonus_start": 180.0,
+  "hit": 184.0,
+  "banner": 187.0,
+  "end": 196.0
+ },
+ "win": {
+  "amount": 2590,
+  "banner": "0:29:40",
+  "bet": 10,
+  "bonus_start": "0:29:33",
+  "confidence": "confirmed",
+  "cur": "$",
+  "date": "2026-10-07",
+  "end": "0:29:49",
+  "evidence": "confirm/keno_full_02941.jpg",
+  "game": "Keno",
+  "hit": "0:29:37",
+  "multi": 259,
+  "notes": "Currency CAD. High risk, 4 picks (5,7,8,10), C$10 bet. The picks land 0:29:37-0:29:40 and the green box shows 259.00x = C$2,590.00 at 0:29:40. Balance after: C$4,181.95. Matches the loud.txt peaks at 0:29:40/0:29:50. Strip: confirm/keno_hit.jpg, confirm/raven.jpg (tail end)",
+  "pick": true,
+  "provider": "Roobet (original)",
+  "status": "new",
+  "tier": "edit",
+  "time_basis": "true",
+  "id": "2026-10-07_Keno_0-29-37"
+ }
+}

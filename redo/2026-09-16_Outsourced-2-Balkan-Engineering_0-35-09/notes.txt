@@ -1,0 +1,48 @@
+Outsourced 2: Balkan Engineering $3,016.85 (3,016x at $1, $235 Tiltier Spins buy), Sep 16 stream - overnight batch edit notes
+(decisions made unattended)
+
+Source: the 2026-09-16 VOD has dropped off Kick's 25-video API listing, so prep_edit.py said "no VOD starting 2026-09-16".
+The VOD itself is still served: prep_run.py (in this folder) wraps prep_edit.py and falls back to the saved VOD record in
+oct11/vods.json (id 127650145). Same clip, same code otherwise. Other 09-16..09-17 picks will need the same wrapper.
+
+Timeline: clip t0 = stream 0:33:53. win.json / evidence times run ~13 s LATE vs the clip (e.g. red TOTAL WIN banner "0:35:33" is
+clip 87.0-89.7). On the clip: Print Spins card 18.5, buy spin with 4 bonus symbols 19.5-21.0 (pays 0.05), TILTIER SPINS 7 card
+21.5-23.0, free spins from 23.5. Spin with the +1 spin 37.0-40.0. Spin 42.4-61.5: x4 nudge wild, 9.60+2.40 (45.0), 3.00, 1.80,
+22.40+4.80 (53.5), 13.50 (56.5) -> win screen 59.50 (61.0). LAST spin 63.5-79.8: 10.20+7.20 (65.5), 14.00+8.40 (68.0-68.5),
+12.00 (71.25), x2 nudge lands 73.3, 2,808.00 xWays hit (74.45-74.9, top centre) + 78.00 (74.75) -> TOTAL WIN 114.05 -> 3,000.05,
+16.80 (77.5) -> 3,016.85. Win screen 80.0-86.2 counts SZOLID 1.60 -> ... -> OLMOST THER 319.56 -> GUD ENUFF 2,954.60 (83.9).
+Red TOTAL WIN 87.0 counts up and locks on 3,016.85 at 89.2; Buy Extra Spin menu from 89.8 (cut there).
+Layout = standard (game_rect [38,230,1288,695], face_rect [1245,695,675,385]); the game's own TOTAL WIN/BALANCE line is at
+y ~900-920, so zoomed keys keep view bottom <= 895 (BAR in mk.py); keys that reach the bottom also stay left of the webcam (x 1240).
+
+Story (10 shots): blurred GUD ENUFF 2,954.60 cold open -> buy spin, pan/tilt across the 4 bonus symbols -> TILTIER SPINS 7
+("it's a super") -> facecam "alright, PLEASE BE GOOD" (captions right; his arm goes up on the left) -> +1 spin ("plus one spin,
+nice") -> the 59.50 spin (straight zooms on 9.60 / 22.40 / 13.50, "okay good, this board is incredible", read-hold on 59.50)
+-> the LAST spin ("door bad"; zooms on 10.20 / 14.00 / 12.00, slow-mo tilt onto the x2 nudge, tilt-push onto 2,808.00
+= freeze + popup, pan to 78.00, cascades out at 2.2x) -> win-screen count at 2x with "good fucking good", swing onto GUD ENUFF
+2,954.60 -> facecam "NOT FUCKING BAD" (captions left) -> red TOTAL WIN 3,016.85 (end + 0.6 s read hold). No closing facecam after
+the total (his next words are "how much is the rebuy"). Extra spins not shown.
+
+Calls made without Dylan:
+- Spin-level pays: the cascade popups inside a spin get straight zooms at 1.0x (no hold); the spin's result gets the hold
+  (59.50 read freeze, 2,808.00 popup freeze). Spins with only 0.30-2.70 pays (25-36 s) cut.
+- Popup pinned to slot "No way!" (least-recently-used among lines that fit; avoids cat "not bad" next to his NOT FUCKING BAD).
+- Voice: he says "not bad, not fucking bad" right after the 2,808 hit AND again 8 s later; kept only the facecam one (captions).
+  Kept: "it's a super", "alright please be good", "plus one spin nice", "okay good, this board is incredible", "door bad",
+  "good fucking good", "not fucking bad". Muted: repeats ("it's a super" x2, "we had nothing" x2, "queen on two" x2, "door bad" x4,
+  "fucking good" x2, "not bad" x4), "top symbol too", rebuy talk.
+- voice_words.json: clean-voice re-transcription had stretched onsets; fixed 12 word timings from the voice-stem energy
+  ("Okay" 53.32->53.68, "please" end 68.78->67.70, "give" 68.78->68.55, "good" 79.02->79.60, "not" 82.94->84.75,
+  "not fucking bad" -> 87.00 / 87.30 / 87.98, "how" -> 88.25, ...). Raw file kept as voice_words_sep_raw.json until cleanup.
+
+Renders:
+ v1: 41.0 s, "9 phrases at 1.0x, 0 words trimmed", edit_qa 0 fail / 1 warn. Review: the facecam heard "baby" before NOT FUCKING BAD
+     (re-transcribing just that window put baby 86.95-87.25, not 87.28, fucking 87.55, bad 88.00); GUD ENUFF swing started while
+     the number was still rising from the bottom, so it was cut off at the bottom of the frame.
+ v2: facecam word timings / captions / mute fixed, face shot 87.05-88.27; swing onto GUD ENUFF from 84.15. Review: the swing's
+     first key still showed the game's TOTAL WIN line at the bottom.
+ v3 (final): swing keys z 2.0-2.14 at cy 590-580 (bar out of frame once settled). edit_qa 0 fail, 1 warn (the 0.6 s read hold on
+     the final 3,016.85 sits in the last 3 s: intended, ends on the total). 40.9 s, 27.4 MiB, -15.8 LUFS, no repeats, blur OK.
+Delivered: "2026-09-16 Outsourced 2 3016 hype edit.mp4", Drive id 15XD-pk2-D1caNBFQxSPY6jppE2vhO_Zp (moved to For review);
+picks page row set to status "edited" (version 3).
+Cleanup: clip, mix, stems, work, sheets and the local mp4s deleted after the upload was confirmed. (qa.jpg was removed by an over-broad cleanup glob; the final render was checked on qa.jpg + key-moment sheets before delivery; qa.log keeps the edit_qa result.) prep_run.py + tools/ (gdense.py, gridf.py: game-rect dense sheets with a source-px grid) kept for reuse.

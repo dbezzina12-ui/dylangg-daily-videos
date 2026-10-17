@@ -1,0 +1,21 @@
+{
+ "amount": 3614.6,
+ "banner": "1:32:28",
+ "bet": 1,
+ "bonus_start": "1:30:12",
+ "confidence": "confirmed",
+ "cur": "$",
+ "date": "2026-09-25",
+ "end": "1:32:38",
+ "evidence": "confirm/s_tumble.jpg, confirm/rs_13212.jpg",
+ "game": "Retro Sweets",
+ "hit": "1:32:04",
+ "multi": 3615,
+ "notes": "Super Free Spins buy for 400 CAD at 1.00 bet. Sat on 71.60 for most of the bonus; the final spin (14/14) lands a huge multiplied cluster: win meter jumps 86.60 -> 3,614.60 CAD at 1:32:12 (Super Win popup 1:32:18). End banner counts up (1,429.37 -> 3,323.30 ...) from 1:32:30; the game's win meter reads 3,614.60 CAD.",
+ "pick": true,
+ "provider": "Push Gaming",
+ "status": "new",
+ "tier": "edit",
+ "time_basis": "true",
+ "id": "2026-09-25_Retro-Sweets_1-32-04"
+}

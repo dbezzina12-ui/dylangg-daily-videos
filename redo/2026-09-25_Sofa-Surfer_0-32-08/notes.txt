@@ -1,0 +1,32 @@
+Sofa Surfer $3,465 (5,775x), 2026-09-25 stream. Clip t0 = stream 0:30:48 (prep.json T0 1848).
+
+Win moments (clip time, from the sheets): Buy Feature 10.25, Bonus Buy 2 240.00 card 11.0, trigger drop 11.75, scatters 13.0-16.5
+(reel-6 tease 13.75-16.4), 12 FREE GAMES 19.3-20.5. Spin 1/12 SUPER 37.80 (31). Spin 2/12: 15x coin 35.75, collect 9.00 36.5,
+multi x3 -> x13 39.75 -> x16 41.75, "9.00 x 16" 42.75, MEGA 144.00 46.5. Spin 6/12: coins 61.25, collect 18.60 61.75, x18 66.25,
+KNOCKOUT 334.80 69.25. Spin 8/12 (the hit): drop 74.5, 20x/250x/2x coins 75.75-76.4, collect 163.20 76.75, his arms-up reaction
+77.5-80, "163.20 x 18" 80.25, BIG/MEGA count 81-82.6, KNOCKOUT 2,937.60 83.0-85.5. Total CONGRATULATIONS 3,465.00 102.5.
+Layout = default game_rect/face_rect; the game's own BALANCE/WIN/BET row starts at y ~850, so every zoom is clamped to view bottom <= 850.
+
+Edit (shot order): cold open KNOCKOUT 2,937.60 blurred (also blurred the "163.20 x 18" header + the multiplier history meter so
+no amount is readable) -> hook face "Podgy, the first one was really bad. We're doing one more." (REALLY / BAD. / ONE / MORE.)
+-> Bonus Buy 2 240 card -> trigger with tilts across the scatters + reel-6 tease ("five scatter?" .. "bang?") -> 12 FS card
+-> spin 2 (coin, 9.00 collect, x13 -> x16, MEGA 144 + 0.7 s hold) -> spin 6 (collect 18.60, x18, KNOCKOUT 334.80 + 0.7 s hold,
+"we still have half the spins left") -> spin 8 drop + collect 163.20 tilt -> facecam arms-up "wait, does that do it?" -> "163.20 x 18",
+count-up, KNOCKOUT 2,937.60 swing + freeze + auto popup -> "not fucking bad, paji" -> facecam "FUCKING 250X COIN, that's all we
+needed paji" -> total 3,465.00 swing -> closing facecam "I mean not bad, Podge" (NOT / BAD / PODGE) = the NOT BAD ending.
+Spin 1 (Super 37.80) and spins 3-5, 7, 9-12 cut (dead / small). No fast-forwards.
+
+Calls made without Dylan:
+- Spin 1/12 (SUPER 37.80) left out to keep the cut ~45-50 s; the x3 -> x18 multi climb is shown in spins 2 and 6 instead.
+- Muted: "these are just extra spins", "guys why do you keep making these accounts", "I mean it's not bad so far paji" (so
+  "not bad" is only said at the end), "and and and uh", the first "not fucking bad" under the popup (he says it again 3 s later).
+- voice_words.json: the Roformer-stem re-transcription put several words at wrong times (whisper stretched "oh" over 1.5 s and
+  put "fucking" of "fucking 250x coin" 1.4 s early); fixed 8 word timings by hand from the voice-stem energy
+  (raw file kept as voice_words_sep_raw.json).
+
+Render v2 (final): caption sizes/sides fixed (FUCKING was clipped at the left edge in v1; closing NOT/BAD/PODGE moved to the right
+because he leans left at the end); spin-8 coin slow-mo shortened to 0.65 s (engine now varispeeds slowed game audio).
+render.log: 13 phrases, 0 words trimmed. edit_qa: 0 fail, 0 warn (27.3 MiB, 53.4 s, -14.5 LUFS, no repeats, blur OK).
+First drive_upload attempt got HTTP 404 from the Apps Script; the retry 20 s later worked.
+Delivered: "2026-09-25 Sofa Surfer 3465 hype edit.mp4", Drive id 1zik2rYVaHldqOZCkAfCTQp-B94Zj_Xtu, moved to "For review".
+Picks doc updated to status "edited" (version 3).

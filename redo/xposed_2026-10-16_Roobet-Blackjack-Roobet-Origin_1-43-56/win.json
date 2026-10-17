@@ -1,0 +1,36 @@
+{
+ "rank": 1,
+ "streamer": "xposed",
+ "date": "2026-10-16",
+ "game": "Roobet Blackjack (Roobet Originals)",
+ "provider": "Roobet",
+ "amount": 1488632.12,
+ "bet": 354435.24,
+ "multi": 4.2,
+ "bonus_start": "1:43:47",
+ "hit": "1:43:56",
+ "banner": "1:44:00",
+ "end": "1:44:25",
+ "tier": "edit",
+ "confidence": "confirmed",
+ "evidence": "confirm/bj_c.jpg, confirm/bj_b.jpg, confirm/bj_face.jpg",
+ "game_rect": [
+  28,
+  48,
+  1440,
+  808
+ ],
+ "face_rect": [
+  1487,
+  48,
+  406,
+  242
+ ],
+ "reaction": "jumps to the cam screaming with mouth wide open (1:44:00-1:44:06), stands/leaves the frame, still yelling at 1:44:15; chat clips 'made' 1:44:29 and 'ILL MAKE MY OWN WIN' 1:46:03",
+ "notes": "Main bet C$283,549 + Perfect Pairs C$35,443.62 + 21+3 C$35,443.62. Dealt 10s-10s (perfect pair, paid C$921,534.12 = 26x side bet), stands on 20, dealer J,4,A,2 = 17. Balance C$1,070,415.63 -> C$2,559,047.75 (+C$1,488,632.12 net incl. stake back). Hand before (1:43:52-55): 9+10=19 vs dealer bust 22, balance C$817,753.87 -> C$1,424,851.87. Came after 8 min of C$12,000 Keno spins (1:42:50-1:43:45). Amounts in CAD.",
+ "cur": "$",
+ "pick": true,
+ "status": "queued-other",
+ "time_basis": "true",
+ "id": "xposed_2026-10-16_Roobet-Blackjack-Roobet-Origin_1-43-56"
+}

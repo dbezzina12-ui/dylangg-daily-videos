@@ -1,0 +1,31 @@
+{
+ "T0": 3342.0,
+ "T1": 3468.0,
+ "clip_times": {
+  "bonus_start": 30.0,
+  "hit": 93.0,
+  "banner": 99.0,
+  "end": 106.0
+ },
+ "win": {
+  "amount": 2774.1,
+  "banner": "0:57:21",
+  "bet": 3,
+  "bonus_start": "0:56:12",
+  "confidence": "confirmed",
+  "cur": "$",
+  "date": "2026-10-02",
+  "end": "0:57:28",
+  "evidence": "confirm/raven_hit.jpg",
+  "game": "Raven's Revenge",
+  "hit": "0:57:15",
+  "multi": 925,
+  "notes": "Currency CAD, bonus hunt #9 (SUPER bonus). Base bet C$3 on the hunt panel. The game shows C$9.00 in the bonus-chance field, which is 308x on that. Slow start with +2FS retriggers (10 -> 14 spins). The win is $958.50 going into the last spin, 14/14, which lands a screen of wild ravens: win jumps to $2,437.50 (0:57:15), then 249.46 tree collect, and TOTAL WIN 2774.10 at 0:57:21. Best and luckiest win of the hunt (panel: 924.70x). Evidence also confirm/raven.jpg",
+  "pick": true,
+  "provider": "Valkyrie Studio",
+  "status": "new",
+  "tier": "edit",
+  "time_basis": "true",
+  "id": "2026-10-02_Raven-s-Revenge_0-57-15"
+ }
+}

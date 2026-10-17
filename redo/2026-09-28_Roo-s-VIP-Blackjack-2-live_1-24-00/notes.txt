@@ -1,0 +1,34 @@
+Roo's VIP Blackjack 2 (live), 2026-09-28 stream: two back-to-back wins at the end of the stream (overnight batch edit)
+Covers BOTH picks docs: 2026-09-28_Roo-s-VIP-Blackjack-2-live_1-24-00 and ..._1-24-32.
+
+What actually happened (clip t = stream t - 1:23:25; read off the cards, the chip and the balance):
+- He's at CA$2,201 (start balance $5,000): "Yeah, I was just hoping to fucking break even, bro" (9.1-11.4).
+- Hand 1: CA$2,000 main + CA$200 side bet. Player K+9 = 19, stands vs dealer 6. Hole card 6 (12), dealer draws a 10 -> 22 BUST
+  -> YOU WIN CA$4,000 (36.7), balance CA$4,001.31. His lines: "You couldn't have just gave me fucking three sixes, you dickhead"
+  (side bet), "this guy's voice is super annoying... not bad though", then "Holy fuck".
+- Hand 2: CA$800 main (the pick note says a CA$1,600 bet: it was 800 DOUBLED to 1,600). 8+2 = 10 vs dealer 3, "I have to double",
+  doubles, gets a 5 (15). Dealer 3+2 = 5, draws 6 (11), 3 (14), 8 -> 22 BUST -> YOU WIN CA$3,200 (70.0), balance CA$5,401.31.
+  Hands on his head while the dealer is on 14; shouts as the 8 lands; then "We're back, we're back".
+- After that he drops to CA$400 hands and loses one (not used); the stream ends.
+
+Edit (mk.py -> edl.json), 40.9 s:
+cold open = YOU WIN CA$4,000 banner, amount blurred, angled swing, whip -> hook facecam "hoping to fucking break even, bro" (glitch word
+captions HOPING / BREAK / EVEN / BRO on the left, his hand is up on the right) -> "just give me a good one and call it a night" over
+the bet / deal -> stands on 19 -> "three sixes, you dickhead" -> hole 6, the 10 from the shoe, 22 BUST (0.6x slow-mo + push-in)
+-> YOU WIN CA$4,000 + the one freeze/popup (robot) -> "not bad though" -> facecam "Holy fuck" -> hand 2 deal -> "I have to double",
+push onto the chip as 800 becomes 1.6K -> "give me a ace" -> the 5 -> "please don't fuck me" while the dealer draws to 14 ->
+hands-on-head facecam -> the 8, 22 BUST (slow-mo + push-in) -> YOU WIN CA$3,200 -> closing facecam "WE'RE BACK, WE'RE BACK"
+(word captions on the right). Closing facecam kept because it's a genuinely great reaction (rule 7).
+Blackjack rules: feed_interp ["game"], fx hit 0.55 / trans 0.7, camera follows the cards (shoe -> spot, small push on landing,
+cam_interp smooth), no hits on deals, slow-mo + push-in only on the two bust cards. cam_bounds: ok.
+Layout: game feed x 40-1240, y 244-919 (webcam box covers the feed's bottom-right) -> game_rect [40,244,1200,675].
+
+Audio: stems2 overlay, his voice at 1.0x, engine log "0 words trimmed". The dealer's voice mostly lands in the game stem, so his table
+narration ("you stand here, shows a 12") is heard under the game, as on stream.
+voice_words.json: whisper stretched some words on the clean stem (e.g. "please" 66.20-68.98, "I" 54.26-56.48); I re-timed 54-60 and
+65.6-74.2 from the voice-stem energy (20 ms RMS) and re-transcribed those windows without VAD. Original kept as voice_words_prep2.json.
+Calls I made: freeze/popup on the CA$4,000 banner (biggest hit, not the final total); the closing "we're back" is his loudest line
+(71.1-71.6) followed by two softer ones, only the first two are kept (no repeats). "Good cider" in the transcript is probably
+"good sider" (side bet); not captioned.
+Coordinator: picture rendered before the 01:11 engine update, so the audio was re-mixed with --audio-only (varispeed on slow-mo).
+Delivered: Drive 1apcDcaT1xAQ96JkSgtSOrtyy0j-EXwOO (For review), QA 0 fail 0 warn, both picks docs status edited.

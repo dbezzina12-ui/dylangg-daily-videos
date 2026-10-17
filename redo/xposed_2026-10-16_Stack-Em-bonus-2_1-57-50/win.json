@@ -1,0 +1,36 @@
+{
+ "rank": 2,
+ "streamer": "xposed",
+ "date": "2026-10-16",
+ "game": "Stack'Em (bonus 2)",
+ "provider": "Hacksaw",
+ "amount": 848100.0,
+ "bet": 750.0,
+ "multi": 1131.0,
+ "bonus_start": "1:55:12",
+ "hit": "1:57:50",
+ "banner": "1:58:20",
+ "end": "1:58:32",
+ "tier": "edit",
+ "confidence": "confirmed",
+ "evidence": "confirm/stack_c.jpg, confirm/stack_bars.jpg, confirm/stack_d.jpg",
+ "game_rect": [
+  28,
+  96,
+  1440,
+  760
+ ],
+ "face_rect": [
+  1487,
+  48,
+  406,
+  242
+ ],
+ "reaction": "leans into cam laughing/yelling at 1:57:51-1:58:22 (loud 1:56:30-1:58:20); fist pump at 1:56:59",
+ "notes": "Natural trigger on $750 autospins. Multiplier climbs 1x -> 499x; MEGA WIN 62,325 at 1:56:16, 146,625 at 1:56:58, single 331,500 hit at 1:57:50 (total 442,837.50 -> 848,100 final with 0 spins). Balance after $3,630,839.82.",
+ "cur": "$",
+ "pick": true,
+ "status": "queued-other",
+ "time_basis": "true",
+ "id": "xposed_2026-10-16_Stack-Em-bonus-2_1-57-50"
+}

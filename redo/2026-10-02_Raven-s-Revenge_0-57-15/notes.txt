@@ -1,0 +1,49 @@
+Raven's Revenge $2,774.10 (CA$, bet C$3, ~925x), Oct 2 stream, bonus hunt #9 (SUPER free spins) - overnight batch edit notes
+(decisions made unattended)
+
+Timeline: clip t0 = stream 0:55:42 (prep.json). win.json times match the clip within ~1 s here.
+On the clip: resumed round / base board 19-27 ("you guys were lying" 25.7), three bonus symbols light 26.0-26.8, 10 SUPER FREE
+SPINS card 27.9-29.5, FS start 30.5. Spin 9/10 132.00 wild pay 62. Spin 10/10: bonus symbol lands 65.4, 10.00 / 9.00 wild pays
+66.5-67.5, +2FS 69.5. Spin 11/12: 228.00 / 126.00 / 79.80 wild pays 73.0-74.0, tree tally 310.43 76.0. Spin 12/12: bonus symbol
+78.6, 150.00 80.5, tree 180.00 82.5, +2FS 85.0 (WIN 958.50). Spin 13/14 (THE HIT): drop 86.3, 174.00 wild 88.0, 1,305.00 wild 88.45,
+tree 223.81 -> 820.04 -> BIG WIN 1,479.00 at 91.0 (WIN 2,437.50). Spin 14/14: drop 93.3, 198.00 + 138.60 95.0-95.3, wild tally
+40.43 -> 131.32 96.6-97.7, tree 249.46 -> NICE WIN 336.60 98.3, TOTAL WIN 2,774.10 99.6-106.
+NOTE: win.json says the last spin "lands a screen of wild ravens" for the jump to 2,437.50; on the board the jump is spin 13/14's
+1,305.00 wild (+174.00 = BIG WIN 1,479.00); the last spin adds 336.60. The edit follows the board.
+Layout = standard (game_rect [38,230,1288,695], face_rect [1245,695,675,385]). The game's own BALANCE / WIN / FREE SPINS row starts
+at y ~810, so every zoom key is clamped to view bottom <= 806 (BAR=806 in mk.py; z >= ~1.88).
+
+Edit (42.1 s, shot order):
+ 1. cold open 90.9-91.7: BIG WIN shield, tree amount 820.04/1,479.00 blurred, whip.
+ 2. hook facecam 32.25-34.15 "Okay, we just need a shitload of fucking birds" (SHITLOAD / OF / FUCKING / BIRDS on the left;
+    he sits centre, hand on chin).
+ 3. 25.3-29.4 "you guys were lying": pan + tilt across the three bonus symbols (0.7x), -> 10 SUPER FREE SPINS card push-in.
+ 4. facecam 63.35-65.05 "can you please give me another bird, please?"
+ 5. spin 10/10: tilt onto the bonus symbol as it lands (0.65x), push on the 10.00/9.00 wild pays, "that's an extra free spin", +2FS swing.
+ 6. spin 11/12: 228.00 -> 126.00 -> 79.80 tilt/pan (0.6x on 228), tree tally swing.
+ 7. spins 12/12 + 13/14 continuous: bonus symbol, 150.00, tree at 1.8x, "last spin, go crazy, give me one of these birds for the
+    last spin" -> +2FS -> "oh, it's two free spins" -> 174.00 -> 1,305.00 wild (0.6x, tilt-push, FREEZE + popup slot "No way!")
+    -> tree count -> BIG WIN 1,479.00 swing with his "OH! Not bad!".
+ 8. last spin 14/14: "is that money?" on the 198.00/138.60 pays (0.7x), wild tally at 1.6x, NICE WIN 336.60 swing.
+ 9. TOTAL WIN 2,774.10 swing push (no voice).
+10. closing facecam 107.1-108.62 "NOT FUCKING BAD" (big grin; captions on the right, he leans left).
+Skipped: spins 1-9 (small), the 132.00 pay, his long "we need more of these birds" chatter, the post-total "3k / generational" talk.
+
+Voice: clean-voice (Roformer) transcript; whisper misplaced the BIG WIN reaction by ~1 s (it is "OH! Not bad! Not fucking bad!"
+at 90.2-92.4 on the voice-stem energy, whisper had "Yeah not fucking bad" at 91.2-92.8) and dropped/offset a few words; corrected
+from the voice-stem loudness (raw file voice_words_sep_raw.json until cleanup): "you guys were lying" 25.7-26.65 (deleted a ghost
+"the"), hook words 32.55-34.1, "spin" end 68.72 (deleted a ghost "that"), BIG WIN reaction, "we need" 93.45, "is that money?"
+94.9-95.25, closing "not fucking bad" 107.25-108.6.
+Mutes (whole words, in mk.py): "solid super", a stray "bad.", "yeah, not bad, not bad ... sure", "we have no spins left ... one
+more spin please", the first "not fucking bad!" at the BIG WIN (keeps only "OH! Not bad!" there so the closing line is the only
+"not fucking bad"), "I mean not bad, not fucking bad at all, this game is fucking good bro" (last spin / total), everything after
+the closing line. Popup pinned to slot "No way!" (the least-recently-used pick; no clash with his words: he is silent 87.5-90.2).
+
+Renders: v1 (42.1 s, edit_qa 0 fail / 0 warn, "9 phrases at 1.0x, 0 words trimmed"): hook and closing captions clipped at the left
+edge (SHITLOAD / FUCKING / NOT), cold-open shield cut at the top. v2 (final): hook captions x 0.22 at smaller sizes, closing captions
+moved to the RIGHT (x 0.77, he leans left there), cold open z 1.88 -> 1.98. v2 QA: edit_qa 0 fail / 0 warn (27.4 MiB, 42.1 s,
+-15.7 LUFS, no repeated phrases, blur OK), "9 phrases at 1.0x, 0 words trimmed".
+Check: edit_qa's re-transcription does not pick up his "OH! Not bad!" at the BIG WIN (it is under the loud BIG WIN sound in the mix;
+the phrase is placed). If it reads too quiet, raise the voice there.
+Delivered: "2026-10-02 Raven's Revenge 2774 hype edit.mp4", Drive id 1Zm4KfwTVZ-6lqIgT51cDaHl3eWKBszNo, moved to "For review"
+(28,733,120 bytes, same as local). Picks doc set to status "edited" (version 3).

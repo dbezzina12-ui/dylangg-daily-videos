@@ -1,0 +1,45 @@
+Retro Sweets $3,614.60 (3,615x at $1), Sep 25 stream - overnight batch edit notes (decisions made unattended)
+
+Timeline: clip t0 = stream 1:29:52 (178 s). On the clip: rebuy talk 16.5-20.6 ("I think we do one more, baby"), Super Free Spins
+buy spin drops 20.6, 10 FS awarded 62.3, +2 retriggers at ~70 (->12) and ~75 (->14), spins 1-13 all dead (WIN stays 71.60 from the
+buy-spin tumbles), LAST spin 14/14 drops 122.2: top-right cluster 2.00 -> 15.00 (126.5-129), left cluster 1.00 -> 14.00, x7 = 98.00
+(133.6-133.9), x6 = 588.00 (134.3-134.6), x6 = 3,528.00 (135.1-135.3); WIN meter 3,614.60 from ~135.0. BIG -> SWEET WIN 3,543.00
+140.5-149.5, board with WIN 3,614.60 150-152, CONGRATULATIONS counts to 3,543.00 (FS part only) 153-159.3.
+win.json times ran ~8 s early vs the clip (hit 132 on the clip timeline; the pay actually lands 133.6-135.3).
+Layout = standard (game_rect [38,230,1288,695], face_rect [1245,695,675,385]). This game's own WIN/balance line sits at y ~890-915
+(board bottom ~875), so zoomed keys keep view bottom <= 880 (BAR=880 in mk.py); only the final shot goes down to the WIN meter.
+
+Story (11 shots):
+ 1. cold open 135.3-136.1: 3,528.00 lands on the board, amount blurred, WIN meter kept out of frame, whip.
+ 2. hook facecam 19.0-20.75 "I think we do one more, baby" (he rebuys after the previous bonus paid 112); captions ONE / MORE / BABY
+    on the LEFT (he sits centre, mic arm on the right).
+ 3. buy spin 20.75-24.6: board clears, tapes drop ("oh wow ... this could be good").
+ 4. 62.6-67.7: YOU HAVE BEEN AWARDED 10 FREE SPINS -> FS start ("we just need good fucking one magnet and it's fucking GG's").
+ 5. 69.5-72.0: +2 lands bottom right ("good, extra spins too, hold on"), angled push onto it.
+ 6. 74.4-76.4: +2 lands top right ("extra spins again").
+ 7. 97.7-99.9: "please do not be dead spins" as spin 8 drops (glitch cut past spins 9-13).
+ 8. 121.9-136.2 THE LAST SPIN: drop at 1.6x ("and it's dead. I mean it should be maybe money back"), tilt onto 15.00 top right,
+    pan to the left cluster's count-up at 1.5x ("that profit potentially, that actually might be way better than I think it is"),
+    0.6x slow-mo with alternating swing push-ins on each multiplier x7 -> x6 -> x6; freeze + popup on 3,528.00 (135.45).
+ 9. reaction facecam 136.2-141.1 "hey, not bad... NOT FUCKING BAD, HOLD THE FUCKING PHONE" (he leans in shouting); word captions
+    on the RIGHT (his head is left of centre here).
+10. 141.0-148.9: BIG -> MEGA -> SUPER -> EPIC -> SWEET WIN count-up at 2x, swing push on SWEET WIN 3,543.00 (no voice: chat talk).
+11. 150.0-152.3 END: board, tilt-push onto the game's WIN meter = 3,614.60 CAD (the real total). No closing facecam (his later
+    "not bad, not fucking bad at all, baby" would repeat the reaction line).
+Skipped: the CONGRATULATIONS screen (it only counts the free-spins part, 3,543.00, not the 3,614.60 total); the buy menu (it sits
+over the webcam corner, a push-in can't frame it inside the game window).
+
+Voice: clean-voice transcript; 5 stretched whisper onsets corrected from the voice-stem energy before curating ("I" 17.94->19.02,
+"oh" 20.60->21.52, "Hey" 135.20->135.72, "not" 136.18->136.48, "bad" 136.76->136.82; raw file kept as voice_words_clean_raw.json
+until cleanup). Mutes (whole words) are listed in mk.py.
+
+Renders:
+ v1: 44.9 s, edit_qa 0 fail / 0 warn, "15 phrases at 1.0x, 0 words trimmed". Issues found on review: the auto popup picked the cat
+     "Hmph... not bad." right before Dylan's own "hey, not bad, not fucking bad" (double "not bad"); slow-mo on the last spin ran
+     3.6 s (0.6x from x7 to the final x6), too long under the new rule 8 (engine now varispeeds slowed game audio).
+ v2: popup pinned to robot "Multiplier: insane." (fits x7 x6 x6); slow-mo cut to two short beats: x7 at 0.7x (133.5-133.95,
+     ~0.65 s) and the final x6 -> 3,528.00 at 0.6x (135.0-135.55, ~0.9 s); win-screen landing 0.7x ~1.3 s.
+     (A container restart killed the first v2 render; reran it in full.)
+ v2 QA: edit_qa 0 fail / 0 warn (44.0 s, 27.4 MiB, -15.7 LUFS), "15 phrases at 1.0x, 0 words trimmed".
+Delivered: "2026-09-25 Retro Sweets 3614 hype edit.mp4", Drive id 19a75DnQdGStGKT0Dsdk7sJ9h4tznS5r7 (moved to For review);
+picks page row set to status "edited".
