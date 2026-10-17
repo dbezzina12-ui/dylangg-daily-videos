@@ -840,9 +840,15 @@ if S2:
     # separate voice and game tracks, each time-stretched per constant-speed run with rubberband (formant-preserving):
     # no second copy of the game is ever crossfaded in (that comb-filtered = "flanger"), and his voice stays on speed-ups
     # up to voice_max_speed. The game is ducked under whatever voice actually ends up in the edit.
-    def _rb(x, tempo):
+    def _rb(x, tempo, game=False):
         if len(x) < 64: return np.zeros((0, 2), np.float32)
         if abs(tempo - 1) < 1e-3: return x.astype(np.float32)
+        if game and tempo < S2.get("vari_below", 0.97):
+            # slow-mo: rubberband-stretching the game below ~0.95x warbles/flanges (Dylan, 2026-10-17: "whenever it gets slowed
+            # down the audio gets busted"). Varispeed instead: plain resampling, pitch drops like a tape slow-down, zero phasing.
+            n = int(round(len(x) / tempo)); t = np.linspace(0, len(x) - 1, n)
+            y = np.stack([np.interp(t, np.arange(len(x)), x[:, c]) for c in range(2)], 1).astype(np.float32)
+            return y * np.float32(10 ** (S2.get("vari_gain_db", -3.0) / 20))
         af = (f"rubberband=tempo={tempo:.6f}:transients=mixed:detector=compound:phase=laminar:window=standard:"
               f"smoothing=on:formant=preserved:pitchq=quality:channels=together")
         r = subprocess.run(["ffmpeg", "-v", "quiet", "-f", "f32le", "-ar", str(SR), "-ac", "2", "-i", "-", "-af", af,
@@ -869,7 +875,7 @@ if S2:
         lo, hi = max(0, a0 - PAD), min(len(V_src), a1 + PAD)
         e0, e1 = max(0, o0 - XF), min(ns, o1 + XF); L = e1 - e0
         for src_, dst_ in (((G_src, Go),) if S2.get("overlay") else ((V_src, Vo), (G_src, Go))):
-            y = _rb(src_[lo:hi], tempo); off = int(round((a0 - lo) / tempo)) - (o0 - e0)
+            y = _rb(src_[lo:hi], tempo, game=src_ is G_src); off = int(round((a0 - lo) / tempo)) - (o0 - e0)
             if off < 0: y = np.vstack([np.zeros((-off, 2), np.float32), y]); off = 0
             y = y[off:off + L]
             if len(y) < L: y = np.vstack([y, np.zeros((L - len(y), 2), np.float32)])
