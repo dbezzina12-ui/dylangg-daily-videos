@@ -917,7 +917,7 @@ if S2:
         import re
         DANGLE = {"i", "a", "an", "the", "to", "be", "me", "my", "and", "but", "so", "of", "in", "on", "it's", "we", "you", "not", "that",
                   "just", "give", "might", "is", "are", "with", "for", "this", "if", "we're", "i'm", "your", "its", "it", "or", "like", "get"}
-        trimmed = []; delayed = 0
+        trimmed = []; delayed = 0; late = []
         for k in range(1, len(sched)):
             T, ph = sched[k]
             j = k - 1
@@ -931,6 +931,7 @@ if S2:
                 while prev and (re.sub(r"[^a-z']", "", prev[-1][2].lower()) in DANGLE or len(prev) == 1 and len(prev[0][2]) <= 3):
                     trimmed.append(prev.pop()[2])
             if over > 0: sched[k][0] = T + over; delayed += 1
+            if over > S2.get("max_late", 1.0): late.append(f"{over:.1f}s late: " + " ".join(w[2] for w in ph))
         Vo[:] = 0; placed = 0; cut_end = []
         for T, ph in sched:
             if not ph: continue
@@ -943,6 +944,7 @@ if S2:
             if f: seg[:f] *= np.linspace(0, 1, f)[:, None]; seg[-f:] *= np.linspace(1, 0, f)[:, None]
             Vo[i0_:i0_ + len(seg)] += seg; placed += 1
         print(f"voice overlay: {placed} phrases at 1.0x, {delayed} nudged later, {len(trimmed)} words trimmed: {' '.join(reversed(trimmed))}")
+        if late: print(f"WARNING voice drift (lines queued behind earlier talking; give them room, see EDIT_BRIEF rule 3): {' | '.join(late)}")
         if cut_end: print(f"WARNING voice runs past the end of the edit (lengthen the last shot): {' | '.join(cut_end)}")
         vmask[:] = 1.0
     else:

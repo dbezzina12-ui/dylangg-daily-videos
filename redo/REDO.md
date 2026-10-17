@@ -15,6 +15,9 @@ Redo every edit in redo_list.json "pc_redo" with the SAME cut (same shots, camer
 - Re-prep each clip (same window as prep.json; stem separation on the shot ranges), delete every "mute" list from the EDL (the engine
   ignores them anyway), render, run edit_qa (0 fail) and look at the QA sheet. If render.log prints "WARNING voice runs past the
   end", lengthen the last shot a little so his last line finishes.
+  If it prints "WARNING voice drift" (a line more than 1 s late because an earlier sentence is still playing), fix the cut as
+  scripts/batch/EDIT_BRIEF.md rule 3 says ("voice": false on the cold open first). If it can't be fixed within ~60 s, keep that
+  edit's old voice ("voice_full": false, it still gets the varispeed fix) and note it in edit_note.
 - Same file name as before. Upload and replace the old Drive file (For review: 1hNx_qyumtB4paJxSHAkBNhAkcd3rhXeM; Other streamers:
   163AljHBEEjf_o019WU3Adj6uwba40XeS) once HYPE_UPLOAD_KEY is set; until then keep the files in out\redo\ and note
   "Drive upload pending" on the doc. Biggest wins first.

@@ -16,7 +16,12 @@ Rules, newest first (they override older notes where they conflict):
    myself play my whole voice clip"): "stems2" with "overlay": true and "words": voice_words.json. NO "mute" lists. The engine
    ("voice_full", default on) plays every line to the end of its sentence, even past a cut, and never trims; repeats are fine.
    Plan shot lengths around his talking: if render.log prints "WARNING voice runs past the end", lengthen the last shot.
-   Overlapping lines get pushed later ("nudged") instead of cut: keep big nudges (> ~1 s) rare by giving talky moments room.
+   Overlapping lines get pushed later instead of cut, so a long sentence delays everything after it. "WARNING voice drift" (a
+   line > 1 s late) is a FAIL: his reaction must land on its moment. Fix it in the cut: "voice": false on the cold-open shot
+   (its words come back later anyway), start the next shot later in the source so the sentence finishes on screen, lengthen
+   the shot where he is talking, or leave out the shot whose chatter causes it. Don't fix it with a long frozen hold (max ~2 s
+   on the end frame). If a ~60 s edit still can't fit his talking in sync, render that one with "voice_full": false (the old
+   voice) and say so in the picks doc's edit_note.
 4. Camera: angled swing / tilt push-ins ON THE BOARD onto win amounts as they appear/count up (not only banners); pan/tilt across
    scatters as they land; alternate yaw sides. VS / expanding-wild games: close 2.2x zoom on each VS as it lands left->right, zoom
    OUT to ~1.72-1.78 as soon as multis display, pan reel to reel, BOARD for the count-up. Every zoom stays inside the game window
