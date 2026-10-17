@@ -2,6 +2,18 @@
 
 Follow EDIT_BRIEF.md (SP/batch/EDIT_BRIEF.md) for everything, EXCEPT:
 
+0. NEWEST (Dylan, 2026-10-17, on the Yassuo Madame Destiny edit):
+   a. OPEN ON HIS FACE SAYING SOMETHING: "it should open with him saying something, the big streamers are a good hook since
+      people know their faces already". Shot 1 is a facecam shot (1.5-3 s) of him saying his punchiest line about this win
+      (the hype or the stakes: "hundred thousand dollar buy", "we're fucking rich", "please pay me 215 thousand"), with word
+      captions (mask_words) if the webcam is big enough, then cut into the game. The blurred-total flash may follow as shot 2
+      (<= 0.8 s) or be dropped. Pick a moment where his face is fully in the webcam.
+   b. FRAMING: the BOARD view shows the WHOLE reel area, centred on the reels: every reel column fully visible, top row down
+      to the win bar, ~3% margin. Measure the reel block on a 1080p frame (not game_rect: webcams and overlays sit on top of
+      game windows) and set "board" from it: zoom = min(1920 / (reel_w * 1.06), 1080 / (reel_h * 1.06)), centre = the reel
+      block's centre (Yassuo's Madame Destiny: reels x 360-1430, y 160-890 -> about [895, 525, 1.40]). A push-in may crop,
+      but never cut the reel / symbol / amount it is about. Check the QA sheet for any cut-off reel or row.
+
 1. Source: their own Kick VOD. Prep with the channel set: `KICK_CHANNEL=<slug> python3 SP/batch/prep_edit.py win.json OUTDIR ...`
    (slugs: xposed, yassuo, cabrzy). win.json has "game_rect"/"face_rect" from the scan: VERIFY on a frame and use them in the
    EDL ("game_rect", "face_rect"); recompute the zoom limits (every zoom inside the game window and clear of any stream overlay
