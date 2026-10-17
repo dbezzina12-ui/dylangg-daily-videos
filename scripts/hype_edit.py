@@ -594,6 +594,7 @@ def ff_fx(o, T):
 
 vid = f"{WORK}/video_only.mp4"; vid_ig = f"{WORK}/video_only_ig.mp4"
 AUDIO_ONLY = "--audio-only" in sys.argv and os.path.exists(vid)   # re-mix audio onto the last rendered picture(s)
+if os.environ.get("HYPE_SYNC_ONLY"): AUDIO_ONLY = True                # voice-sync check only: no picture, exits after the voice plan
 def _has_nvenc():
     """NVIDIA hardware encoder available (e.g. Dylan's RTX 2070 Super)? Checked with a real 1-frame test encode."""
     if os.environ.get("HYPE_NO_GPU"): return False
@@ -721,6 +722,79 @@ def draw_pops(o, T, ow=None, oh=None):
         out *= (1 - 0.4 * shd)[..., None]
         out = out * (1 - a_)[..., None] + cv2.warpAffine(rgb, M, (ow_, oh_), flags=cv2.INTER_LINEAR, borderValue=0)
     return o if out is None else np.clip(out, 0, 255).astype(np.uint8)
+# ---------- his reaction over the game (Dylan, 2026-10-17: "I can hear him reacting but can't see him") ----------
+# "reactions": [{"src0": a, "src1": b, "style": "pip" | "ghost", "side": "r" | "l", "size": .., "alpha": .., "tilt": .., "pos": [x, y]}]
+# on game shots whose picture is inside src0..src1 (source times) his webcam (face_rect of the SAME frame, so it is live) is shown:
+#   pip   - a white-framed webcam window, tilted in perspective, that swings in from the side, sways a little while the webcam
+#           view pushes in and pans across him, and swings back out (size = width as a share of the frame, default 0.36)
+#   ghost - his webcam cut out of its background (person matte) and laid big and semi-transparent over the board, rising from the
+#           bottom edge (size = height share, default 0.72; alpha default 0.55)
+REACT = [dict(r) for r in EDL.get("reactions", [])]
+for r in REACT:
+    idx = [i for i, (si_, t_, _) in enumerate(frames) if SHOTS[si_]["kind"] != "face" and r["src0"] <= t_ <= r["src1"]]
+    r["_i0"], r["_i1"] = (idx[0], idx[-1]) if idx else (1, 0)
+_rseg = {"sess": None, "prev": None, "k": None}
+def _face_matte(crop, key):
+    if _rseg["k"] is not None and 0 <= key - _rseg["k"] < 2 and _rseg["prev"] is not None and _rseg["prev"].shape == crop.shape[:2]:
+        return _rseg["prev"]
+    from rembg import new_session, remove
+    from PIL import Image
+    if _rseg["sess"] is None:
+        try:
+            import onnxruntime; onnxruntime.preload_dlls()
+        except Exception: pass
+        _rseg["sess"] = new_session("isnet-general-use")
+    m = np.asarray(remove(Image.fromarray(np.clip(crop, 0, 255).astype(np.uint8)[..., ::-1]), session=_rseg["sess"], only_mask=True))
+    m = np.clip((m.astype(np.float32) / 255.0 - 0.15) / 0.7, 0, 1)
+    if _rseg["prev"] is not None and _rseg["prev"].shape == m.shape and _rseg["k"] is not None and key - _rseg["k"] <= 3:
+        m = 0.55 * m + 0.45 * _rseg["prev"]
+    _rseg["prev"], _rseg["k"] = m, key
+    return m
+def draw_reactions(o, raw_, i):
+    act = [r for r in REACT if r["_i0"] <= i <= r["_i1"]]
+    if not act: return o
+    fx_, fy_, fw_, fh_ = [int(v) for v in EDL["face_rect"]]
+    crop = raw_[fy_:fy_ + fh_, fx_:fx_ + fw_].astype(np.float32)
+    crop = cv2.addWeighted(crop, 1.6, cv2.GaussianBlur(crop, (0, 0), 2.0), -0.6, 0)        # webcams are soft: sharpen before upscaling
+    out = o.astype(np.float32); H_, W_ = out.shape[:2]
+    for r in act:
+        n_ = max(1, r["_i1"] - r["_i0"]); u = (i - r["_i0"]) / n_
+        e_in = min(1.0, (i - r["_i0"]) / (0.3 * FPS)); e_in = 1 - (1 - e_in) ** 3
+        e_out = min(1.0, max(0.0, (r["_i1"] - i) / (0.25 * FPS))); e_out = e_out * e_out * (3 - 2 * e_out)
+        sd = 1 if r.get("side", "r") == "r" else -1
+        if r.get("style", "pip") == "ghost":
+            th = int(H_ * r.get("size", 0.72) * (1 + 0.05 * u)); tw = int(th * fw_ / fh_)
+            big = cv2.resize(crop, (tw, th), interpolation=cv2.INTER_CUBIC)
+            m = cv2.resize(_face_matte(cv2.resize(crop, (fw_ * 2, fh_ * 2), interpolation=cv2.INTER_CUBIC), i), (tw, th))
+            vy = np.clip(np.linspace(0, 1, th) / 0.12, 0, 1) ** 2; vx = np.sin(np.linspace(0, np.pi, tw)) ** 0.35   # no hard webcam edges
+            al = m * np.outer(vy, vx) * r.get("alpha", 0.55) * min(e_in, e_out)
+            x0 = W_ - tw - int(0.01 * W_) if sd > 0 else int(0.01 * W_)
+            y0 = H_ - th + int((1 - e_in) * 0.25 * th) + int((1 - e_out) * 0.25 * th)              # rises in, sinks out
+            if "pos" in r: x0, y0 = int(r["pos"][0] - tw / 2), int(r["pos"][1] - th / 2)
+            _blit(out, big, al[..., None].astype(np.float32), x0, y0)
+        else:
+            pw = int(W_ * r.get("size", 0.36)); ph = int(pw * fh_ / fw_)
+            z = 1.0 + 0.12 * u; cw, ch = fw_ / z, fh_ / z                                          # push in on him ...
+            cx = fw_ / 2 + sd * (0.5 - u) * (fw_ - cw) * 0.9; cy = fh_ / 2 - (fh_ - ch) * 0.25       # ... and pan across
+            pic = cv2.resize(cv2.getRectSubPix(crop, (int(cw), int(ch)), (cx, cy)), (pw, ph), interpolation=cv2.INTER_CUBIC)
+            bd = max(6, pw // 55)
+            card = cv2.copyMakeBorder(pic, bd, bd, bd, bd, cv2.BORDER_CONSTANT, value=(255, 255, 255)); kh, kw = card.shape[:2]
+            ang = math.radians(r.get("tilt", -6.0 * sd) + sd * 16 * (1 - e_in) + 1.2 * math.sin(u * 2 * math.pi))
+            yaw = sd * (0.10 + 0.04 * math.sin(u * math.pi)) * (1 + 1.5 * (1 - e_in))                # perspective: near edge taller
+            sc_ = 0.9 + 0.1 * e_in
+            pos = r.get("pos", [W_ - kw / 2 - 0.035 * W_ if sd > 0 else kw / 2 + 0.035 * W_, kh / 2 + 0.07 * H_])
+            px = pos[0] + sd * (1 - e_in) * 0.55 * W_ + sd * (1 - e_out) * 0.55 * W_; py = pos[1]
+            base = [(-kw / 2, -kh / 2 * (1 - yaw)), (kw / 2, -kh / 2 * (1 + yaw)), (kw / 2, kh / 2 * (1 + yaw)), (-kw / 2, kh / 2 * (1 - yaw))]
+            dst = np.float32([[px + sc_ * (bx * math.cos(ang) - by * math.sin(ang)), py + sc_ * (bx * math.sin(ang) + by * math.cos(ang))]
+                              for bx, by in base])
+            M_ = cv2.getPerspectiveTransform(np.float32([[0, 0], [kw, 0], [kw, kh], [0, kh]]), dst)
+            wc = cv2.warpPerspective(card, M_, (W_, H_), flags=cv2.INTER_LINEAR, borderValue=0)
+            al = cv2.warpPerspective(np.ones((kh, kw), np.float32), M_, (W_, H_), flags=cv2.INTER_LINEAR, borderValue=0)
+            shd = cv2.GaussianBlur(np.roll(np.roll(al, 16, 0), 12 * sd, 1), (0, 0), 14)
+            out *= (1 - 0.5 * shd)[..., None]
+            out = out * (1 - al[..., None]) + wc * al[..., None]
+    return np.clip(out, 0, 255).astype(np.uint8)
+if REACT: print("reactions: " + ", ".join(f'{r.get("style", "pip")} {r["src0"]}-{r["src1"]} (out {r["_i0"] / FPS:.2f}-{r["_i1"] / FPS:.2f})' for r in REACT))
 RUN_LOOP = not AUDIO_ONLY
 if not AUDIO_ONLY and PART is None and PAR > 1 and N > 600:
     import time as _time; _t0 = _time.time()
@@ -770,7 +844,7 @@ if RUN_LOOP:
         img = warp_cam(src, st, st0)
         if s.get("mask_text"): img = mask_text_fx(img, s, T, i)
         if enc:
-            o = draw_overlays(ff_fx(post(img, st), T), T)
+            o = draw_overlays(draw_reactions(ff_fx(post(img, st), T), raw_, i), T)
             dk = freeze_dim(T)
             if dk > 0: o = (o.astype(np.float32) * (1 - 0.2 * dk)).astype(np.uint8)
             o = draw_age_tag(draw_pops(o, T), T)
@@ -884,7 +958,88 @@ if S2:
             if r1: w[-r1:] = np.cos(np.linspace(0, np.pi / 2, r1)) ** 2
             dst_[e0:e1] += y * w[:, None]
         if tg <= S2.get("voice_max_speed", 2.0) or SHOTS[si]["kind"] == "face": vmask[o0:o1] = 1.0
-    if S2.get("overlay"):
+    if S2.get("overlay") and S2.get("voice_mode", "live") == "live":
+        # Dylan, 2026-10-17: "during whatever clip is happening it should have the voice still active... if the voice is there for
+        # the whole clip it doesn't do that [sound terrible]. If we need to fade it out we can also do that."
+        # LIVE voice: every shot plays his voice stem continuously at 1.0x from the shot's first frame, in sync with the picture, for
+        # the whole shot. Nothing is picked out or queued. Where the picture runs slower than him (slow-mo, freezes) his voice keeps
+        # going and then waits in his next pause until the picture catches up; where the picture is ahead it skips through a pause.
+        # At a cut to a different moment, the word running at the cut finishes (max voice_tail) and fades out under the next shot.
+        Wd = json.load(open(S2["words"])) if S2.get("words") else []
+        hop = SR / FPS; vm = V_src.mean(1); nb = int(len(vm) // hop)
+        e_ = np.sqrt(np.array([(vm[int(k * hop):int((k + 1) * hop)] ** 2).mean() for k in range(nb)]) + 1e-12); edb = 20 * np.log10(e_)
+        loud0 = edb > np.percentile(edb, 95) + S2.get("gap_db", -26)
+        loud = np.convolve(loud0.astype(float), np.ones(7), mode="same") > 0         # ~0.05 s either side of any sound
+        talking = loud.copy(); inword = np.zeros(nb, bool)
+        for w0, w1, _ in Wd:
+            talking[max(0, int((w0 - 0.08) * FPS)):min(nb, int((w1 + 0.15) * FPS) + 1)] = True
+            inword[max(0, int(w0 * FPS) + 1):min(nb, int(w1 * FPS))] = True        # the frame where two words touch stays free
+        tol, max_tail, max_off = S2.get("sync_tol", 0.12), S2.get("voice_tail", 0.45), S2.get("max_off", 1.0)
+        def seam(b):   # between two words, at a dip in his level (a breath): a 20 ms crossfade here is inaudible
+            return 0 <= b < nb and not inword[b] and edb[b] <= edb[max(0, b - 3):b + 4].min() + 2.0
+        def gap(v, off=0.0):
+            # a real pause; or, once he is out of sync by more than max_off (behind) / 2x that (ahead, e.g. a long freeze), a seam
+            b = int(v * FPS)
+            return b >= nb or not talking[b] or (off > max_off and seam(b))
+        sync_log = []; segs = []; vend = None; worst = []                                  # seg: [out frame, src time, frames, fade_in, fade_out]
+        for si_, sh in enumerate(SHOTS):
+            if sh.get("voice") is False: vend = None; continue
+            f0_, f1_ = sh["f0"], sh["f1"]; v = frames[f0_][1]
+            cont = vend is not None and abs(v - vend) < 0.06 and segs and segs[-1][0] + segs[-1][2] == f0_
+            if cont: v = vend
+            cur = None; off_max = 0.0
+            for i in range(f0_, f1_):
+                p = frames[i][1]
+                if v - p > tol and gap(v, (v - p) / 2):                                     # he's ahead of the picture and quiet: wait
+                    if cur: segs.append(cur); cur = None
+                    continue
+                if p - v > tol and gap(v, p - v):                              # behind and quiet: skip ahead through the pause
+                    b = int(v * FPS)
+                    if p - v > max_off:                                        # (far behind: re-sync, landing on a seam near the picture)
+                        cand = [c for c in range(max(int(v * FPS) + 1, int((p - 0.8) * FPS)), min(nb, int((p + 0.2) * FPS) + 1)) if seam(c)]
+                        b = min(cand, key=lambda c: abs(c / FPS - p)) if cand else int(v * FPS)
+                    while b < min(int(p * FPS), nb) and not talking[b]: b += 1
+                    if b / FPS > v + 1e-6:
+                        if cur: segs.append(cur); cur = None
+                        v = b / FPS
+                if cur is None:
+                    if cont and i == f0_ and segs: cur = segs.pop(); cur[4] = 0.012   # same moment as the last shot: keep going
+                    else: cur = [i, v, 0, 0.03 if i == f0_ else 0.012, 0.012]
+                sync_log.append([round(i / FPS, 3), round(p, 3), round(v, 3)])
+                cur[2] += 1; v += 1 / FPS; off_max = max(off_max, abs(v - p - 1 / FPS))
+            if cur:
+                nxt = SHOTS[si_ + 1] if si_ + 1 < len(SHOTS) else None
+                joins = nxt is not None and nxt.get("voice") is not False and abs(frames[nxt["f0"]][1] - v) < 0.06
+                if not joins:                                                  # finish the word at the cut, fade it under the next shot
+                    k = 0
+                    while k < int(max_tail * FPS) and int(v * FPS) + k < nb and talking[int(v * FPS) + k]: k += 1
+                    cur[2] += k; v += k / FPS; cur[4] = max(0.08, k / FPS)
+                segs.append(cur)
+            vend = v; worst.append(off_max)
+        Vo[:] = 0
+        for i0, sv, nf, fi_, fo_ in segs:
+            o0, a0 = int(i0 / FPS * SR), int(sv * SR); n = min(int(round(nf / FPS * SR)), ns - o0, len(V_src) - a0)
+            if n <= 0 or o0 < 0: continue
+            seg = V_src[a0:a0 + n].astype(np.float32).copy(); w = np.ones(n, np.float32)
+            r0, r1 = min(int(fi_ * SR), n // 2), min(int(fo_ * SR), n // 2)
+            if r0: w[:r0] = np.sin(np.linspace(0, np.pi / 2, r0)) ** 2
+            if r1: w[-r1:] = np.cos(np.linspace(0, np.pi / 2, r1)) ** 2
+            Vo[o0:o0 + n] += seg * w[:, None]
+        for ev in EDL.get("extra_sfx", []):                                # his voice dips (not cut) under a voice-over line
+            if ev.get("duck_voice") is None: continue
+            T_ = src_out(ev["src"]) + ev.get("offset", 0.0)
+            L_ = ev.get("len") or float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                                                        ev["file"]], capture_output=True, text=True).stdout or 2.5)
+            d0, d1 = int((T_ - 0.08) * SR), int((T_ + L_ + 0.15) * SR); r_ = int(0.08 * SR)
+            env_ = np.zeros(ns, np.float32); env_[max(0, d0):max(0, min(ns, d1))] = 1
+            env_ = np.convolve(env_, np.ones(r_) / r_, mode="same")
+            Vo *= (1 - env_ * (1 - 10 ** (-abs(ev["duck_voice"]) / 20)))[:, None]
+        json.dump(sync_log, open(f"{WORK}/voice_sync.json", "w"))   # [out time, picture source time, voice source time]
+        if os.environ.get("HYPE_SYNC_ONLY"): print("voice sync written", [round(x, 2) for x in worst]); sys.exit(0)
+        print(f"voice LIVE: {len(segs)} stretches at 1.0x; most his voice drifts from the picture in each shot (slow-mo/freezes: it runs "
+              f"on, then waits in his next pause): " + ", ".join(f"{sh['T0']:.1f}s {w_:.1f}" for sh, w_ in zip([s_ for s_ in SHOTS if s_.get("voice") is not False], worst)))
+        vmask[:] = 1.0
+    elif S2.get("overlay"):
         # his voice NEVER changes speed: words (from "words", [[start, end, text], ...] on the source timeline) are grouped into
         # phrases at pauses; each phrase starts where its first word lands in the cut and plays from the clean voice stem at 1.0x.
         # Muted words are dropped whole. A phrase that would overlap the previous one waits (up to max_delay) or is dropped.

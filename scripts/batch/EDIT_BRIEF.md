@@ -12,16 +12,18 @@ freeze_popups, no_repeats, mask_captions, swing_moves, voice_real_speed, vs_slot
 Rules, newest first (they override older notes where they conflict):
 1. ~40-55 s. Balance real gameplay and hype; never rushed, never every spin.
 2. NO fast-forwards/VHS x8 shots: cut dead spins out with glitch cuts. Each spin that hits plays from the reels dropping to its win.
-3. HIS VOICE IS NEVER STRETCHED AND NEVER CUT (Dylan, 2026-10-17: "don't cut off their talking at all... even if I'm repeating
-   myself play my whole voice clip"): "stems2" with "overlay": true and "words": voice_words.json. NO "mute" lists. The engine
-   ("voice_full", default on) plays every line to the end of its sentence, even past a cut, and never trims; repeats are fine.
-   Plan shot lengths around his talking: if render.log prints "WARNING voice runs past the end", lengthen the last shot.
-   Overlapping lines get pushed later instead of cut, so a long sentence delays everything after it. "WARNING voice drift" (a
-   line > 1 s late) is a FAIL: his reaction must land on its moment. Fix it in the cut: "voice": false on the cold-open shot
-   (its words come back later anyway), start the next shot later in the source so the sentence finishes on screen, lengthen
-   the shot where he is talking, or leave out the shot whose chatter causes it. Don't fix it with a long frozen hold (max ~2 s
-   on the end frame). If a ~60 s edit still can't fit his talking in sync, render that one with "voice_full": false (the old
-   voice) and say so in the picks doc's edit_note.
+3. HIS VOICE PLAYS LIVE FOR THE WHOLE SHOT (Dylan, 2026-10-17: "during whatever clip is happening it should have the voice
+   still active... if the voice is there for the whole clip it doesn't [sound terrible]. If we need to fade it out we can also do
+   that"): "stems2" with "overlay": true and "words": voice_words.json, NO "mute" lists. The engine ("voice_mode": "live", the
+   default) plays his voice stem continuously at 1.0x through every shot, in sync with the picture, exactly as it was live, and at
+   a cut it lets the word running finish and fades it under the next shot. No phrases are picked out, queued or replayed, so there
+   is no drift. Slow-mo and freezes: his voice runs on at 1.0x, then waits in his next pause until the picture catches up. Speed
+   ramps (> 1.0x): his voice falls behind, then re-syncs in a gap between words once it is ~1 s out, so a ramp over his talking
+   skips some of what he said there: keep ramps over stretches where he isn't saying anything that matters. HYPE_SYNC_ONLY=1
+   writes work/voice_sync.json ([out time, picture time, voice time]) and exits in ~30 s, to check a cut before rendering. So what
+   you HEAR is decided by the cut: choose shot ranges where what he says fits the moment (the hype on the hit, not a Discord plug),
+   end shots in his pauses where you can, and give the last shot room for his last line. "voice": false on a shot silences him
+   there (use it for the cold open if its talking clashes with the story). "voice_mode": "phrases" restores the old phrase engine.
 4. Camera: angled swing / tilt push-ins ON THE BOARD onto win amounts as they appear/count up (not only banners); pan/tilt across
    scatters as they land; alternate yaw sides. VS / expanding-wild games: close 2.2x zoom on each VS as it lands left->right, zoom
    OUT to ~1.72-1.78 as soon as multis display, pan reel to reel, BOARD for the count-up. Every zoom stays inside the game window

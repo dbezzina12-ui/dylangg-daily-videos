@@ -1,8 +1,10 @@
 # Full-voice redo (Dylan, 2026-10-17)
 
-Dylan: "don't cut off their talking at all... even if I'm repeating myself play my whole voice clip." The engine
-(scripts/hype_edit.py, `git pull` first) now ignores "mute" lists and plays every line to the end of its sentence, even past a
-cut; scripts/edit_qa.py only reports repeats as INFO. Slowed game audio is varispeed (no flanging).
+Dylan: "don't cut off their talking at all... even if I'm repeating myself play my whole voice clip", then: "during whatever clip
+is happening it should have the voice still active... if the voice is there for the whole clip it doesn't [sound terrible]. If we
+need to fade it out we can also do that." The engine (scripts/hype_edit.py, `git pull` first) now plays his voice LIVE: continuous
+at 1.0x through every shot, in sync with the picture, fading out under the next shot at a cut (scripts/batch/EDIT_BRIEF.md rule 3).
+It ignores "mute" lists. scripts/edit_qa.py only reports repeats as INFO. Slowed game audio is varispeed (no flanging).
 
 Redo every edit in redo_list.json "pc_redo" with the SAME cut (same shots, camera, captions, popups/voice-over), only the voice changes:
 - Picks page: https://claude.ai/artifact/VmrEDckdntHVjxLSLUxYbY, collection "wins". Each redo doc has status "redo" and editor "pc".
@@ -13,11 +15,10 @@ Redo every edit in redo_list.json "pc_redo" with the SAME cut (same shots, camer
   scratchpad: rewrite src / stems / words / sfx_dir / popups / font paths to this PC's files. Other-streamer ids start with the
   streamer's Kick slug (xposed_...): fetch their clip with KICK_CHANNEL=<slug>; see scripts/batch/OTHERS_EDIT.md.
 - Re-prep each clip (same window as prep.json; stem separation on the shot ranges), delete every "mute" list from the EDL (the engine
-  ignores them anyway), render, run edit_qa (0 fail) and look at the QA sheet. If render.log prints "WARNING voice runs past the
-  end", lengthen the last shot a little so his last line finishes.
-  If it prints "WARNING voice drift" (a line more than 1 s late because an earlier sentence is still playing), fix the cut as
-  scripts/batch/EDIT_BRIEF.md rule 3 says ("voice": false on the cold open first). If it can't be fixed within ~60 s, keep that
-  edit's old voice ("voice_full": false, it still gets the varispeed fix) and note it in edit_note.
+  ignores them anyway), render, run edit_qa (0 fail) and look at the QA sheet. If his last line is cut by the end of the edit,
+  lengthen the last shot a little so it finishes.
+  Listen to the QA cuts: what he says in each shot is now exactly what he said at that moment of the stream, so if a shot
+  carries off-topic chat (a plug, a long side story) over the big moment, move that shot's start/end a little rather than mute it.
 - Same file name as before. Upload and replace the old Drive file (For review: 1hNx_qyumtB4paJxSHAkBNhAkcd3rhXeM; Other streamers:
   163AljHBEEjf_o019WU3Adj6uwba40XeS) once HYPE_UPLOAD_KEY is set; until then keep the files in out\redo\ and note
   "Drive upload pending" on the doc. Biggest wins first.
