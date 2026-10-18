@@ -80,6 +80,7 @@ if FRZ and PACKP:
     import zlib
     pins_p = os.path.join(WORK, "pop_picks.json"); hist_p = os.path.join(POPS["dir"], "history.json")
     pins = json.load(open(pins_p)) if os.path.exists(pins_p) else {}
+    pins0 = json.dumps(pins, sort_keys=True)
     hist = json.load(open(hist_p)) if os.path.exists(hist_p) else []
     def last_use(k): return max([i for i, h in enumerate(hist) if h == k], default=-1)
     def tiebreak(k): return zlib.crc32((OUT + k).encode()) / 2 ** 32
@@ -107,7 +108,8 @@ if FRZ and PACKP:
         p.setdefault("corner", POPS.get("corner", "br"))
         f["pop"] = p
         print(f'freeze at {f["src"]:.2f}: {p["char"]} says "{ln.get("text", p["line"])}"')
-    json.dump(pins, open(pins_p, "w"), indent=1)
+    if json.dumps(pins, sort_keys=True) != pins0 or not os.path.exists(pins_p):
+        json.dump(pins, open(pins_p, "w"), indent=1)
     if fresh and not PREVIEW: json.dump(hist + fresh, open(hist_p, "w"))
 for f in FRZ:
     p = f.get("pop") if isinstance(f.get("pop"), dict) and "_aud" in f["pop"] else None
