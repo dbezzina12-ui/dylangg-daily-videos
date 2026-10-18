@@ -2,6 +2,10 @@
 
 Follow EDIT_BRIEF.md (SP/batch/EDIT_BRIEF.md) for everything, EXCEPT:
 
+00. NO ANNOUNCER VOICE-OVER ANY MORE (Dylan, 2026-10-18: "the random voice thing like '6 wins back to back wow' is super
+    cheesy... don't add those voice tags anymore"). Do NOT make or place a vo.wav (skip make_vo.py and item 3 below entirely). Keep
+    the on-screen gold caption of the amount (item 4) and let the streamer's own voice carry the big moment. Delivered edits keep
+    theirs; Dylan will handle those himself, so don't re-render them for this.
 0. NEWEST (Dylan, 2026-10-17, on the Yassuo Madame Destiny edit):
    a. OPEN ON HIS FACE SAYING SOMETHING: "it should open with him saying something, the big streamers are a good hook since
       people know their faces already". Shot 1 is a facecam shot (1.5-3 s) of him saying his punchiest line about this win
@@ -19,7 +23,7 @@ Follow EDIT_BRIEF.md (SP/batch/EDIT_BRIEF.md) for everything, EXCEPT:
    EDL ("game_rect", "face_rect"); recompute the zoom limits (every zoom inside the game window and clear of any stream overlay
    or balance bar; adapt the clamp() helper in the reference mk.py to the new rects).
 2. NO talking pop-up sticker (no character popups at all): freezes use "pop": null.
-3. VOICE-OVER at the big win instead: write ONE short announcer line that fits the moment (e.g. "TEN THOUSAND X. ARE YOU KIDDING ME?",
+3. (RETIRED 2026-10-18, see 00.) VOICE-OVER at the big win instead: write ONE short announcer line that fits the moment (e.g. "TEN THOUSAND X. ARE YOU KIDDING ME?",
    "HE JUST HIT FOR TWO HUNDRED GRAND"; numbers in words; <= ~2.5 s), make it with
    `python3 SP/vo/make_vo.py SP/batch/<id>/vo.wav "<line>"` (queues on the CPU lock, ~1-3 min; it checks the words and keeps the best take),
    place it with "extra_sfx": [{"file": "<abs path to vo.wav>", "src": <source time of the hit/freeze>, "gain": 1.0}]
