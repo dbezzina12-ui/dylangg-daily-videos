@@ -1,0 +1,106 @@
+{
+ "streamer": "yungreal",
+ "rank": 1,
+ "date": "2026-10-17",
+ "vod_id": "132788492",
+ "game": "Fruit Party",
+ "provider": "Pragmatic Play",
+ "amount": 2795.7,
+ "bet": 6.0,
+ "multi": 466,
+ "buy_cost": 600.0,
+ "bonus_start": "1:01:24",
+ "hit": "1:03:06",
+ "banner": "1:03:15",
+ "end": "1:03:33",
+ "tier": "edit",
+ "confidence": "confirmed",
+ "evidence": "scan/yungreal_2026-10-17/confirm/f_10315.jpg (banner $2,795.70, bet $6.00), confirm/f_10307.jpg (paytable 7x orange x256 $1,920.00, fist pump), confirm/s_full.jpg (1:02:40-1:03:20 1 s strip), confirm/s_face_hit.jpg, confirm/s_start.jpg, confirm/s_face_stakes.jpg",
+ "game_rect": [
+  594,
+  97,
+  1304,
+  810
+ ],
+ "face_rect": [
+  12,
+  14,
+  514,
+  330
+ ],
+ "reel_block": {
+  "grid": [
+   962,
+   98,
+   780,
+   707
+  ],
+  "win_bar_bottom": 862,
+  "note": "7x7 grid x 962-1742, y 98-805; WIN bar text to y ~862. Paytable (logo + cluster list with '7x orange x256 $1,920.00') at x 660-895, y 410-740. Credit/bet at x 825-1010, y 830-885."
+ },
+ "board": [
+  1240,
+  480,
+  1.415
+ ],
+ "board_note": "Rule formula gives zoom 1.33 centred on the grid (1352, 480), but that view (1443 px wide) runs past the frame's right edge and would clamp onto the webcam/chat column (x < 558). Fruit Party's grid is square, so the 16:9 view can't be centred on it: [1240, 480, 1.415] shows x 562-1918, y 98-862 = the whole grid + WIN bar, all inside the Gamdom panel, with the paytable on the left (useful: it lists the x256 line). Tighter alternative without the WIN bar: [1246, 452, 1.47] (= the whole game width 594-1900).",
+ "reaction": "Real reaction, not huge: hand on forehead through the build (1:03:00-1:03:06), then at the x256 orange cluster he yells 'Oh how much?! YES! YES! YES!' (1:03:05.9-1:03:10.0, loudest of the bonus) with a grinning fist pump, leaning into the cam (1:03:07-1:03:14). Then reads chat and says 'We're back! We're actually up! ... We're so back.' (1:03:27.5-1:03:32.4). Earlier tease: 'AHHH FUCK YOU' at 1:02:28 when a $3 x32 cluster lands, MEGA $192 at 1:02:36, hands on face 1:02:30-1:02:40.",
+ "hook": {
+  "line": "We're back! We're actually up! ... We're so back.",
+  "src": [
+   "1:03:27.9",
+   "1:03:32.6"
+  ],
+  "cut_suggestion": "1:03:27.9-1:03:29.6 ('We're back! We're actually up!') + jump cut to 1:03:31.8-1:03:32.6 ('We're so back') = ~2.5 s; skip the muttered 'fuckin' hell' at 1:03:30.9-1:03:31.7 (or keep it: ~4.7 s total).",
+  "face": "Face fully in the webcam, centred and talking 1:03:28-1:03:31 (leaning in from the right at 1:03:27; hand on chin from 1:03:32, face still visible).",
+  "words_check": "faster-whisper small: 'We're back! We're actually up! Fuckin' up! We're so back.'; small.en: 'We're back. Wax you up. Fucking hell. We're so back.' -> confirm 'actually up' by ear.",
+  "alt_stakes_line": {
+   "line": "That means we've lost 2.5K somehow",
+   "src": [
+    "0:59:53.8",
+    "0:59:58.4"
+   ],
+   "face": "clear 0:59:52-0:59:55, hand over his mouth/nose from 0:59:56",
+   "note": "said before the previous (dead, ~1x) $600 bonus; then 'please please please be a good buy... for once' to 1:00:06"
+  }
+ },
+ "pip_moments": [
+  {
+   "src": [
+    "1:02:27.8",
+    "1:02:31.0"
+   ],
+   "what": "'AHHH FUCK YOU' as the $3.00 x32 / $4.50 x8 clusters land (board win $325.20) -> hands to face"
+  },
+  {
+   "src": [
+    "1:03:00.0",
+    "1:03:06.0"
+   ],
+   "what": "hand on forehead, groaning while the x32 cluster builds ($842.40)"
+  },
+  {
+   "src": [
+    "1:03:06.3",
+    "1:03:12.5"
+   ],
+   "what": "MAIN: 'OH HOW MUCH?! YES! YES! YES!' + grinning fist pump right as the 7x orange x256 pays $1,920 (WIN $842.40 -> $2,768.70)"
+  },
+  {
+   "src": [
+    "1:03:13.8",
+    "1:03:16.5"
+   ],
+   "what": "fist still up, talking; then sits back as the $2,795.70 banner appears (1:03:15)"
+  }
+ ],
+ "voice_notes": "His mic is loud and clean. Off-topic chat reads to silence/split: 1:03:10.5-1:03:16 (TTS 'my brother loves you... shout out to Nat'), 1:03:20-1:03:27 (reading names). Slot talk to keep: 1:02:17-1:02:21 he reads 'full-screen oranges would be so nice man' (the win IS an orange cluster - nice foreshadow if wanted), 1:02:28 'AHHH FUCK YOU', 1:03:05.9 'Oh how much, yes yes yes'.",
+ "shot_idea": "1) FACE 1:03:27.9-1:03:32.6 'We're back! We're actually up!... We're so back.' (~2.5 s with jump cut). 2) optional <=0.8 s flash of the $2,795.70 banner blurred. 3) BONUS INTRO 1:01:24-1:01:30: $600 buy -> '10 FREE SPINS' (speed up). 4) BUILD 1:02:24-1:02:40: x32/x64 clusters, MEGA $192, 'AHHH FUCK YOU' PiP at 1:02:28. 5) LAST SPIN 1:02:55-1:03:07: multis stack (x32 $842.40), push in on the orange column / paytable as the x256 lands; FREEZE ~1:03:06.6 in his breath before 'Oh how much' -> VO 'FOUR HUNDRED SIXTY-SIX X. ON A SIX DOLLAR BET!' (or 'HE TURNED SIX HUNDRED INTO TWENTY-EIGHT HUNDRED'), gold caption '$2,795.70' / '466X' top-centre (pos ~[1240, 170] in board space, clear of the WIN bar and paytable), duck_voice 10. PiP of the fist pump 1:03:06.3-1:03:12.5. 6) BANNER 1:03:15-1:03:19 'CONGRATULATIONS $2,795.70 IN 10 FREE SPINS' with the count/zoom, PiP 1:03:13.8-1:03:16.5. ~20-25 s total.",
+ "notes": "Bought Fruit Party free spins for $600 at bet $6 (1:01:24), 10 FS awarded 1:01:28. Previous $600 buy (1:00:40-1:01:22) paid only $605.40. Final $2,795.70 = 4.66x the buy / 466x the bet; the key spin is the 7x orange cluster with a x256 multiplier = $1,920.00 at 1:03:06 (WIN $842.40 -> $2,768.70). Credit $6,955.48 at the hit, $9,751.18 after the banner. Chat clip '1:03:47 yung 2k win fruit party'. Biggest win of the stream: other bonuses were Wild West Gold $1,178.24 (0:33:15, $320 buy), two follow-up Fruit Party buys (a $240 buy at $2.40 bet from ~1:04:10, and a $360 buy at $3.60 bet paying $1,062.54 = 295x, banner 1:07:00), Eternal Zeus Super Mega $254.80, Buffalo King under $650. Not a high roller: $3-6 bets on Gamdom, $8,000 bottom-left counter is a static stream widget. Small-streamer level win; the reaction is real but moderate.",
+ "cur": "$",
+ "pick": true,
+ "status": "queued-other",
+ "editor": "pc",
+ "time_basis": "true",
+ "id": "yungreal_2026-10-17_Fruit-Party_1-03-06"
+}
