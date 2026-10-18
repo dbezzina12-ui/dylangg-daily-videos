@@ -1,0 +1,32 @@
+{
+ "id": "kb_2026-06-24_Sky-Bounty_oavi325ildi8",
+ "date": "2026-06-24",
+ "game": "Sky Bounty",
+ "amount": 30251.5,
+ "cur": "C$",
+ "bet": "CA$15.00",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "oavi325ildi8",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/oavi325ildi8/playlist.m3u8",
+ "alt_clips": [
+  "tamzcgyn6h3a"
+ ],
+ "peak_frames": [
+  21,
+  22,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). last free spin wild turns 17,751.50 into 30,251.50; chain of Sensational banners 549 -> 1,799 -> 2,399 -> 3,654 -> 12,500; congratulations screen",
+ "hit": "KickBot clip oavi325ildi8",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; find the build-up and the total on the clip itself."
+}

@@ -1,0 +1,26 @@
+{
+ "id": "kb_2026-08-30_Sugar-Rush-1000_fmol9062fe49",
+ "date": "2026-08-30",
+ "game": "Sugar Rush 1000",
+ "amount": 12779.6,
+ "cur": "C$",
+ "bet": "CA$23.00 (low-res)",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "fmol9062fe49",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/fmol9062fe49/playlist.m3u8",
+ "alt_clips": [],
+ "peak_frames": [
+  16,
+  20,
+  28,
+  30
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). +10 retrigger, multipliers up to x928, many Sensational banners; ends on final Sensational at CA$12,779.60",
+ "hit": "KickBot clip fmol9062fe49",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; find the build-up and the total on the clip itself."
+}

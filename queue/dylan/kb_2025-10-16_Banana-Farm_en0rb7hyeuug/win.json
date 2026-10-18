@@ -1,0 +1,30 @@
+{
+ "id": "kb_2025-10-16_Banana-Farm_en0rb7hyeuug",
+ "date": "2025-10-16",
+ "game": "Banana Farm",
+ "amount": 21462.0,
+ "cur": "$",
+ "bet": "$10.00",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "en0rb7hyeuug",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/en0rb7hyeuug/playlist.m3u8",
+ "alt_clips": [
+  "3gpke994nn9a",
+  "5qan239hfk61",
+  "eeuf03pt3cq7"
+ ],
+ "peak_frames": [
+  18,
+  22,
+  24,
+  25
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). most complete version of the Banana Farm bonus: Big 540 -> Epic 16,050 -> Epic 2,775 -> Total 21,462",
+ "hit": "KickBot clip en0rb7hyeuug",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; find the build-up and the total on the clip itself."
+}

@@ -1,0 +1,25 @@
+{
+ "id": "kb_2025-04-23_Zeus-vs-Hades_rso7s9a72vg6",
+ "date": "2025-04-23",
+ "game": "Zeus vs Hades",
+ "amount": 9000.0,
+ "cur": "C$",
+ "bet": "C$0.60",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "rso7s9a72vg6",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/rso7s9a72vg6/playlist.m3u8",
+ "alt_clips": [],
+ "peak_frames": [
+  15,
+  24,
+  25
+ ],
+ "confidence": "sheet-read",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). max win screen; Sensational 2,308.50 then capped at C$9,000 on C$0.60 bet; webcam reaction",
+ "hit": "KickBot clip rso7s9a72vg6",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; find the build-up and the total on the clip itself."
+}
