@@ -1,0 +1,25 @@
+{
+ "id": "kb_2026-05-26_Epic-Archer_8kbbcsax3qrn",
+ "date": "2026-05-26",
+ "game": "Epic Archer",
+ "amount": 4298.7,
+ "cur": "C$",
+ "bet": "CA$3.75",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "8kbbcsax3qrn",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/8kbbcsax3qrn/playlist.m3u8",
+ "alt_clips": [],
+ "peak_frames": [
+  9,
+  27,
+  30
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). roaming wild levels up to 8, Sensational CA$229.95, Congratulations CA$4,298.70",
+ "hit": "KickBot clip 8kbbcsax3qrn",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; confirm the total, bet and buy on the clip itself."
+}

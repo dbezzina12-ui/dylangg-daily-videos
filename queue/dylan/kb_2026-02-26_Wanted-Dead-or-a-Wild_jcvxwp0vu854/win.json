@@ -1,0 +1,26 @@
+{
+ "id": "kb_2026-02-26_Wanted-Dead-or-a-Wild_jcvxwp0vu854",
+ "date": "2026-02-26",
+ "game": "Wanted Dead or a Wild",
+ "amount": 4257.0,
+ "cur": "$",
+ "bet": "$3.00",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "jcvxwp0vu854",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/jcvxwp0vu854/playlist.m3u8",
+ "alt_clips": [],
+ "peak_frames": [
+  19,
+  28,
+  29,
+  30
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). Dead Man's Hand style 8x wild reels pay 4,212.60, Total Win 4257.00 screen",
+ "hit": "KickBot clip jcvxwp0vu854",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; confirm the total, bet and buy on the clip itself."
+}

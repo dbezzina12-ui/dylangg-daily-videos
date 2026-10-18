@@ -1,0 +1,25 @@
+{
+ "id": "kb_2025-10-23_Rotten_7h9o6xh7ynsz",
+ "date": "2025-10-23",
+ "game": "Rotten",
+ "amount": 4288.2,
+ "cur": "$",
+ "bet": "$7.00",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "7h9o6xh7ynsz",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/7h9o6xh7ynsz/playlist.m3u8",
+ "alt_clips": [],
+ "peak_frames": [
+  14,
+  16,
+  25
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). Mad Scientist bonus, Total Win 4288.20 screen",
+ "hit": "KickBot clip 7h9o6xh7ynsz",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; confirm the total, bet and buy on the clip itself."
+}

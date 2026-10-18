@@ -1,0 +1,28 @@
+{
+ "id": "kb_2026-06-11_Gates-of-Olympus_51i7kuh3sfxu",
+ "date": "2026-06-11",
+ "game": "Gates of Olympus",
+ "amount": 3996.27,
+ "cur": "C$",
+ "bet": "CA$15.00",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "51i7kuh3sfxu",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/51i7kuh3sfxu/playlist.m3u8",
+ "alt_clips": [
+  "v78hgnr6mh9k"
+ ],
+ "peak_frames": [
+  13,
+  18,
+  19,
+  27
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). three Sensational banners (1,230 / 124.30 / 864.96), multiplier to 19x; webcam reaction visible frame 18",
+ "hit": "KickBot clip 51i7kuh3sfxu",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; confirm the total, bet and buy on the clip itself."
+}

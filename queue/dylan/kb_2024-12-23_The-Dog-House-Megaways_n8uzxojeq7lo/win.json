@@ -1,0 +1,26 @@
+{
+ "id": "kb_2024-12-23_The-Dog-House-Megaways_n8uzxojeq7lo",
+ "date": "2024-12-23",
+ "game": "The Dog House Megaways",
+ "amount": 3321.12,
+ "cur": "C$",
+ "bet": "C$14.80 (buy C$1,480)",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "n8uzxojeq7lo",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/n8uzxojeq7lo/playlist.m3u8",
+ "alt_clips": [],
+ "peak_frames": [
+  9,
+  13,
+  14,
+  16
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). sticky wilds bonus, sensational banners, congratulations screen; second buy rolling to C$2,035",
+ "hit": "KickBot clip n8uzxojeq7lo",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; confirm the total, bet and buy on the clip itself."
+}
