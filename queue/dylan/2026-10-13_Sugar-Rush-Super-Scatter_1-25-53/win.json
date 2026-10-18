@@ -10,7 +10,7 @@
  "game": "Sugar Rush Super Scatter",
  "hit": "1:25:53",
  "multi": 780,
- "notes": "Natural 3-scatter trigger at CA$3 (1:23:27), +10 FS retrigger 1:24:32 (20 FS total). SENSATIONAL 252.00 (1:24:47), 194.40 (1:25:17), 288.00 (1:25:36); 1:25:41 $450 cluster -> 1,575.60; last spins: 1,959.68 (1:25:51), 2,127.60 (1:25:53, $552 on x128/x256 board), x352 at 1:25:56 -> SENSATIONAL 763.20 (1:25:59). 'Congratulations you have won 2,338.80 in 20 free spins' at 1:26:05. Overview strips sr1_a.jpg / sr1_b.jpg.",
+ "notes": "Bonus BUY, not a natural trigger: 1:23:24 bet CA$3, REBUY SUPER FREE SPINS CA$1,500 (2x all grid positions), credit 1,729.06 -> 229.06; 2,338.80 is 1.56x the buy (780x vs the CA$3 base bet). FS start 1:23:27, +10 FS retrigger 1:24:32 (20 FS total). SENSATIONAL 252.00 (1:24:47), 194.40 (1:25:17), 288.00 (1:25:36); 1:25:41 $450 cluster -> 1,575.60; last spins: 1,959.68 (1:25:51), 2,127.60 (1:25:53, $552 on x128/x256 board), x352 at 1:25:56 -> SENSATIONAL 763.20 (1:25:59). 'Congratulations you have won 2,338.80 in 20 free spins' at 1:26:05. Overview strips sr1_a.jpg / sr1_b.jpg.",
  "provider": "Pragmatic Play",
  "tier": "edit",
  "time_basis": "true",
@@ -18,5 +18,6 @@
  "pick": true,
  "status": "queued-pc",
  "editor": "pc",
- "id": "2026-10-13_Sugar-Rush-Super-Scatter_1-25-53"
+ "id": "2026-10-13_Sugar-Rush-Super-Scatter_1-25-53",
+ "buy": 1500
 }
