@@ -6,7 +6,7 @@
                                                        (one frame every --step s, 6x8 per sheet, stamped with stream time h:mm:ss),
                                                        OUTDIR/loud.txt (loudest 10 s windows) and OUTDIR/clips.txt (chat clips that day)
   python3 scan_vod.py frame DATE T OUT.jpg [--crop x,y,w,h]   -> one 1080p frame at stream time T (seconds or h:mm:ss)
-  python3 scan_vod.py strip DATE T0 T1 OUT.jpg [--step 1]     -> 1080p game-window strip T0..T1 (for confirming a win)
+  python3 scan_vod.py strip DATE T0 T1 OUT.jpg [--step 1] [--crop x,y,w,h] -> 1080p game-window strip T0..T1 (crop = that stream's game window)
   python3 scan_vod.py clip DATE T0 T1 OUT.mp4                 -> exact 1080p60 clip for editing
 All times are TRUE stream times (segment durations from the playlist; contact-sheet stamps and 1080p frames agree).
 
@@ -23,9 +23,14 @@ def get(url, timeout=30):
         except Exception:
             if i == 5: raise
             import time; time.sleep(2 ** i + 1)
+CHANNEL = os.environ.get("KICK_CHANNEL", "dylanjamesgg")   # e.g. KICK_CHANNEL=xposed
 def vods():
-    return json.loads(get("https://kick.com/api/v2/channels/dylanjamesgg/videos"))
+    return json.loads(get(f"https://kick.com/api/v2/channels/{CHANNEL}/videos"))
+REND = os.environ.get("REND", "1080p60")   # older / smaller VODs may only have e.g. 720p30: frames and clips are scaled to 1080p60
 def vod(date):
+    if os.environ.get("VOD_ID"):                # pick one VOD by id when a date has several
+        for v in vods():
+            if str(v["id"]) == os.environ["VOD_ID"]: return v
     for v in vods():
         if (v.get("start_time") or "").startswith(date): return v
     sys.exit(f"no VOD starting {date}")
@@ -81,7 +86,7 @@ def sheets(date, out, step):
     open(os.path.join(out, "loud.txt"), "w").write("\n".join(f"{hms(i * 10)}  {rms[i]:.1f} dB" for i in sorted(order)))
     # chat clips from that stream
     try:
-        cl = json.loads(get("https://kick.com/api/v2/channels/dylanjamesgg/clips?sort=date&time=all"))
+        cl = json.loads(get(f"https://kick.com/api/v2/channels/{CHANNEL}/clips?sort=date&time=all"))
         cl = cl.get("clips", cl) if isinstance(cl, dict) else cl
         st = v["start_time"]; from datetime import datetime
         t0 = datetime.fromisoformat(st)
@@ -99,24 +104,29 @@ def sheets(date, out, step):
               open(os.path.join(out, "vod.json"), "w"), indent=1)
     print(f"{date}: {dur / 3600:.2f} h, {len(fr)} frames -> {len(range(0, len(fr), per))} sheets in {out}")
 
-def frame_at(v, t, rend="1080p60"):
+def frame_at(v, t, rend=None):
+    rend = rend or REND
     urls, d_ = segs(v, rend, True); i, off = locate(d_, t)
     d = f"/tmp/_seg_{os.getpid()}"; os.makedirs(d, exist_ok=True)          # per-process cache, keeps the newest 6 segments (~11 MB each)
-    p = f"{d}/{v['id']}_{i}.ts"
+    p = f"{d}/{v['id']}_{rend}_{i}.ts"
     if not os.path.exists(p):
         open(p, "wb").write(get(urls[i]))
         for old in sorted((os.path.join(d, f) for f in os.listdir(d)), key=os.path.getmtime)[:-6]: os.remove(old)
-    raw = subprocess.run(["ffmpeg", "-v", "quiet", "-ss", f"{off:.2f}", "-i", p, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "bgr24", "-"],
-                         capture_output=True).stdout
+    raw = b""
+    for pre in (True, False):                     # fast seek first; on a .ts segment it sometimes returns nothing -> accurate seek
+        cmd = ["ffmpeg", "-v", "quiet"] + (["-ss", f"{off:.2f}", "-i", p] if pre else ["-i", p, "-ss", f"{off:.2f}"])
+        raw = subprocess.run(cmd + ["-frames:v", "1", "-vf", "scale=1920:1080", "-f", "rawvideo", "-pix_fmt", "bgr24", "-"], capture_output=True).stdout
+        if len(raw) == 1920 * 1080 * 3: break
     return np.frombuffer(raw, np.uint8).reshape(1080, 1920, 3).copy() if len(raw) == 1920 * 1080 * 3 else None
 
 def clip(date, t0, t1, out):
     """exact 1080p60 clip of true stream time t0..t1 (what the editor's clip.mp4 is made from)"""
-    v = vod(date); urls, d = segs(v, "1080p60", True); i0, o0 = locate(d, t0); i1, _ = locate(d, t1)
+    v = vod(date); urls, d = segs(v, REND, True); i0, o0 = locate(d, t0); i1, _ = locate(d, t1)
     tmp = out + ".parts.ts"
     with open(tmp, "wb") as fh:
         for i in range(i0, i1 + 1): fh.write(get(urls[i], 60))
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{o0:.3f}", "-i", tmp, "-t", f"{t1 - t0:.3f}", "-c:v", "libx264", "-preset", "veryfast",
+    up = [] if REND == "1080p60" else ["-vf", "scale=1920:1080:flags=lanczos,fps=60"]
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{o0:.3f}", "-i", tmp, "-t", f"{t1 - t0:.3f}", *up, "-c:v", "libx264", "-preset", "veryfast",
                     "-crf", "16", "-c:a", "aac", "-b:a", "192k", out], check=True)
     os.remove(tmp); print("wrote", out, f"({t1 - t0:.0f} s from {hms(t0)})")
 import atexit, shutil
@@ -138,7 +148,8 @@ if __name__ == "__main__":
         while t <= t1:
             im = frame_at(v, t)
             if im is not None:
-                g = cv2.resize(im[230:925, 38:1326], (480, 259)); cv2.putText(g, hms(t) + f".{int(t * 10) % 10}", (6, 24), 0, 0.7, (0, 255, 255), 2); ims.append(g)
+                x, y, w, h = map(int, arg("--crop", "38,230,1288,695").split(","))     # game window (Dylan's layout by default)
+                g = cv2.resize(im[y:y + h, x:x + w], (480, int(480 * h / w))); cv2.putText(g, hms(t) + f".{int(t * 10) % 10}", (6, 24), 0, 0.7, (0, 255, 255), 2); ims.append(g)
             t += st
         while len(ims) % 4: ims.append(np.zeros_like(ims[0]))
         cv2.imwrite(a[4], np.vstack([np.hstack(ims[i:i + 4]) for i in range(0, len(ims), 4)]), [cv2.IMWRITE_JPEG_QUALITY, 85]); print("wrote", a[4])
