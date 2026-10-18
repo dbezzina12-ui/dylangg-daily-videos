@@ -1,0 +1,82 @@
+{
+ "streamer": "joshygambles",
+ "rank": 1,
+ "date": "2026-10-17",
+ "game": "Zombie Carnival",
+ "provider": "Pragmatic Play",
+ "amount": 324.3,
+ "bet": 1.0,
+ "multi": 324.3,
+ "bonus_start": "0:20:39",
+ "hit": "0:22:50",
+ "banner": "0:22:57",
+ "end": "0:23:03",
+ "tier": "edit",
+ "confidence": "confirmed",
+ "evidence": "confirm/s_zc_last.jpg, confirm/s_zc.jpg, work/d_trig2.jpg, work/face_end.jpg, work/face_trig.jpg, work/face_hoh.jpg",
+ "game_rect": [
+  0,
+  96,
+  1352,
+  816
+ ],
+ "face_rect": [
+  1378,
+  26,
+  520,
+  352
+ ],
+ "reel_block": [
+  237,
+  165,
+  993,
+  735
+ ],
+ "board": [
+  690,
+  540,
+  1.45
+ ],
+ "reaction": "Big: jumps up flexing both arms on the trigger ('yes sir, yes sir ski', 0:20:41-0:20:44); both hands on his head on a near-miss mid-bonus (0:21:53.5-0:21:56.5, 'please! ... oh bro if that was the guy we would've been so rage'); on the last spin 'yes bruh, it's huge' then throws himself back in the chair arms out, shouting (0:22:55-0:23:02); '300x on that one... bang, we take that'.",
+ "opening_line": {
+  "text": "300x on that one... bang",
+  "src0": "0:23:04.15",
+  "src1": "0:23:08.40",
+  "t0": 1384.15,
+  "t1": 1388.4,
+  "face": "fully in the webcam, smiling at the cam, mouth visible (checked 1384-1388.5)",
+  "alt": "'Yes bruh, it's huge' 0:22:55.57-0:22:56.97 (1375.57-1376.97), face fully in, mouth open"
+ },
+ "pips": [
+  {
+   "src0": 1240.5,
+   "src1": 1244.2,
+   "what": "trigger: 3 scatters land 0:20:39-0:20:41, he jumps up flexing both arms 'yes sir, yes sir ski' (face leaves the cam 1244.5-1245.5, end before)"
+  },
+  {
+   "src0": 1313.5,
+   "src1": 1317.0,
+   "what": "near-miss: both hands on his head, 'please! ... oh bro if that was the guy' (x5 + x3 wilds, WIN 51.90)"
+  },
+  {
+   "src0": 1374.8,
+   "src1": 1382.0,
+   "what": "last spin: 'yes bruh, it's huge', leans back, arms out, shouting, SENSATIONAL 169.40 / 324.30 on screen"
+  }
+ ],
+ "timeline": {
+  "trigger": "0:20:39-0:20:41 3 scatters on a $1 auto spin (base game, not bought); 6 FREE SPINS card 0:20:44-0:20:46",
+  "retriggers": "+1 FS 0:20:56, +2 FS 0:21:30, +2 FS 0:21:40 (15 spins total)",
+  "wins": "WIN 36.90 -> 51.90 (0:21:50) -> 81.30 (0:22:00) -> 106.50 (0:22:15), NICE $21.00 (0:22:20) -> 127.50 -> 129.90, NICE $25.00 (0:22:45, '7x and the 4x ... going third') -> 154.90",
+  "last_spin": "LAST FREE SPIN reels drop 0:22:50 (x7 wild reel 2, bear x4 wild reel 5, 'clowns, no, clowns'), all landed 0:22:55, SENSATIONAL $169.40 0:22:57-0:22:59, WIN $324.30 0:23:00, CONGRATULATIONS $324.30 IN 15 FREE SPINS 0:23:01-0:23:02, back to base 0:23:03. Credit 1,424.50 -> 1,747.80."
+ },
+ "voice": "Slot talk throughout 0:20:36-0:23:15 (transcript work/zc_words.json, stream seconds). Off-topic to leave out: 0:19:06-0:19:25 chat banter, 0:23:21-0:23:40 ('yo Floki ... make a ticket in the discord ... time to run some slayers').",
+ "shot_idea": "1) face hook 0:23:04.15-0:23:08.4 '300x on that one... bang' (z ~3.7 inside the 520 px cam). 2) optional 0.8 s blurred SENSATIONAL flash. 3) trigger: scatters land 0:20:38-0:20:42 + PiP flex. 4) glitch to the 6 FREE SPINS card / retrigger +2 (0:21:30-0:21:42). 5) near-miss spin 0:21:50-0:21:57 with hands-on-head PiP. 6) NICE $25 '7x and the 4x' 0:22:35-0:22:47 push-in on the wilds. 7) LAST FREE SPIN 0:22:50-0:23:02: tilt onto x7 + x4 wilds as they land, freeze in his pause before 'yes bruh' (~0:22:55.3), SENSATIONAL $169.40 swing, WIN $324.30 push-in + PiP (arms out), VO + gold '$324.30' slam; end before 1384 so the hook line isn't repeated.",
+ "notes": "Small-stakes stream ($1 bets, ~$1.4k balance). Biggest win of the stream and the best reaction. Other candidates checked: Pots of Greed $264.51 bonus on $25 bet (10.6x, yell on the trigger 0:51:10, otherwise flat); Sugar Rush $190.05 in 22 FS on a $100 buy (0:46:47, calm); Starlight Princess 1000 $1.62 x104 tumble (0:17:02, hands on head, ~$168 on $2.25). Game shows $; the overlay '$2100 CAD' is a stream goal widget, wallet currency not confirmed.",
+ "cur": "$",
+ "pick": true,
+ "status": "queued-other",
+ "editor": "pc",
+ "time_basis": "true",
+ "id": "joshygambles_2026-10-17_Zombie-Carnival_0-22-50"
+}
