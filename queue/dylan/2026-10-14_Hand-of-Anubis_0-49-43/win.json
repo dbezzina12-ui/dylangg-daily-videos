@@ -1,0 +1,22 @@
+{
+ "amount": 3033.0,
+ "banner": "0:49:58",
+ "bet": 10.0,
+ "bonus_start": "0:47:56",
+ "confidence": "confirmed",
+ "cur": "$",
+ "date": "2026-10-14",
+ "end": "0:50:04",
+ "evidence": "confirm/anubis_hit.jpg, confirm/anubis_scan.jpg",
+ "game": "Hand of Anubis",
+ "hit": "0:49:43",
+ "multi": 303,
+ "notes": "Hunt bonus #13 (Banana), CA$10. 'Round interrupted' replay 0:47:48, FS from 0:47:56. Slow build to 854.00 with 2 spins left; spin at 0:49:43 pays SUPER MEGA WIN 1,831.00 (0:49:45, total 2,685), last spin BIG WIN 348.00 (0:49:53). TOTAL WIN 3033.00 in 22 free spins at 0:49:58 (303x). Panel C$3,033.00.",
+ "pick": true,
+ "provider": "Hacksaw Gaming",
+ "status": "queued-pc",
+ "tier": "edit",
+ "time_basis": "true",
+ "editor": "pc",
+ "id": "2026-10-14_Hand-of-Anubis_0-49-43"
+}

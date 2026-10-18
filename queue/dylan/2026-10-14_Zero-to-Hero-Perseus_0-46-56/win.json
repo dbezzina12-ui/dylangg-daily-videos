@@ -1,0 +1,22 @@
+{
+ "amount": 16208.0,
+ "banner": "0:47:19",
+ "bet": 10.0,
+ "bonus_start": "0:45:30",
+ "confidence": "confirmed",
+ "cur": "$",
+ "date": "2026-10-14",
+ "end": "0:47:28",
+ "evidence": "confirm/perseus_end.jpg, confirm/perseus_scan.jpg, confirm/panels2.jpg",
+ "game": "Zero to Hero: Perseus",
+ "hit": "0:46:56",
+ "multi": 1621,
+ "notes": "Hunt bonus #12 ('Dylan - Zero To Hero' on the panel; in-game logo 'Zero to Hero: Perseus'), CA$10 bet, 5 FS at 0:45:30 (balance 4,574.16 -> 3,446.33). FUTURE LEGEND 461.00 at 0:46:30 (total 841). The last three spins make it: spin 13/15 at 0:46:56 -> GODLIKE 3,442.00 CAD (344x) 0:46:58 (total 4,286); spin 14/15 0:47:03 -> GODLIKE 5,963.00 (total 10,249); spin 15/15 0:47:09 -> GODLIKE 5,959.00 (596x) 0:47:13. TOTAL WIN 16,208.00 CAD (1,621x) banner 0:47:19-0:47:27, balance 19,654.33 at 0:47:28. Best win of hunt #177 (panel C$16,208.00, 1,620.80x). Matches the KickBot chat clip ending 23:48 UTC (hands on head).",
+ "pick": true,
+ "provider": "Popiplay",
+ "status": "queued-pc",
+ "tier": "edit",
+ "time_basis": "true",
+ "editor": "pc",
+ "id": "2026-10-14_Zero-to-Hero-Perseus_0-46-56"
+}

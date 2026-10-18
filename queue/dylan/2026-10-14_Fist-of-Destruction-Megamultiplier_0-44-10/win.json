@@ -1,0 +1,22 @@
+{
+ "amount": 1767.5,
+ "banner": "0:45:11",
+ "bet": 5.0,
+ "bonus_start": "0:44:04",
+ "confidence": "confirmed",
+ "cur": "$",
+ "date": "2026-10-14",
+ "end": "0:45:15",
+ "evidence": "confirm/fist_end.jpg, confirm/fist_scan.jpg",
+ "game": "Fist of Destruction Megamultiplier",
+ "hit": "0:44:10",
+ "multi": 354,
+ "notes": "Hunt bonus #11 (TTJ), CA$5 bet ('BonusHunt FeatureSpins' at $15 land 3 FS at 0:43:58). First FS: 3x fist at 0:44:10 -> ME(GA) 462.50 at 0:44:16; total 981 at 0:44:37, BIG WIN 120.00 (0:44:46), 52.50, BIG WIN 142.00 (0:45:04), 1,760.50 at 0:45:08. TOTAL WIN 1767.50 (11 free spins) 0:45:11-0:45:14 (354x). Panel C$1,767.50.",
+ "pick": true,
+ "provider": "Hacksaw Gaming",
+ "status": "queued-pc",
+ "tier": "edit",
+ "time_basis": "true",
+ "editor": "pc",
+ "id": "2026-10-14_Fist-of-Destruction-Megamultiplier_0-44-10"
+}
