@@ -494,7 +494,10 @@ def _blit(out, rgb, al, x0, y0, alpha=1.0):
     if xb <= xa or yb <= ya: return
     a_ = al[ya - y0:yb - y0, xa - x0:xb - x0] * alpha
     out[ya:yb, xa:xb] = out[ya:yb, xa:xb] * (1 - a_) + rgb[ya - y0:yb - y0, xa - x0:xb - x0] * a_
-OSD_FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"
+def _font(path, local):   # the Linux font, else the copy in <repo>/pack/fonts (Windows PC)
+    alt = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "pack", "fonts", local)
+    return path if os.path.exists(path) or not os.path.exists(alt) else alt
+OSD_FONT = _font("/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf", "consolab.ttf")
 _seg = {"sess": None, "prev": None, "k": None}
 def person_mask(img, key):
     """soft person matte of the output frame (computed every other frame, smoothed over time)"""
@@ -544,7 +547,7 @@ def mask_text_fx(img, s, T, key):
     m = person_mask(base, key)[..., None]
     res = base * m + out * (1 - m)
     return np.clip(res, 0, 255).astype(np.uint8) if img.dtype == np.uint8 else res.astype(img.dtype)
-CAP_FONT = "/usr/share/fonts/opentype/inter/InterDisplay-BlackItalic.otf"
+CAP_FONT = _font("/usr/share/fonts/opentype/inter/InterDisplay-BlackItalic.otf", "InterDisplay-BlackItalic.otf")
 _scan = {}
 def ff_fx(o, T):
     if not FFR: return o
@@ -644,7 +647,8 @@ def age_badge(dpx):
         g.ellipse([0, 0, D - 1, D - 1], fill=(255, 255, 255, 255))                        # white ring
         r = int(D * 0.075); g.ellipse([r, r, D - 1 - r, D - 1 - r], fill=(214, 32, 39, 255))   # red disc
         fonts = [AGE.get("font"), os.path.join(EDL.get("sfx_dir") or "", "tools/Poppins-BoldItalic.ttf"),
-                 "/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]
+                 "/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+                 _font("/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf", "Inter-ExtraBold.otf")]
         font = next(ImageFont.truetype(f, int(D * 0.40)) for f in fonts if f and os.path.exists(f))
         l, t, r_, b = g.textbbox((0, 0), AGE["text"], font=font)
         g.text(((D - (r_ - l)) / 2 - l, (D - (b - t)) / 2 - t), AGE["text"], font=font, fill=(255, 255, 255, 255))
@@ -758,11 +762,11 @@ def _face_matte(crop, key):
 def draw_reactions(o, raw_, i):
     act = [r for r in REACT if r["_i0"] <= i <= r["_i1"]]
     if not act: return o
-    fx_, fy_, fw_, fh_ = [int(v) for v in EDL["face_rect"]]
-    crop = raw_[fy_:fy_ + fh_, fx_:fx_ + fw_].astype(np.float32)
-    crop = cv2.addWeighted(crop, 1.6, cv2.GaussianBlur(crop, (0, 0), 2.0), -0.6, 0)        # webcams are soft: sharpen before upscaling
     out = o.astype(np.float32); H_, W_ = out.shape[:2]
     for r in act:
+        fx_, fy_, fw_, fh_ = [int(v) for v in r.get("rect", EDL["face_rect"])]      # "rect": a tighter crop when he sits in one part of the cam
+        crop = raw_[fy_:fy_ + fh_, fx_:fx_ + fw_].astype(np.float32)
+        crop = cv2.addWeighted(crop, 1.6, cv2.GaussianBlur(crop, (0, 0), 2.0), -0.6, 0)    # webcams are soft: sharpen before upscaling
         n_ = max(1, r["_i1"] - r["_i0"]); u = (i - r["_i0"]) / n_
         e_in = min(1.0, (i - r["_i0"]) / (0.3 * FPS)); e_in = 1 - (1 - e_in) ** 3
         e_out = min(1.0, max(0.0, (r["_i1"] - i) / (0.25 * FPS))); e_out = e_out * e_out * (3 - 2 * e_out)

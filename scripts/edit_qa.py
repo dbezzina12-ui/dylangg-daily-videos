@@ -59,7 +59,7 @@ def main(video, work, max_mb=29.0):
     if not reported: out("PASS", "no repeated phrases")
 
     # blurred numbers must be unreadable
-    blurred = [s for s in tl["shots"] if s.get("blur")]
+    blurred = [s for s in tl["shots"] if any(not b.get("mask") for b in s.get("blur", []))]   # "mask": True = cosmetic (e.g. a webcam strip), not a hidden number
     if blurred:
         from rapidocr_onnxruntime import RapidOCR
         ocr = RapidOCR(); leaks = []
