@@ -4,8 +4,9 @@ Follow EDIT_BRIEF.md (SP/batch/EDIT_BRIEF.md) for everything, EXCEPT:
 
 00. NO ANNOUNCER VOICE-OVER ANY MORE (Dylan, 2026-10-18: "the random voice thing like '6 wins back to back wow' is super
     cheesy... don't add those voice tags anymore"). Do NOT make or place a vo.wav (skip make_vo.py and item 3 below entirely). Keep
-    the on-screen gold caption of the amount (item 4) and let the streamer's own voice carry the big moment. Delivered edits keep
-    theirs; Dylan will handle those himself, so don't re-render them for this.
+    the on-screen gold caption of the amount (item 4) and let the streamer's own voice carry the big moment. Delivered edits are
+    being re-rendered without their VO too (Dylan, 2026-10-18: "fix all the other streamers videos so they don't have voice over
+    lines"); same cut, VO extra_sfx and its duck_voice removed, new file replaces the old one in Other streamers.
 0. NEWEST (Dylan, 2026-10-17, on the Yassuo Madame Destiny edit):
    a. OPEN ON HIS FACE SAYING SOMETHING: "it should open with him saying something, the big streamers are a good hook since
       people know their faces already". Shot 1 is a facecam shot (1.5-3 s) of him saying his punchiest line about this win
