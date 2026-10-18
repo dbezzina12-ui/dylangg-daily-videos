@@ -1,0 +1,26 @@
+{
+ "id": "kb_2025-02-12_Le-Bandit_z6g6k51083ii",
+ "date": "2025-02-12",
+ "game": "Le Bandit",
+ "amount": 5481.7,
+ "cur": "$",
+ "bet": "$1.00",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "z6g6k51083ii",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/z6g6k51083ii/playlist.m3u8",
+ "alt_clips": [],
+ "peak_frames": [
+  19,
+  24,
+  26,
+  30
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). base-game super cascade into coin collect, huge 5481.70 total screen; strong hype candidate",
+ "hit": "KickBot clip z6g6k51083ii",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; confirm the total, bet and buy on the clip itself."
+}

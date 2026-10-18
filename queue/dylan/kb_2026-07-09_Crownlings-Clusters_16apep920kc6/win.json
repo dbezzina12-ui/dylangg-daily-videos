@@ -1,0 +1,24 @@
+{
+ "id": "kb_2026-07-09_Crownlings-Clusters_16apep920kc6",
+ "date": "2026-07-09",
+ "game": "Crownlings Clusters",
+ "amount": 5243.0,
+ "cur": "$",
+ "bet": "$10.00",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "16apep920kc6",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/16apep920kc6/playlist.m3u8",
+ "alt_clips": [],
+ "peak_frames": [
+  22,
+  23
+ ],
+ "confidence": "sheet-read (blurry)",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). two bonuses: 10 FS 230.50, then 10 FS with Big Win 1,453.88 and Epic Win 5,243.00",
+ "hit": "KickBot clip 16apep920kc6",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; confirm the total, bet and buy on the clip itself."
+}

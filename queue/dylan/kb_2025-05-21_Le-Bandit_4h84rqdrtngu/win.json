@@ -1,0 +1,26 @@
+{
+ "id": "kb_2025-05-21_Le-Bandit_4h84rqdrtngu",
+ "date": "2025-05-21",
+ "game": "Le Bandit",
+ "amount": 6827.0,
+ "cur": "$",
+ "bet": "$5.00",
+ "status": "queued-pc",
+ "pick": false,
+ "tier": "edit",
+ "source": "kickbot",
+ "clip_id": "4h84rqdrtngu",
+ "hls": "https://clips.kickbotcdn.com/kickbot-hls/4h84rqdrtngu/playlist.m3u8",
+ "alt_clips": [
+  "ybz48gmhmig7"
+ ],
+ "peak_frames": [
+  1,
+  2
+ ],
+ "confidence": "sheet-read",
+ "notes": "Old KickBot clip, never edited (no VOD on Kick; edit from the 2-min clip). static final board with 918 coin after the 6,827 bonus; then Money Train 4 buy feature screen, no result",
+ "hit": "KickBot clip 4h84rqdrtngu",
+ "editor": "pc",
+ "source_note": "No VOD on Kick. Source is the KickBot 2-min clip: fetch playlist.m3u8 from 'hls' (1080p, 2 s segments) with urllib/curl, concat the segments, and edit from that. alt_clips are other KickBot clips of the same hit (may hold more lead-up). All times are clip-relative; confirm the total, bet and buy on the clip itself."
+}
