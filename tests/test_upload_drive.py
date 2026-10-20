@@ -158,7 +158,7 @@ class UploadTests(unittest.TestCase):
                 uploader.main(str(video), str(data))
         self.assertEqual([f[0] for f in uploaded], ['2026-10-14.mp4', '2026-10-14.hq.json'])
         metadata = json.loads(uploaded[1][2])
-        self.assertEqual(set(metadata), {'schemaVersion', 'kind', 'title', 'summary', 'keyPoints', 'caption', 'sourceUrl',
+        self.assertEqual(set(metadata), {'schemaVersion', 'kind', 'title', 'summary', 'keyPoints', 'caption',
                                          'creator', 'driveFileId', 'mediaChecksum'})
         self.assertEqual(metadata['schemaVersion'], 1)
         self.assertEqual(metadata['driveFileId'], 'real_video_fixture')

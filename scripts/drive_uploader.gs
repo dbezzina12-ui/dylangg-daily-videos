@@ -16,7 +16,7 @@
 
 const FOLDER_ID = '1waRIY_FHC3KJnmpEKEOgoLWfiL1d6xpT';   // 1001 Clips
 const HISTORY_DAYS = 45;
-const HISTORY_FIELDS = ['date', 'pool', 'main', 'raffle', 'multi', 'round', 'ends', 'top', 'headline', 'stream_tonight'];
+const HISTORY_FIELDS = ['date', 'pool', 'main', 'raffle', 'multi', 'round', 'ends', 'top', 'headline', 'stream_tonight', 'caption_choice'];
 
 function doPost(e) {
   let req;

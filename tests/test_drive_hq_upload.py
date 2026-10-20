@@ -1,4 +1,5 @@
 import contextlib
+import datetime as dt
 import hashlib
 import importlib.util
 import io
@@ -50,14 +51,19 @@ class FakeDrive:
         self.files.append((name, req.get_header('Content-type'), content))
         record = {'id': f'id_{len(self.files)}', 'name': name, 'size': str(len(content)),
                   'md5Checksum': self.md5_override or hashlib.md5(content).hexdigest()}
+        self.in_drive[name] = (record['id'], record['md5Checksum'])
         return contextlib.closing(io.BytesIO(json.dumps(record).encode()))
 
 
-def run_upload(drive, folder, video_id=None):
-    video = Path(folder) / '2026-10-13.mp4'; video.write_bytes(b'fake video bytes')
-    data = Path(folder) / '2026-10-13.json'; data.write_text(json.dumps(DAY))
+VIDEO = b'fake video bytes'
+
+
+def run_upload(drive, folder, video_id=None, today=dt.date(2026, 10, 13), day=DAY):
+    video = Path(folder) / f'{day["date"]}.mp4'; video.write_bytes(VIDEO)
+    data = Path(folder) / f'{day["date"]}.json'; data.write_text(json.dumps(day))
     out = io.StringIO()
     with patch.dict(hq.os.environ, {'HYPE_UPLOAD_KEY': KEY}), patch.object(hq, 'ask', drive.ask), \
+            patch.object(hq, '_toronto_today', lambda: today), patch.object(hq.time, 'sleep', lambda s: None), \
             patch.object(hq.urllib.request, 'urlopen', drive.urlopen), contextlib.redirect_stdout(out):
         result = hq.upload(str(video), str(data), video_id)
     return result, out.getvalue(), video.read_bytes()
@@ -72,8 +78,12 @@ class DriveHqUploadTests(unittest.TestCase):
         self.assertEqual(drive.files[0][1], 'video/mp4')
         self.assertEqual(drive.files[1][1], 'application/json')
         sidecar = json.loads(drive.files[1][2])
-        self.assertEqual(set(sidecar), {'schemaVersion', 'kind', 'title', 'summary', 'keyPoints', 'caption', 'sourceUrl',
+        self.assertEqual(set(sidecar), {'schemaVersion', 'kind', 'title', 'summary', 'keyPoints', 'caption',
                                         'creator', 'driveFileId', 'mediaChecksum'})
+        self.assertEqual((sidecar['schemaVersion'], sidecar['kind'], sidecar['creator']), (1, 'video', 'Claude'))
+        self.assertIn('Prize pool: $14,200.', sidecar['keyPoints'])
+        self.assertIn('#1 Inne****: $420,000 wagered, $4,500 prize.', sidecar['keyPoints'])
+        self.assertLessEqual(len(sidecar['caption']), 240)
         self.assertEqual(sidecar['driveFileId'], video_id)
         self.assertEqual(sidecar['mediaChecksum'], hashlib.md5(video).hexdigest())
         self.assertEqual(sidecar['caption'], caption)
@@ -90,13 +100,52 @@ class DriveHqUploadTests(unittest.TestCase):
         self.assertFalse(any(r.get('action') == 'remember' for r in drive.requests))
 
     def test_video_already_in_drive_only_adds_metadata(self):
-        drive = FakeDrive()
+        drive = FakeDrive(in_drive={'2026-10-13.mp4': ('existing_video_id', hashlib.md5(VIDEO).hexdigest())})
         with tempfile.TemporaryDirectory() as tmp:
             (video_id, _, _), _, video = run_upload(drive, tmp, video_id='existing_video_id')
         self.assertEqual([f[0] for f in drive.files], ['2026-10-13.hq.json'])
         sidecar = json.loads(drive.files[0][2])
         self.assertEqual(sidecar['driveFileId'], 'existing_video_id')
         self.assertEqual(sidecar['mediaChecksum'], hashlib.md5(video).hexdigest())
+
+    def test_expired_video_is_not_uploaded_or_redated(self):
+        drive = FakeDrive()
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(ValueError) as err:
+            run_upload(drive, tmp, today=dt.date(2026, 10, 14))
+        self.assertEqual(drive.files, [])
+        self.assertIn('never moved to a later posting date', str(err.exception))
+
+    def test_failed_metadata_upload_is_retried_without_sending_the_video_again(self):
+        drive = FakeDrive()
+        real_urlopen, fails = drive.urlopen, {'left': 1}
+
+        def flaky(req, timeout=None):
+            if drive.requests[-1].get('name', '').endswith('.hq.json') and fails['left']:
+                fails['left'] -= 1
+                raise hq.urllib.error.HTTPError(req.full_url, 503, 'busy', {}, None)
+            return real_urlopen(req, timeout)
+        drive.urlopen = flaky
+        with tempfile.TemporaryDirectory() as tmp:
+            run_upload(drive, tmp)
+        self.assertEqual([f[0] for f in drive.files], ['2026-10-13.mp4', '2026-10-13.hq.json'])
+
+    def test_upload_stops_when_drive_cannot_confirm_the_files(self):
+        drive = FakeDrive()
+        real_ask = drive.ask
+        drive.ask = lambda p: {'ok': False, 'error': 'no such file'} if p.get('action') == 'file' else real_ask(p)
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(RuntimeError) as err:
+            run_upload(drive, tmp)
+        self.assertIn('could not confirm', str(err.exception))
+
+    def test_the_posted_opening_is_remembered_and_not_reused_within_a_week(self):
+        drive = FakeDrive()
+        with tempfile.TemporaryDirectory() as tmp:
+            first = run_upload(drive, tmp)[0][2]
+            stored = drive.saved[-1]['caption_choice']
+            self.assertEqual(stored['text'], first)
+            nxt = {**DAY, 'date': '2026-10-14', 'pool': 14300}
+            second = run_upload(drive, tmp, today=dt.date(2026, 10, 14), day=nxt)[0][2]
+        self.assertNotEqual(first.split('\n')[0], second.split('\n')[0])
 
     def test_bad_drive_checksum_stops_before_metadata(self):
         drive = FakeDrive(md5_override='0' * 32)

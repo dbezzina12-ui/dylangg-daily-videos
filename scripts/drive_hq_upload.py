@@ -25,12 +25,13 @@ import os
 from pathlib import Path
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from upload_drive import build_metadata  # noqa: E402  (same caption builder and metadata format)
+from upload_drive import _toronto_today, build_caption, build_metadata  # noqa: E402  (same caption builder and metadata format)
 
 UPLOADER = os.environ.get('HYPE_UPLOAD_URL') or (
     'https://script.google.com/macros/s/AKfycbxnQKMIk9GTq1iRRNhjx7GmkTeIADc6oN6pvU-Qgwh3UwbHx7PLJxN6ApN2jEczHVFU/exec')
@@ -100,12 +101,38 @@ def pull_history(data_dir):
     return added
 
 
+def send_metadata(name, sidecar, tries=3, wait=30):
+    """Upload the caption sidecar, retrying only this file (the uploader replaces a same-named file, so a retry
+    never leaves two). The video is never sent again here."""
+    for attempt in range(1, tries + 1):
+        try:
+            return send(name, 'application/json', sidecar)
+        except RuntimeError as e:
+            if 'invalid file metadata' in str(e) or attempt == tries:
+                raise
+            print(f'metadata: attempt {attempt} failed ({e}); retrying in {wait} s')
+            time.sleep(wait)
+
+
+def verify(name, file_id, md5=None):
+    """Both files must really be in 1001 Clips: exactly one file of that name, with the expected ID (and MD5)."""
+    info = ask({'action': 'file', 'name': name})
+    if not info.get('ok'):
+        raise RuntimeError(f'could not confirm {name} in 1001 Clips: {info.get("error")}')
+    if info.get('id') != file_id or (md5 and info.get('md5Checksum') != md5):
+        raise RuntimeError(f'{name} in 1001 Clips does not match what was uploaded')
+
+
 def upload(video_path, data_path, video_id=None):
     video, source = Path(video_path), Path(data_path)
     if not re.fullmatch(r'\d{4}-\d{2}-\d{2}\.mp4', video.name):
         raise ValueError('Name the daily video YYYY-MM-DD.mp4')
     data = json.loads(source.read_text())
-    metadata = build_metadata(data, video.stem, data_dir=source.parent)   # validates before anything is uploaded
+    if not video_id and video.stem < _toronto_today().isoformat():
+        raise ValueError(f'{video.name} was for {video.stem}, which has already passed in Toronto. Not uploading it: '
+                         'a daily video is never moved to a later posting date.')
+    choice = build_caption(data, video.stem, data_dir=source.parent)
+    metadata = build_metadata(data, video.stem, data_dir=source.parent, choice=choice)   # validates before any upload
 
     content = video.read_bytes()
     if video_id:
@@ -118,15 +145,20 @@ def upload(video_path, data_path, video_id=None):
     metadata.update(driveFileId=vid['id'], mediaChecksum=vid['md5'])
     sidecar = json.dumps(metadata, ensure_ascii=False, indent=2).encode('utf-8')
     try:
-        meta = send(f'{video.stem}.hq.json', 'application/json', sidecar)
+        meta = send_metadata(f'{video.stem}.hq.json', sidecar)
     except RuntimeError as e:
         why = ('the uploader only takes videos: deploy the updated scripts/drive_uploader.gs'
                if 'invalid file metadata' in str(e) else str(e))
         raise RuntimeError(f'{video.name} is in Drive ({vid["id"]}) but its caption metadata was not uploaded: {why}. '
                            f'Then rerun with --video-id {vid["id"]}') from None
     print(f'metadata: {"replaced" if meta["replaced"] else "uploaded"} {video.stem}.hq.json ({meta["id"]})')
+    verify(video.name, vid['id'], vid['md5'])
+    verify(f'{video.stem}.hq.json', meta['id'])
+    print('verified: both files are in 1001 Clips')
     print('caption: ' + metadata['caption'].replace('\n', ' / '))
 
+    data['caption_choice'] = choice   # so the next days' captions know which opening was really used
+    source.write_text(json.dumps(data, indent=2, ensure_ascii=False))
     remember(data)
     return vid['id'], meta['id'], metadata['caption']
 
@@ -141,7 +173,8 @@ def metadata_only(data_path):
     source = Path(data_path)
     data = json.loads(source.read_text())
     day = data.get('date', '')
-    metadata = build_metadata(data, day, data_dir=source.parent)
+    choice = build_caption(data, day, data_dir=source.parent)
+    metadata = build_metadata(data, day, data_dir=source.parent, choice=choice)
     info = ask({'action': 'file', 'name': f'{day}.mp4'})
     if not info.get('ok'):
         raise RuntimeError(f'uploader could not find {day}.mp4: {info.get("error")}')
@@ -149,9 +182,12 @@ def metadata_only(data_path):
         raise RuntimeError('this needs the updated uploader script (it reports file IDs and checksums)')
     metadata.update(driveFileId=info['id'], mediaChecksum=info['md5Checksum'])
     sidecar = json.dumps(metadata, ensure_ascii=False, indent=2).encode('utf-8')
-    meta = send(f'{day}.hq.json', 'application/json', sidecar)
+    meta = send_metadata(f'{day}.hq.json', sidecar)
     print(f'metadata: {"replaced" if meta["replaced"] else "uploaded"} {day}.hq.json ({meta["id"]}) for {day}.mp4 ({info["id"]})')
+    verify(f'{day}.hq.json', meta['id'])
     print('caption: ' + metadata['caption'].replace('\n', ' / '))
+    data['caption_choice'] = choice
+    source.write_text(json.dumps(data, indent=2, ensure_ascii=False))
     remember(data)
     return info['id'], meta['id'], metadata['caption']
 

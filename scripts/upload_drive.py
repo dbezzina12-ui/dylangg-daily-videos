@@ -21,6 +21,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 API = 'https://www.googleapis.com'
 DATE_FILE = re.compile(r'\d{4}-\d{2}-\d{2}\.json')
 NO_REPEAT_DAYS = 7
+CAPTION_TARGET = 240   # characters; the hard limit below is X's 280 (weighted)
 
 # Caption openings: (id, kind, wording for that day's video, wording when the video is from an earlier date,
 # facts it needs). The dated wording replaces "today"/"now"/"tonight" with the video's own date.
@@ -156,6 +157,8 @@ def _choose_caption(data, day, history, previous, is_today):
     if not question_lately and not EMOJI.search(first) and int(_rank(day, 'question'), 16) % 4 == 0:
         seconds.append(('question', 'Who’s making a move? 👀'))
     second = min(seconds, key=lambda s: _rank(day, 'second:' + s[0]))
+    if len(first) + 1 + len(second[1]) > CAPTION_TARGET:   # keep it short: drop the extra line rather than run long
+        second = ('none', '')
     text = first if not second[1] else f'{first}\n{second[1]}'
     return {'text': text, 'opening': pick[0], 'kind': pick[1],
             'mentions_leader': 'leader' in mentions or second[0] == 'leader', 'question': second[0] == 'question'}
@@ -186,7 +189,11 @@ def build_caption(data, day, data_dir=None, today=None):
     history, earlier = [], []
     for snap in _snapshots_before(day, data_dir):
         prev = next((p for p in reversed(earlier) if _same_round(snap, p)), None)
-        history.append((snap['date'], _choose_caption(snap, snap['date'], history, prev, is_today=True)))
+        stored = snap.get('caption_choice')
+        if isinstance(stored, dict) and {'opening', 'kind', 'mentions_leader', 'question'} <= set(stored):
+            history.append((snap['date'], stored))   # the caption that was actually posted that day
+        else:
+            history.append((snap['date'], _choose_caption(snap, snap['date'], history, prev, is_today=True)))
         earlier.append(snap)
     prev = next((p for p in reversed(earlier) if _same_round(data, p)), None)
     return _choose_caption(data, day, history, prev, is_today=dt.date.fromisoformat(day) >= today)
@@ -224,7 +231,13 @@ def access_token():
     return json.loads(b)['access_token']
 
 
-def build_metadata(data, day, data_dir=None, today=None):
+def _money(v):
+    return f'${v:,.0f}'
+
+
+def build_metadata(data, day, data_dir=None, today=None, choice=None):
+    """Social HQ caption metadata for the day's video (driveFileId and mediaChecksum are added after the upload).
+    Every fact comes from the same data snapshot the video was rendered from."""
     if data.get('date') != day or dt.date.fromisoformat(day).isoformat() != day:
         raise ValueError('Video date and source data date must match')
     pool, top = data.get('pool'), data.get('top')
@@ -235,13 +248,31 @@ def build_metadata(data, day, data_dir=None, today=None):
     leader = top[0][0]
     if not isinstance(leader, str) or not leader.strip() or len(leader) > 40 or '\n' in leader:
         raise ValueError('Use the displayed leaderboard name')
-    summary = f'Prize pool: ${pool:,.0f}. {leader} currently leads the standings.'
-    caption = build_caption(data, day, data_dir, today)['text']
+    rows = [r for r in top[:5] if isinstance(r, list) and len(r) == 3 and isinstance(r[0], str)
+            and all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in r[1:])]
+    label = _date_label(day)
+    key_points = [f'Prize pool: {_money(pool)}.']
+    key_points += [f'#{i} {n}: {_money(w)} wagered, {_money(p)} prize.' for i, (n, w, p) in enumerate(rows, 1)]
+    left = None
+    ends = data.get('ends')
+    if isinstance(ends, str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}', ends):
+        left = (dt.date.fromisoformat(ends) - dt.date.fromisoformat(day)).days
+        if left >= 0:
+            rnd = f'Round {data["round"]}' if data.get('round') else 'The round'
+            key_points.append(f'{rnd} ends {_date_label(ends)} '
+                              f'({"last day" if left == 0 else f"{left} day{"" if left == 1 else "s"} left"}).')
+    summary = f'Daily leaderboard update for {label}: the prize pool is {_money(pool)} and {leader} leads'
+    summary += f' with {_money(rows[0][1])} wagered.' if rows else '.'
+    if len(rows) > 1:
+        summary += f' The video counts down the top {len(rows)} with each player\'s wagered amount and prize.'
+    if left is not None and left >= 0:
+        summary += ' Last day of the round.' if left == 0 else f' {left} day{"" if left == 1 else "s"} left in the round.'
+    choice = choice or build_caption(data, day, data_dir, today)
+    caption = choice['text']
     if sum(2 if ord(c) > 127 else 1 for c in caption) > 280:
         raise ValueError('Generated caption exceeds the X limit')
-    return {'schemaVersion': 1, 'kind': 'video', 'title': f'Daily leaderboard | {day}',
-            'summary': summary, 'keyPoints': [], 'caption': caption,
-            'sourceUrl': 'https://dylanjames.gg/', 'creator': 'Claude daily video pipeline'}
+    return {'schemaVersion': 1, 'kind': 'video', 'title': f'Leaderboard standings, {label}',
+            'summary': summary, 'keyPoints': key_points, 'caption': caption, 'creator': 'Claude'}
 
 
 def upload(tok, folder, name, mime, content):
