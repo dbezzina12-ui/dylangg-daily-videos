@@ -322,7 +322,7 @@ PY = (VH - PH) // 2
 # shows me") -> the X edit's own 16:9 picture full-width in the middle over a blurred, darkened copy of itself; his reactions
 # swing in as a big tilted webcam card in the ghost space above it (not over the game); face shots become a tall panel of him.
 IGL = EDL.get("ig_layout", "panel")
-IG_POP_VOICE = EDL.get("ig_pop_voice", IGL != "ghost")   # Dylan 2026-10-22: no popup voice lines on the ghost 9:16 (the pop-up still shows)
+IG_POPS = EDL.get("ig_pops", IGL != "ghost")   # Dylan 2026-10-22: ghost 9:16 has no pop-up at all ("don't show the coin, don't say the line")
 CAMH = EDL.get("ig_cam_h", 700); FACEH = EDL.get("ig_face_h", 1240); IG_SAFE_B = 330
 IG_OV_SCALE = 0.75                                  # overlays (total slam etc.) at "ig_pos", default the middle of the game band
 def vignette(h, w):
@@ -788,7 +788,7 @@ def freeze_dim(T):
         if f["_T0"] <= T < f["_T1"] + 0.15:
             k = max(k, min(1.0, (T - f["_T0"]) / 0.12) * min(1.0, max(0.0, f["_T1"] + 0.15 - T) / 0.15))
     return k
-def draw_pops(o, T, ow=None, oh=None, voice=True):
+def draw_pops(o, T, ow=None, oh=None):
     """springy pop-up: rises from its corner with an overshoot and a wobble, bobs with its own voice, shrinks away"""
     out = None
     for f in FRZ:
@@ -802,7 +802,7 @@ def draw_pops(o, T, ow=None, oh=None, voice=True):
         rgb, al = sprite(p["_img"], hpx); sh_, sw_ = al.shape
         sc = 1 - math.exp(-d * 9) * math.cos(d * 20)                 # 0 -> overshoot ~1.25 -> settle at 1
         vi = int((T - (f["_T0"] + POP_IN + VOICE_DELAY)) * FPS)
-        env = float(p["_env"][vi]) if voice and 0 <= vi < len(p["_env"]) else 0.0
+        env = float(p["_env"][vi]) if 0 <= vi < len(p["_env"]) else 0.0
         ky = 1 + 0.06 * env; kx = 1 - 0.03 * env                      # talks: stretches a little with its voice
         if e > 0: sc *= (1 - e) ** 1.5 * (1 + 0.6 * e)
         sc = max(sc, 0.0)
@@ -975,7 +975,7 @@ if RUN_LOOP:
                 o = post(vertical(panel), st)
             dk = freeze_dim(T)
             if dk > 0: o = (o.astype(np.float32) * (1 - 0.2 * dk)).astype(np.uint8)
-            o = draw_age_tag(draw_pops(o, T, VW, VH, IG_POP_VOICE), T, VW, VH)
+            o = draw_age_tag(draw_pops(o, T, VW, VH) if IG_POPS else o, T, VW, VH)
             if PREVIEW: o = cv2.resize(o, (VW // 2, VH // 2), interpolation=cv2.INTER_AREA)
             enc_ig.stdin.write(o.tobytes())
         if i % 300 == 0: print("frame", i, "/", N, flush=True)
@@ -1271,7 +1271,7 @@ def ringout(pre, L):
     y = np.stack([signal.fftconvolve(pre[:, c], ir)[len(pre):len(pre) + L] for c in range(2)], -1)
     ref = np.sqrt((pre[-int(0.08 * SR):] ** 2).mean()) + 1e-9; got = np.sqrt((y[:int(0.08 * SR)] ** 2).mean()) + 1e-9
     return y * (EDL.get("freeze_ring", 0.55) * ref / got)
-popa = np.zeros_like(a); popv = np.zeros_like(a)   # pop-up in/out sounds | its voice line (kept apart for the 9:16 mix)
+popa = np.zeros_like(a)
 def pop_sfx(up=True):
     n = int(0.11 * SR); t_ = np.arange(n) / SR
     f_ = (260 + 900 * (t_ / t_[-1]) ** 0.6) if up else (900 - 600 * (t_ / t_[-1]))
@@ -1292,7 +1292,7 @@ for f in FRZ:
     p = f["pop"]
     if p:
         add_to(popa, pop_sfx(True), f["_T0"] + POP_IN - 0.01, 0.35)
-        add_to(popv, p["_aud"], f["_T0"] + POP_IN + VOICE_DELAY)
+        add_to(popa, p["_aud"], f["_T0"] + POP_IN + VOICE_DELAY)
         add_to(popa, pop_sfx(False), pop_out_t(f), 0.22)
 
 sfx = np.zeros_like(a)
@@ -1442,12 +1442,9 @@ def _pop_duck(pa):
     if not (FRZ and np.any(pa)): return np.ones(len(pa))
     pe = np.convolve(np.abs(pa).mean(1), np.ones(int(0.1 * SR)) / int(0.1 * SR), mode="same")
     return 1 - 0.55 * np.clip(pe / (pe.max() + 1e-9) * 4, 0, 1)
-d_ = _pop_duck(popa + popv)[:, None]
-mix = a + sfx * d_ * SFX_GAIN + music * d_ + popa + popv
-if "ig" in FORMATS and not IG_POP_VOICE:
-    d_ = _pop_duck(popa)[:, None]
-    mix_ig = a + sfx * d_ * SFX_GAIN + music * d_ + popa
-else: mix_ig = None
+d_ = _pop_duck(popa)[:, None]
+mix = a + sfx * d_ * SFX_GAIN + music * d_ + popa
+mix_ig = a + sfx * SFX_GAIN + music if ("ig" in FORMATS and not IG_POPS and np.any(popa)) else None   # 9:16 without the pop-up
 if EDL.get("debug_stems"):
     sfx.astype(np.float32).tofile(f"{WORK}/stem_sfx.f32"); music.astype(np.float32).tofile(f"{WORK}/stem_music.f32")
 fade = int(0.5 * SR)
