@@ -314,6 +314,13 @@ FORMATS = EDL.get("formats", ["x"])               # "x" = the main edit at out_s
 VW, VH = 1080, 1920
 PW, PH = 1080, 830                                  # vertical: one near-square panel, centred, over a blurred copy of itself
 PY = (VH - PH) // 2
+# "ig_layout": "stack" -> full-bleed 9:16: his live webcam in a band on top, the game below, a Kick-green seam between them.
+# Game shots: webcam band ig_cam_h tall, game band fills the rest (framed on the board, the X edit's push-ins scaled to it).
+# Face shots: the webcam band grows to ig_face_h (he is the shot, word captions sit behind him), the game runs in the strip below.
+# No reaction PiPs (he is always on screen). The banner rides the seam. Reels UI safe zone: nothing important below VH - IG_SAFE_B.
+IGL = EDL.get("ig_layout", "panel")
+CAMH = EDL.get("ig_cam_h", 700); FACEH = EDL.get("ig_face_h", 1240); IG_SAFE_B = 330
+IG_OV_SCALE = 0.75                                  # overlays (total slam etc.) at "ig_pos", default the middle of the game band
 def vignette(h, w):
     y_, x_ = np.mgrid[0:h, 0:w].astype(np.float32)
     return (np.clip(np.sqrt(((x_ - w / 2) / (w / 2)) ** 2 + ((y_ - h / 2) / (h / 2)) ** 2) / 1.414, 0, 1) ** 2.2)[..., None]
@@ -365,20 +372,66 @@ def warp_cam(src, st, st0, ow=None, oh=None):
         img = acc / 6
     return img
 
-def vcam(st, kind):
-    """map a 16:9 camera state to the vertical panel: same centre and horizontal framing on close-ups,
-    but never zoomed out past the game window / webcam height (so no stream overlays creep in)"""
+def vcam(st, kind, pw=PW, ph=PH, prop=False):
+    """map a 16:9 camera state to a vertical panel: same centre and horizontal framing on close-ups,
+    but never zoomed out past the game window / webcam height (so no stream overlays creep in).
+    prop=True (stack game band): the X edit's BOARD framing = the whole game height, push-ins damped from there (the band is
+    narrow, a full-strength push would cut wide banners like MEGA WIN off at the sides)"""
     v = dict(st)
     if kind == "face":
-        zmin = PH / fh; top, bot = fy_, fy_ + fh; left, right = fx_, fx_ + fw
+        zmin = ph / fh; top, bot = fy_, fy_ + fh; left, right = fx_, fx_ + fw
     else:
-        zmin = PH / gh; top, bot = gy, gy + gh; left, right = gx, gx + gw
-    v["z"] = max(st["z"] * PW / W, zmin * 1.01)
-    hh = PH / v["z"] / 2; hw = PW / v["z"] / 2
+        zmin = ph / gh; top, bot = gy, gy + gh; left, right = gx, gx + gw
+    v["z"] = zmin * 1.01 * max(1.0, st["z"] / BOARD[2]) ** 0.35 if prop else max(st["z"] * pw / W, zmin * 1.01)
+    hh = ph / v["z"] / 2; hw = pw / v["z"] / 2
     v["cy"] = min(max(v["cy"], top + hh), bot - hh)
     v["cx"] = min(max(v["cx"], left + hw), right - hw) if right - left > 2 * hw else (left + right) / 2
     return v
 
+_ig_ban = {}
+def ig_banner_rgba(wpx):
+    if wpx not in _ig_ban:
+        im = cv2.imread(EDL["ig_banner"], cv2.IMREAD_UNCHANGED)
+        a_ = im[..., 3]; ys, xs = np.where(a_ > 8); im = im[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
+        im = cv2.resize(im, (wpx, int(im.shape[0] * wpx / im.shape[1])), interpolation=cv2.INTER_AREA).astype(np.float32)
+        _ig_ban[wpx] = (im[..., :3], im[..., 3:4] / 255.0)
+    return _ig_ban[wpx]
+def ig_stack(src, raw_, st, st0, s, t, T, i):
+    """9:16 stack frame (before the grade): webcam band on top, game band below, seam line, captions behind him"""
+    face = s["kind"] == "face"; seam = FACEH if face else CAMH
+    canvas = np.empty((VH, VW, 3), np.float32)
+    if face:                                                    # the X edit's face camera, re-framed for the tall band
+        top = warp_cam(src, vcam(st, "face", VW, seam), vcam(st0, "face", VW, seam), VW, seam)
+        if s.get("mask_text"):                                  # tall band: behind him they'd hide behind his head, so in front, on his chest
+            top = mask_text_fx(top, s, T, i, _seg_ig, x=0.5, y=EDL.get("ig_caption_y", 0.74), k=1.3, behind=False)
+    else:                                                       # his live webcam, slow push over the shot
+        u = min(1.0, max(0.0, (t - s["a"]) / max(0.1, s["b"] - s["a"])))
+        z = max(VW / fw, seam / fh) * EDL.get("ig_cam_zoom", 1.12) * (1.0 + 0.05 * u)
+        c = raw_[fy_:fy_ + fh, fx_:fx_ + fw]
+        c = cv2.addWeighted(c, 1.5, cv2.GaussianBlur(c, (0, 0), 2.0), -0.5, 0)    # webcams are soft: sharpen before upscaling
+        cx, cy = EDL.get("ig_cam_center", [fw / 2, fh * 0.45])     # webcam coords; he sits a little above centre
+        M = np.float32([[z, 0, VW / 2 - z * cx], [0, z, seam / 2 - z * cy]])
+        top = cv2.warpAffine(c, M, (VW, seam), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT)
+    canvas[:seam] = top
+    gh_ = VH - seam
+    if face:                                                    # strip below his face: the game, board framing
+        gs = dict(st, cx=BOARD[0], cy=BOARD[1], z=BOARD[2], rot=0.0, yaw=0.0, pitch=0.0)
+        canvas[seam:] = warp_cam(raw_, vcam(gs, "game", VW, gh_), vcam(gs, "game", VW, gh_), VW, gh_)
+    else:
+        canvas[seam:] = warp_cam(src, vcam(st, "game", VW, gh_, True), vcam(st0, "game", VW, gh_, True), VW, gh_)
+    canvas[seam:seam + 36] *= np.linspace(0.55, 1.0, 36, dtype=np.float32)[:, None, None]   # soft shadow under the seam
+    canvas[seam - 4:seam + 4] = (24, 252, 83)                   # Kick green seam
+    return canvas
+def ig_stack_finish(o, s, T):
+    """after the grade: banner on the seam (fades with the edit), so it moves with the layout and never sits on his face"""
+    if not EDL.get("ig_banner"): return o
+    seam = FACEH if s["kind"] == "face" else CAMH
+    rgb, al = ig_banner_rgba(int(VW * 0.5))
+    fade = min(1.0, T / 0.3) * min(1.0, max(0.0, (DUR - 0.05 - T) / 0.45))
+    if fade <= 0: return o
+    out = o.astype(np.float32)
+    _blit(out, rgb, al, (VW - al.shape[1]) // 2, seam - al.shape[0] - 22, fade)
+    return np.clip(out, 0, 255).astype(np.uint8)
 def vertical(panel):
     """9:16 frame: the panel centred, a zoomed, blurred, darkened copy of it filling the background"""
     small = cv2.GaussianBlur(cv2.resize(panel, (108, 83), interpolation=cv2.INTER_AREA), (0, 0), 2.0)
@@ -417,7 +470,7 @@ def text_rgba(text, ov):
         a = np.asarray(img).astype(np.float32)
         _txt_cache[key] = (a[..., [2, 1, 0]], a[..., 3:4] / 255.0)        # BGR, alpha
     return _txt_cache[key]
-def draw_overlays(o, T, scale=1.0):
+def draw_overlays(o, T, scale=1.0, ig=False):
     if not OVERLAYS: return o
     out = None
     for ov in OVERLAYS:
@@ -447,7 +500,7 @@ def draw_overlays(o, T, scale=1.0):
         # darken around the focus point after the slam (spotlight on the balance + number)
         dk = ov.get("darken", 0.0) * min(1.0, max(0.0, ds) / 0.25) * fade_end
         if dk > 0:
-            fx_, fy_ = [v * scale for v in ov.get("focus", ov["pos"])]
+            fx_, fy_ = ov.get("ig_pos", [VW / 2, (CAMH + VH - IG_SAFE_B) / 2]) if ig else [v * scale for v in ov.get("focus", ov["pos"])]
             yy, xx = np.ogrid[:h_, :w_]
             r = np.sqrt(((xx - fx_) / (w_ * 0.55)) ** 2 + ((yy - fy_) / (h_ * 0.30)) ** 2)
             out *= (1 - dk * np.clip(r - 0.35, 0, 1)[..., None])
@@ -469,7 +522,8 @@ def draw_overlays(o, T, scale=1.0):
                     rgb[yb_:yb_ + bh] = np.roll(rgb[yb_:yb_ + bh], sh, 1); al[yb_:yb_ + bh] = np.roll(al[yb_:yb_ + bh], sh, 1)
                 yb_ += bh
             if rng.random() < 0.25 * gk: al = al * 0.35                   # flicker
-        cx = ov["pos"][0] * scale + shake * math.sin(d * 97); cy = ov["pos"][1] * scale + shake * math.cos(d * 83)
+        px_, py_ = ov.get("ig_pos", [VW / 2, (CAMH + VH - IG_SAFE_B) / 2]) if ig else (ov["pos"][0] * scale, ov["pos"][1] * scale)
+        cx = px_ + shake * math.sin(d * 97); cy = py_ + shake * math.cos(d * 83)
         th, tw = al.shape[:2]; x0 = int(cx - tw / 2); y0 = int(cy - th / 2)
         xa, ya = max(0, x0), max(0, y0); xb, yb = min(w_, x0 + tw), min(h_, y0 + th)
         if xb <= xa or yb <= ya: continue
@@ -501,22 +555,25 @@ def _font(path, local):   # the Linux font, else the copy in <repo>/pack/fonts (
     return path if os.path.exists(path) or not os.path.exists(alt) else alt
 OSD_FONT = _font("/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf", "consolab.ttf")
 _seg = {"sess": None, "prev": None, "k": None}
-def person_mask(img, key):
+_seg_ig = {"sess": None, "prev": None, "k": None}                 # the 9:16 stack's face band has its own matte history
+def person_mask(img, key, _seg=_seg):
     """soft person matte of the output frame (computed every other frame, smoothed over time)"""
-    if _seg["k"] is not None and key - _seg["k"] < 2 and _seg["prev"] is not None: return _seg["prev"]
+    if _seg["k"] is not None and key - _seg["k"] < 2 and _seg["prev"] is not None and _seg["prev"].shape == img.shape[:2]: return _seg["prev"]
     from rembg import new_session, remove
     from PIL import Image
     if _seg["sess"] is None:
-        import onnxruntime; onnxruntime.preload_dlls()  # without torch imported, ORT can't find the pip CUDA/cuDNN DLLs and drops to CPU
+        try:
+            import onnxruntime; onnxruntime.preload_dlls()  # without torch imported, ORT can't find the pip CUDA/cuDNN DLLs and drops to CPU
+        except Exception: pass
         _seg["sess"] = new_session("isnet-general-use")
     small = cv2.resize(np.clip(img, 0, 255).astype(np.uint8), (img.shape[1] // 2, img.shape[0] // 2), interpolation=cv2.INTER_AREA)
     m = np.asarray(remove(Image.fromarray(small[..., ::-1]), session=_seg["sess"], only_mask=True)).astype(np.float32) / 255.0
     m = cv2.resize(m, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_LINEAR)
     m = np.clip((m - 0.15) / 0.7, 0, 1)
-    if _seg["prev"] is not None and _seg["k"] is not None and key - _seg["k"] <= 3: m = 0.55 * m + 0.45 * _seg["prev"]
+    if _seg["prev"] is not None and _seg["prev"].shape == m.shape and _seg["k"] is not None and key - _seg["k"] <= 3: m = 0.55 * m + 0.45 * _seg["prev"]
     _seg["prev"], _seg["k"] = m, key
     return m
-def mask_text_fx(img, s, T, key):
+def mask_text_fx(img, s, T, key, seg=_seg, x=None, y=None, k=1.0, behind=True):
     act = [mt for mt in s.get("mask_text", []) if mt["_t0"] <= T < mt["_t1"] + 0.25]
     if not act: return img
     out = img.astype(np.float32); h_, w_ = out.shape[:2]; base = out.copy()
@@ -526,7 +583,7 @@ def mask_text_fx(img, s, T, key):
         if mt.get("_cut"): fade = min(1.0, d / 0.03)
         glitchy = mt.get("style") == "glitch"
         sc = (1.0 + 0.22 * math.exp(-d * 18)) if glitchy else (1.0 + 0.45 * math.exp(-d * 14))
-        rgb, al = _ff_text(mt["text"], mt.get("font", CAP_FONT), int(mt.get("size", 330) * w_ / W), tuple(mt.get("color", [255, 255, 255])),
+        rgb, al = _ff_text(mt["text"], mt.get("font", CAP_FONT), int(mt.get("size", 330) * w_ / W * k), tuple(mt.get("color", [255, 255, 255])),
                            tuple(mt.get("stroke", [255, 255, 255])), 0)
         rgb = cv2.resize(rgb, None, fx=sc, fy=sc, interpolation=cv2.INTER_LINEAR); al = cv2.resize(al, None, fx=sc, fy=sc, interpolation=cv2.INTER_LINEAR)
         if al.ndim == 2: al = al[..., None]
@@ -544,9 +601,10 @@ def mask_text_fx(img, s, T, key):
                         rgb[yb_:yb_ + bh] = np.roll(rgb[yb_:yb_ + bh], shf, 1); al[yb_:yb_ + bh] = np.roll(al[yb_:yb_ + bh], shf, 1)
                     yb_ += bh
         sh = 14 * math.exp(-d * 9) * w_ / W
-        x0 = int(w_ * mt.get("x", 0.5) - al.shape[1] / 2 + sh * math.sin(d * 97)); y0 = int(h_ * mt.get("y", 0.34) - al.shape[0] / 2 + sh * math.cos(d * 83))
+        x0 = int(w_ * (mt.get("x", 0.5) if x is None else x) - al.shape[1] / 2 + sh * math.sin(d * 97)); y0 = int(h_ * (mt.get("y", 0.34) if y is None else y) - al.shape[0] / 2 + sh * math.cos(d * 83))
         _blit(out, rgb, al, x0, y0, fade)
-    m = person_mask(base, key)[..., None]
+    if not behind: return np.clip(out, 0, 255).astype(np.uint8) if img.dtype == np.uint8 else out.astype(img.dtype)
+    m = person_mask(base, key, seg)[..., None]
     res = base * m + out * (1 - m)
     return np.clip(res, 0, 255).astype(np.uint8) if img.dtype == np.uint8 else res.astype(img.dtype)
 CAP_FONT = _font("/usr/share/fonts/opentype/inter/InterDisplay-BlackItalic.otf", "InterDisplay-BlackItalic.otf")
@@ -668,7 +726,7 @@ def draw_age_tag(o, T, ow=None, oh=None):
     rgb, al = age_badge(D)
     m = int(0.03 * base)
     cx = int(0.035 * base * 16 / 9) + int(AGE["size"] * base) // 2 if ow_ > oh_ else m + int(AGE["size"] * base) // 2
-    cy = (oh_ if ow_ > oh_ else PY + PH) - m - int(AGE["size"] * base) // 2     # 9:16: inside the panel, clear of the app UI
+    cy = (oh_ if ow_ > oh_ else (VH - IG_SAFE_B if IGL == "stack" else PY + PH)) - m - int(AGE["size"] * base) // 2     # 9:16: clear of the app UI
     x0, y0 = cx - D // 2, cy - D // 2
     out = o.astype(np.float32); a_ = al[..., None] * fade
     sh = cv2.GaussianBlur(al, (0, 0), max(1, D / 18))[..., None] * fade * 0.45
@@ -715,7 +773,7 @@ def draw_pops(o, T, ow=None, oh=None):
         mx = int(0.035 * base * 16 / 9) if ow_ > oh_ else int(0.035 * ow_); my = int(0.03 * base)
         ax = ow_ - mx - sw_ / 2 if right else mx + sw_ / 2
         ay = (my + sh_) if top else oh_ - my                             # the sprite's bottom centre sits here
-        if oh_ > ow_ and not top: ay = min(ay, PY + PH + int(0.12 * PH))  # 9:16: stand on the panel's lower edge
+        if oh_ > ow_ and not top: ay = min(ay, VH - IG_SAFE_B if IGL == "stack" else PY + PH + int(0.12 * PH))  # 9:16: panel edge / above the Reels UI
         ay += base * 0.22 * math.exp(-d * 12) + (base * 0.12 * e if e > 0 else 0)
         rot = (-7 if right else 7) + 14 * math.exp(-d * 5) * math.sin(d * 16) + (25 * e if e > 0 else 0) * (1 if right else -1)
         c, s_ = math.cos(math.radians(rot)), math.sin(math.radians(rot))
@@ -865,8 +923,11 @@ if RUN_LOOP:
             if PREVIEW: o = cv2.resize(o, (W // 2, H // 2), interpolation=cv2.INTER_AREA)
             enc.stdin.write(o.tobytes())
         if enc_ig:
-            panel = warp_cam(src, vcam(st, s["kind"]), vcam(st0, s["kind"]), PW, PH)
-            o = post(vertical(panel), st)
+            if IGL == "stack":
+                o = ig_stack_finish(draw_overlays(ff_fx(post(ig_stack(src, raw_, st, st0, s, t, T, i), st), T), T, IG_OV_SCALE, ig=True), s, T)
+            else:
+                panel = warp_cam(src, vcam(st, s["kind"]), vcam(st0, s["kind"]), PW, PH)
+                o = post(vertical(panel), st)
             dk = freeze_dim(T)
             if dk > 0: o = (o.astype(np.float32) * (1 - 0.2 * dk)).astype(np.uint8)
             o = draw_age_tag(draw_pops(o, T, VW, VH), T, VW, VH)
@@ -1364,4 +1425,4 @@ def finish(vpath, out, banner=None):
         os.remove(full)
     print("done", out, f"{os.path.getsize(out) / 1e6:.1f} MB", f"{DUR:.1f}s")
 if "x" in FORMATS: finish(vid, OUT)
-if "ig" in FORMATS: finish(vid_ig, OUT.replace(".mp4", "_ig.mp4"), EDL.get("ig_banner"))
+if "ig" in FORMATS: finish(vid_ig, OUT.replace(".mp4", "_ig.mp4"), None if IGL == "stack" else EDL.get("ig_banner"))
