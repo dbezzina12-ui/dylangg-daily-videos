@@ -426,6 +426,8 @@ def ig_stack(src, raw_, st, st0, s, t, T, i):
     canvas[seam - 4:seam + 4] = (24, 252, 83)                   # Kick green seam
     return canvas
 GH_FACE = EDL.get("ig_face_h", 1240)
+GH_PIC = EDL.get("ig_ghost_h", 1050)                 # the X picture's height on the 9:16 canvas: its sides are cropped to fill the phone
+                                                     # (Dylan: "so much room, zoom in more on mobile"); 608 = the whole 16:9 frame
 def ig_ghost(xpic, src, raw_, st, st0, s, T, i):
     """9:16 ghost frame (graded): the 16:9 X picture (or a tall face panel) centred over a blurred copy of itself"""
     if s["kind"] == "face":
@@ -433,7 +435,8 @@ def ig_ghost(xpic, src, raw_, st, st0, s, T, i):
         if s.get("mask_text"):                                  # tall panel: behind him they'd hide behind his head, so in front, on his chest
             panel = mask_text_fx(panel, s, T, i, _seg_ig, x=0.5, y=EDL.get("ig_caption_y", 0.76), k=1.3, behind=False)
     else:
-        panel = cv2.resize(xpic, (VW, VW * H // W), interpolation=cv2.INTER_AREA)
+        cw = min(W, int(round(H * VW / GH_PIC))); x0_ = (W - cw) // 2                 # centre crop to VW:GH_PIC
+        panel = cv2.resize(xpic[:, x0_:x0_ + cw], (VW, min(GH_PIC, VW * H // cw)), interpolation=cv2.INTER_AREA)
     ph = panel.shape[0]; y0 = (VH - ph) // 2
     small = cv2.GaussianBlur(cv2.resize(panel, (96, max(8, 96 * ph // VW)), interpolation=cv2.INTER_AREA), (0, 0), 2.2)
     bw = int(VH * VW / ph); bg = cv2.resize(small, (bw, VH), interpolation=cv2.INTER_LINEAR).astype(np.float32)
@@ -860,7 +863,7 @@ def draw_reactions(o, raw_, i, vert=None):
     for r in act:
         if vert is not None:
             r = {k: v for k, v in r.items() if k not in ("pos", "size", "style", "tilt")}
-            r.update(style="pip", size=EDL.get("ig_react_size", 0.82), pos=[W_ / 2, max(0.0, vert / 2 + 30)])
+            r.update(style="pip", size=EDL.get("ig_react_size", 0.72), pos=[W_ / 2, max(0.0, vert / 2 + 20)])
         fx_, fy_, fw_, fh_ = [int(v) for v in r.get("rect", EDL["face_rect"])]      # "rect": a tighter crop when he sits in one part of the cam
         crop = raw_[fy_:fy_ + fh_, fx_:fx_ + fw_].astype(np.float32)
         crop = cv2.addWeighted(crop, 1.6, cv2.GaussianBlur(crop, (0, 0), 2.0), -0.6, 0)    # webcams are soft: sharpen before upscaling
