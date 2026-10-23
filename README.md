@@ -6,7 +6,8 @@ Daily DylanGG "Live Standings" leaderboard video, uploaded to the **1001 Clips**
 
 1. Each morning (8:24 AM Toronto) the **Daily Live Standings Video (to Drive)** routine reads dylanjames.gg, checks the numbers and writes `data/YYYY-MM-DD.json`.
 2. It renders the 14 s 1920×1080 video with `scripts/render_day.py` (`kit/`).
-   The background is the original clean look, near-black with a soft gold glow (`--world none`, the default since 2026-10-23).
+   The look is the white + purple "Leaderboard Launch" style (`--theme launch`, the default since 2026-10-23): the hook on an
+   off-white page, then every scene in one black rounded card, purple accents. `--theme dark` is the original black + gold.
    `--world auto` brings back the drawn worlds that rotate with the date (`kit/make_daily.py`, worlds in `kit/standings.js`):
    **coin storm** (a giant turning coin behind the headline, coins raining at the camera into the pool slam, a coin fountain on the end
    card), **reel wall** (giant slot reels that land $ $ $ on the pool slam) and **vault** (tumbler rings that lock on the slam and open

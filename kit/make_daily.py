@@ -98,6 +98,8 @@ def main():
     ap.add_argument('--world', default='none', help="standings background: 'none' = the original clean look, near-black with a soft "
                     "gold glow (Dylan, 2026-10-23: back to the plain Apple-style one); drawn in code: 0 coin storm, 1 reel wall, 2 vault, "
                     "'auto' = those three rotating with the date; 'plate' = the old Higgsfield footage plate")
+    ap.add_argument('--theme', default='launch', help="standings look: 'launch' = off-white page, scenes in a black rounded card, "
+                    "purple accents (Dylan, 2026-10-23: the white + purple Apple-style one); 'dark' = the original black + gold")
     ap.add_argument('--headline', default='', help="standings: today's intro text, 'LINE ONE|LINE TWO' (1-2 lines, each <= 20 chars)")
     a = ap.parse_args()
 
@@ -122,6 +124,7 @@ def main():
     if a.style == 'standings' and not plate and a.world != 'none':   # drawn world: which one rotates with the date, the seed varies it
         q['world'] = today.toordinal() % 3 if a.world in ('auto', 'plate') else int(a.world) % 3
         q['ws'] = today.toordinal()
+    if a.style == 'standings' and a.theme == 'launch' and not plate: q['theme'] = 'launch'
     if plate: q['plate'] = 1          # graphics render transparent and are composited over the Higgsfield footage plate
     if a.style == 'standings':
         q['top'] = json.dumps(top, separators=(',', ':'))

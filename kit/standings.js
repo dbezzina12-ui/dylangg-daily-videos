@@ -29,8 +29,15 @@ const TOP = (() => {
   return [['Inne****', 276431.57, 4111], ['Jame********', 108574.22, 1762], ['AkaC***', 75255.58, 1174], ['Fros*********', 62400.94, 704], ['Span*****', 57289.29, 587]]
     .map(r => ({ name: r[0], wag: r[1], prize: r[2] }));
 })();
-const GOLD = '#EEAF0E', GOLD_L = '#FFD34D', GOLD_D = '#D99A00', INK = '#0A0A0A';
-const GOLD_RGB = [238, 175, 14];
+// ?theme=launch (Dylan, 2026-10-23: "go back to our Apple inspired ones", the white + purple Leaderboard Launch piece):
+// an off-white page with a small header, every scene inside one black rounded card, purple wherever the default look is gold
+const LAUNCH = Q.get('theme') === 'launch';
+const GOLD = LAUNCH ? '#7C4DFF' : '#EEAF0E', GOLD_L = LAUNCH ? '#A88BFF' : '#FFD34D', GOLD_D = LAUNCH ? '#5A2EE6' : '#D99A00', INK = '#0A0A0A';
+const GOLD_RGB = LAUNCH ? [124, 77, 255] : [238, 175, 14], GOLD_L_RGB = LAUNCH ? [168, 139, 255] : [255, 211, 77];
+const GRAD = LAUNCH ? ['#9C7BFF', '#7C4DFF', '#6236E8'] : ['#FFD54A', '#F2B418', '#D99A00'];   // leader row / code button fill
+const PAGE = '#EBE9E5', PAGE_INK = '#0B0B0B', PAGE_GREY = '#6B6863';
+const ONP = LAUNCH ? '#FFFFFF' : INK;   // type on a purple / gold fill
+const HFG = LAUNCH ? PAGE_INK : '#FFFFFF', HGREY = LAUNCH ? PAGE_GREY : '#CFCFCF';   // the hook sits on the page in the launch theme
 const money = v => '$' + Math.round(v).toLocaleString('en-US');
 
 const cv = document.getElementById('c'); cv.width = W; cv.height = H;
@@ -277,6 +284,11 @@ function stage(g, t, floor = 1, glow = 0.12, dark = 0.5) {
     radial(g, W / 2, H * 0.4, Math.max(W, H) * 0.6, GOLD_RGB, 0.05 * beatPulse(t, 4));
     return;
   }
+  if (LAUNCH) {   // the card: flat black, only a faint purple lift behind the type
+    g.fillStyle = '#0B0B0B'; g.fillRect(-200, -200, W + 400, H + 400);
+    radial(g, W / 2, H * 0.4, Math.max(W, H) * 0.6, GOLD_RGB, 0.05 + 0.03 * beatPulse(t, 4));
+    return;
+  }
   g.fillStyle = '#070707'; g.fillRect(-200, -200, W + 400, H + 400);
   radial(g, W / 2, H * 0.36, Math.max(W, H) * 0.7, GOLD_RGB, glow + 0.06 * beatPulse(t, 4));
   gridFloor(g, t, floor);
@@ -461,16 +473,16 @@ function livePill(g, cx, y, size, t0, t) {
   const blink = 0.55 + 0.45 * Math.cos((t - t0) * Math.PI * 4) ** 2;
   g.fillStyle = `rgba(214,30,30,${blink})`; g.beginPath(); g.arc(x0 + padX + dot / 2, y + h / 2, dot / 2, 0, Math.PI * 2); g.fill();
   let x = x0 + padX + dot + gapD;
-  text(g, s1, x, y + padY + cap, 'PB', size, INK, { ls }); x += L1.w;
-  g.fillStyle = INK; g.beginPath(); g.arc(x + sep / 2, y + h / 2, size * 0.08, 0, Math.PI * 2); g.fill(); x += sep;
-  text(g, s2, x, y + padY + cap, 'PB', size, INK, { ls });
+  text(g, s1, x, y + padY + cap, 'PB', size, ONP, { ls }); x += L1.w;
+  g.fillStyle = ONP; g.beginPath(); g.arc(x + sep / 2, y + h / 2, size * 0.08, 0, Math.PI * 2); g.fill(); x += sep;
+  text(g, s2, x, y + padY + cap, 'PB', size, ONP, { ls });
   g.restore();
   return h;
 }
 /* the intro rotates daily (?intro=0..3, ?head=n picks the headline for the slam style) */
 const HEADS = [["WHO'S", 'WINNING?'], ['THE POOL', 'KEEPS CLIMBING'], ['NEW DAY.', 'NEW LEADER?'], ['STILL', 'NO MAX CAP'], ['CHECK', 'THE BOARD']];
 function hookFrame(g, t, mainH, drawMain) {   // eyebrow + main block + live pill, vertically centred
-  stage(g, t, 1, 0.10);
+  if (!LAUNCH) stage(g, t, 1, 0.10);
   const es = P4 ? 30 : 34, ps = P4 ? 40 : 44, ce = capH('PB', es), ph = capH('PB', ps) + ps;
   const g1 = P4 ? 54 : 44, g3 = P4 ? 64 : 54;
   const total = ce + g1 + mainH + g3 + ph; const top = (H - total) / 2;
@@ -478,7 +490,7 @@ function hookFrame(g, t, mainH, drawMain) {   // eyebrow + main block + live pil
   const sc = 1 + 0.10 * (1 - E.outExpo(prog(t, 0, 0.45))) + 0.035 * E.inOutSine(prog(t, 0.45, 1.05));
   g.save(); g.translate(W / 2, H / 2); g.scale(sc, sc); g.translate(-W / 2, -H / 2);
   const ey = ROUND ? `PROGRESSIVE LEADERBOARD  ·  ROUND ${ROUND}` : 'PROGRESSIVE LEADERBOARD';
-  riseText(g, ey, W / 2 + 4, be, 'PB', es, '#CFCFCF', 0.12, t, { ls: 8, align: 'center', stagger: 0.006, dur: 0.4 });
+  riseText(g, ey, W / 2 + 4, be, 'PB', es, HGREY, 0.12, t, { ls: 8, align: 'center', stagger: 0.006, dur: 0.4 });
   drawMain(mt);
   livePill(g, W / 2, py, ps, 0.32, t);
   g.restore();
@@ -487,7 +499,7 @@ function hookSlam(g, t, l1, l2) {
   const TW = P4 ? 940 : 1240;
   const s = Math.min(P4 ? 230 : 300, TW / Math.max(lay('PBI', 100, -3, l1).w, lay('PBI', 100, -3, l2).w) * 100); const cap = capH('PB', s), gp = cap * 0.2;
   hookFrame(g, t, l2 ? cap * 2 + gp : cap, (mt) => {
-    riseText(g, l1, W / 2, mt + cap, 'PBI', s, l2 ? '#FFFFFF' : GOLD, -0.04, t, { ls: -3, align: 'center', stagger: 0.02, dur: 0.38, from: 1.2 });
+    riseText(g, l1, W / 2, mt + cap, 'PBI', s, l2 ? HFG : GOLD, -0.04, t, { ls: -3, align: 'center', stagger: 0.02, dur: 0.38, from: 1.2 });
     if (l2) riseText(g, l2, W / 2, mt + cap * 2 + gp, 'PBI', s, GOLD, 0.02, t, { ls: -3, align: 'center', stagger: 0.018, dur: 0.38, from: 1.2 });
   });
 }
@@ -498,26 +510,26 @@ function hookType(g, t) {   // typewriter + blinking cursor + scanlines
   hookFrame(g, t, l2 ? cap * 2 + gp : cap, (mt) => {
     const n1 = Math.min(l1.length, Math.max(0, Math.floor((t - 0.02) * cps) + 1)), n2 = Math.min(l2.length, Math.max(0, Math.floor((t - t2) * cps) + 1));
     const L1 = lay('PB', s, 2, l1), L2 = lay('PB', s, 2, l2), x1 = W / 2 - Math.max(L1.w, L2.w) / 2;
-    if (n1 > 0) text(g, l1.slice(0, n1), x1, mt + cap, 'PB', s, '#FFFFFF', { ls: 2 });
+    if (n1 > 0) text(g, l1.slice(0, n1), x1, mt + cap, 'PB', s, HFG, { ls: 2 });
     if (l2 && n2 > 0) text(g, l2.slice(0, n2), x1, mt + cap * 2 + gp, 'PB', s, GOLD, { ls: 2 });
     const onL2 = l2 && t >= t2, n = onL2 ? n2 : n1, LL = onL2 ? L2 : L1, cb = onL2 ? mt + cap * 2 + gp : mt + cap;
     if (Math.floor(t * 4) % 2 === 0 || n < (onL2 ? l2.length : l1.length)) { g.fillStyle = GOLD; g.fillRect(x1 + LL.xs[n] + s * 0.06, cb - cap, s * 0.09, cap); }
   });
-  g.save(); g.fillStyle = 'rgba(0,0,0,0.16)'; for (let y = (t * 120) % 6; y < H; y += 6) g.fillRect(0, y, W, 2); g.restore();
+  if (!LAUNCH) { g.save(); g.fillStyle = 'rgba(0,0,0,0.16)'; for (let y = (t * 120) % 6; y < H; y += 6) g.fillRect(0, y, W, 2); g.restore(); }
 }
 function hookScramble(g, t) {  // "how big is the pool today?" with the digits still spinning
   const q = HL.length ? HL.join(' ') : 'HOW BIG IS THE POOL TODAY?';
   const s = P4 ? 210 : 270, cap = capH('PB', s), qs = Math.min(P4 ? 50 : 62, (W * 0.86) / lay('PBI', 100, 0, q).w * 100), qc = capH('PBI', qs), gq = P4 ? 40 : 34;
   hookFrame(g, t, qc + gq + cap, (mt) => {
-    riseText(g, q, W / 2, mt + qc, 'PBI', qs, '#FFFFFF', -0.02, t, { align: 'center', stagger: 0.008, dur: 0.36 });
+    riseText(g, q, W / 2, mt + qc, 'PBI', qs, HFG, -0.02, t, { align: 'center', stagger: 0.008, dur: 0.36 });
     const str = '$' + Math.floor(POOL).toLocaleString('en-US'); const L = lay('PB', s, 0, str); const x0 = W / 2 - L.w / 2, b = mt + qc + gq + cap;
     const u = E.outExpo(prog(t, 0.08, 0.4)); if (u <= 0) return;
-    g.save(); g.globalAlpha *= u; g.shadowColor = rgba(GOLD_RGB, 0.7); g.shadowBlur = 40; font(g, 'PB', s, 0); g.textAlign = 'center';
+    g.save(); g.globalAlpha *= u; g.shadowColor = rgba(GOLD_RGB, 0.7); g.shadowBlur = LAUNCH ? 0 : 40; font(g, 'PB', s, 0); g.textAlign = 'center';
     for (let i = 0; i < str.length; i++) {
       const c = str[i], cx = x0 + (L.xs[i] + L.xs[i + 1]) / 2;
       // every digit is a bouncing "?" -- never a fake number someone could screenshot
       const ch = c >= '0' && c <= '9' ? '?' : c; const hop = ch === '?' ? -Math.abs(Math.sin((t - 0.1) * 7 + i * 0.9)) * cap * 0.12 : 0;
-      g.fillStyle = c === '$' ? GOLD : ch === '?' ? (i % 2 ? GOLD : '#FFFFFF') : '#FFFFFF'; g.fillText(ch, cx, b + (1 - u) * cap * 0.6 + hop);
+      g.fillStyle = c === '$' ? GOLD : ch === '?' ? (i % 2 ? GOLD : HFG) : HFG; g.fillText(ch, cx, b + (1 - u) * cap * 0.6 + hop);
     }
     g.restore(); g.textAlign = 'left';
   });
@@ -530,10 +542,10 @@ function hookCountdown(g, t) {   // days left as the hook
   const Lb = lay('PBI', bs, -6, big), Lr = Math.max(lay('PBI', rs, -2, r1).w, lay('PB', r2s, 4, r2).w), gapX = P4 ? 36 : 56;
   const tw = Lb.w + gapX + Lr; const x0 = W / 2 - tw / 2;
   hookFrame(g, t, bc, (mt) => {
-    slam(g, big, x0, mt + bc, 'PBI', bs, GOLD, 0.0, t, { ls: -6, s0: 2.2, dur: 0.34, glow: 50, align: 'left' });
+    slam(g, big, x0, mt + bc, 'PBI', bs, GOLD, 0.0, t, { ls: -6, s0: 2.2, dur: 0.34, glow: LAUNCH ? 0 : 50, align: 'left' });
     const rx = x0 + Lb.w + gapX, rb1 = mt + bc / 2 - 6, rb2 = rb1 + 26 + r2c;
-    riseText(g, r1, rx, rb1, 'PBI', rs, '#FFFFFF', 0.1, t, { ls: -2, stagger: 0.016, dur: 0.38 });
-    riseText(g, r2, rx + 4, rb2, 'PB', r2s, '#CFCFCF', 0.18, t, { ls: 4, stagger: 0.008, dur: 0.38 });
+    riseText(g, r1, rx, rb1, 'PBI', rs, HFG, 0.1, t, { ls: -2, stagger: 0.016, dur: 0.38 });
+    riseText(g, r2, rx + 4, rb2, 'PB', r2s, HGREY, 0.18, t, { ls: 4, stagger: 0.008, dur: 0.38 });
   });
 }
 function sceneHook(g, t) {
@@ -587,7 +599,7 @@ const XSPARK = (() => { const r = rng(55); const a = []; for (let i = 0; i < 70;
 const CONFETTI = (() => { const r = rng(99); const a = []; for (let i = 0; i < 90; i++) { const ang = -Math.PI * (0.05 + r() * 0.9); const sp = 700 + r() * 1300; a.push({ vx: Math.cos(ang) * sp * 1.1, vy: Math.sin(ang) * sp, rot: r() * 6, vr: (r() - 0.5) * 22, w: 10 + r() * 14, h: 6 + r() * 8, c: r() < 0.62 ? GOLD : r() < 0.6 ? GOLD_L : '#FFFFFF', ph: r() * 6 }); } return a; })();
 function burst(g, t, t0, cxr, cyr, k = 1) {
   const p = t - t0; if (p < 0 || p > 1.8) return;
-  radial(g, cxr, cyr, (500 + 900 * p) * k, [255, 226, 140], 0.5 * Math.exp(-p * 7));
+  radial(g, cxr, cyr, (500 + 900 * p) * k, LAUNCH ? GOLD_L_RGB : [255, 226, 140], 0.5 * Math.exp(-p * 7));
   if (p < 0.6) { const u = E.outCubic(p / 0.6); g.save(); g.strokeStyle = rgba(GOLD_RGB, (1 - u) * 0.9); g.lineWidth = 34 * (1 - u) + 2; g.beginPath(); g.arc(cxr, cyr, (60 + 1200 * u) * k, 0, Math.PI * 2); g.stroke(); g.restore(); }
   g.save(); g.lineCap = 'round';
   for (const q of XSPARK) {
@@ -637,7 +649,7 @@ function scenePool(g, t) {
     riseText(g, 'TOTAL PRIZE POOL', W / 2 + 5, BD.big.lab, 'PB', P4 ? 38 : 44, '#D8D8D8', TL.x1 + 0.05, t, { ls: 12, align: 'center', stagger: 0.008, dur: 0.4 });
     if (t >= TL.c1 + 0.08) {
       const L = lay('PBI', P4 ? 46 : 52, 0, 'NO MAX CAP'); const u = E.outBack(prog(t, TL.c1 + 0.08, 0.36), 2.2);
-      chip(g, 'NO MAX CAP', W / 2, BD.big.chip, 'PBI', P4 ? 46 : 52, 2, GOLD, INK, 26, 16, TL.c1 + 0.08, t, 'center');
+      chip(g, 'NO MAX CAP', W / 2, BD.big.chip, 'PBI', P4 ? 46 : 52, 2, GOLD, ONP, 26, 16, TL.c1 + 0.08, t, 'center');
     }
     g.restore();
   }
@@ -666,7 +678,7 @@ function row(g, t, i) {
   // panel
   if (lead) {
     g.save(); g.shadowColor = rgba(GOLD_RGB, 0.55 + 0.25 * beatPulse(t, 5)); g.shadowBlur = 40;
-    const gr = g.createLinearGradient(0, y, 0, y + h); gr.addColorStop(0, '#FFD54A'); gr.addColorStop(0.55, '#F2B418'); gr.addColorStop(1, '#D99A00');
+    const gr = g.createLinearGradient(0, y, 0, y + h); gr.addColorStop(0, GRAD[0]); gr.addColorStop(0.55, GRAD[1]); gr.addColorStop(1, GRAD[2]);
     g.fillStyle = gr; roundRect(g, x, y, w, h, 18); g.fill(); g.restore();
   } else {
     g.fillStyle = 'rgba(20,19,16,0.94)'; roundRect(g, x, y, w, h, 18); g.fill();
@@ -676,8 +688,8 @@ function row(g, t, i) {
   g.save(); roundRect(g, x, y, h, h, 18); g.clip(); g.fillStyle = lead ? INK : GOLD; g.fillRect(x, y, h, h); g.restore();
   const rs = h * 0.56, rc = capH('PBI', rs); const n = String(i + 1); const Ln = lay('PBI', rs, 0, n), Ls = lay('PB', h * 0.18, 1, SUFFIX[i]);
   const rx0 = x + h / 2 - (Ln.w + Ls.w + 4) / 2, rb = y + h / 2 + rc / 2 + (lead ? h * 0.08 : 0);
-  text(g, n, rx0, rb, 'PBI', rs, lead ? GOLD : INK);
-  text(g, SUFFIX[i], rx0 + Ln.w + 4, rb - rc + capH('PB', h * 0.18), 'PB', h * 0.18, lead ? GOLD : INK, { ls: 1 });
+  text(g, n, rx0, rb, 'PBI', rs, lead ? GOLD : ONP);
+  text(g, SUFFIX[i], rx0 + Ln.w + 4, rb - rc + capH('PB', h * 0.18), 'PB', h * 0.18, lead ? GOLD : ONP, { ls: 1 });
   if (lead) crown(g, x + h / 2, y + h * 0.2, h / 150, GOLD);
   // prize pill (right)
   const ps = BD.prize, pc = capH('PB', ps), ptxt = money(r.prize), Lp = lay('PB', ps, 1, ptxt);
@@ -686,20 +698,20 @@ function row(g, t, i) {
   if (pu > 0) {
     g.save(); g.translate(pxr - pw / 2, y + h / 2); g.scale(pu, pu); g.translate(-(pxr - pw / 2), -(y + h / 2));
     g.fillStyle = lead ? INK : GOLD; roundRect(g, pxr - pw, py, pw, ph, ph * 0.28); g.fill();
-    text(g, ptxt, pxr - pw + ps * 0.45, py + ps * 0.31 + pc, 'PB', ps, lead ? GOLD : INK, { ls: 1 });
+    text(g, ptxt, pxr - pw + ps * 0.45, py + ps * 0.31 + pc, 'PB', ps, lead ? GOLD : ONP, { ls: 1 });
     g.restore();
   }
   // name + wagered
   const nx = x + h + (BD.two ? 30 : 40), wroll = Math.round(r.wag * E.outQuart(prog(t, ta, 0.7)));
   if (BD.two) {
     const ns = fitSize('PB', BD.name, 1, r.name, pxr - pw - nx - 24);
-    text(g, r.name, nx, y + 70, 'PB', ns, lead ? INK : '#FFFFFF', { ls: 1 });
-    text(g, 'WAGERED', nx, y + 118, 'PB', 24, lead ? 'rgba(10,10,10,0.65)' : GOLD, { ls: 5 });
-    text(g, money(wroll), nx + lay('PB', 24, 5, 'WAGERED').w + 16, y + 120, 'PM', BD.wag + 2, lead ? INK : '#E8E3D8', { ls: 1 });
+    text(g, r.name, nx, y + 70, 'PB', ns, lead ? ONP : '#FFFFFF', { ls: 1 });
+    text(g, 'WAGERED', nx, y + 118, 'PB', 24, lead ? (LAUNCH ? 'rgba(255,255,255,0.72)' : 'rgba(10,10,10,0.65)') : GOLD, { ls: 5 });
+    text(g, money(wroll), nx + lay('PB', 24, 5, 'WAGERED').w + 16, y + 120, 'PM', BD.wag + 2, lead ? ONP : '#E8E3D8', { ls: 1 });
   } else {
     const wx = x + w * 0.50; const ns = fitSize('PB', BD.name, 1, r.name, wx - nx - 30);
-    text(g, r.name, nx, y + h / 2 + capH('PB', ns) / 2, 'PB', ns, lead ? INK : '#FFFFFF', { ls: 1 });
-    text(g, money(wroll), wx, y + h / 2 + capH('PM', BD.wag) / 2, 'PM', BD.wag, lead ? INK : '#E8E3D8', { ls: 1 });
+    text(g, r.name, nx, y + h / 2 + capH('PB', ns) / 2, 'PB', ns, lead ? ONP : '#FFFFFF', { ls: 1 });
+    text(g, money(wroll), wx, y + h / 2 + capH('PM', BD.wag) / 2, 'PM', BD.wag, lead ? ONP : '#E8E3D8', { ls: 1 });
   }
   // leader shine
   if (lead) for (const ts of [ta + 0.15, ta + 1.7]) {
@@ -744,7 +756,7 @@ function ticker(g, t) {
   g.restore();
   g.fillStyle = GOLD; g.fillRect(-20, y, lw + 20, k.h);
   g.fillStyle = INK; g.beginPath(); g.moveTo(lw, y); g.lineTo(lw + 22, y + k.h / 2); g.lineTo(lw, y + k.h); g.closePath(); g.fillStyle = GOLD; g.fill();
-  text(g, lab, 28, y + k.h / 2 + capH('PB', k.s) / 2, 'PB', k.s, INK, { ls: 6 });
+  text(g, lab, 28, y + k.h / 2 + capH('PB', k.s) / 2, 'PB', k.s, ONP, { ls: 6 });
   g.restore();
 }
 function sceneBoard(g, t) {
@@ -882,12 +894,12 @@ function sceneEnd(g, t) {
     g.translate(bx, by + bh / 2); g.scale(u, Math.max(0.05, uy)); g.translate(-bx, -(by + bh / 2));
     // glow
     g.save(); g.shadowColor = rgba(GOLD_RGB, 0.75); g.shadowBlur = 40 + 45 * bp * clamp((t - B0 - 0.6) / 0.3);
-    const gr = g.createLinearGradient(0, by, 0, by + bh); gr.addColorStop(0, '#FFD54A'); gr.addColorStop(0.55, '#F2B418'); gr.addColorStop(1, '#D99A00');
+    const gr = g.createLinearGradient(0, by, 0, by + bh); gr.addColorStop(0, GRAD[0]); gr.addColorStop(0.55, GRAD[1]); gr.addColorStop(1, GRAD[2]);
     g.fillStyle = gr; roundRect(g, bx, by, bw, bh, 28); g.fill(); g.restore();
-    g.strokeStyle = 'rgba(255,245,210,0.7)'; g.lineWidth = 3; roundRect(g, bx + 5, by + 5, bw - 10, bh - 10, 24); g.stroke();
+    g.strokeStyle = LAUNCH ? 'rgba(255,255,255,0.45)' : 'rgba(255,245,210,0.7)'; g.lineWidth = 3; roundRect(g, bx + 5, by + 5, bw - 10, bh - 10, 24); g.stroke();
     // reel letters
     g.save(); roundRect(g, bx, by, bw, bh, 28); g.clip();
-    font(g, 'PB', size, 0); g.textAlign = 'left'; g.fillStyle = INK;
+    font(g, 'PB', size, 0); g.textAlign = 'left'; g.fillStyle = ONP;
     const tx = bx + 64, base = by + bh / 2 + cap / 2; const lh = bh * 0.9;
     for (let i = 0; i < CODE.length; i++) {
       const R = REELS[i]; const tl = B0 + 0.1 + i * 0.07; const pu = E.outBack(prog(t, B0, tl - B0 + 0.12), 1.3);
@@ -952,12 +964,51 @@ function pushUp(g, t, t0, dur, drawOld, drawNew) {
    MASTER TIMELINE
    ===================================================================== */
 const DURATION = TL.DUR;
+const CARDC = LAUNCH ? document.createElement('canvas') : null;
+if (CARDC) { CARDC.width = W; CARDC.height = H; }
+const HDR = Math.round(H * 0.085), PADB = Math.round(H * 0.037);              // page header band / bottom margin
+const CS = (H - HDR - PADB) / H, CW = W * CS, CH = H * CS, CX = (W - CW) / 2, CY = HDR, CR = Math.round(44 * CS);
+function launchPage(g, t) {
+  g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.filter = 'none'; g.shadowBlur = 0; g.shadowColor = 'rgba(0,0,0,0)';
+  g.fillStyle = PAGE; g.fillRect(0, 0, W, H);
+  // header: brand left, live standings + date right, the round in purple; slides in at the start
+  const a = E.outCubic(prog(t, 0.05, 0.4)), dy = (1 - a) * -14, hs = Math.round(HDR * 0.30), base = Math.round(HDR * 0.62) + dy;
+  g.save(); g.globalAlpha = a;
+  text(g, 'DYLANJAMES.GG', CX + 4, base, 'PB', hs, PAGE_INK, { ls: 2 });
+  const r = ROUND ? `ROUND ${ROUND}` : '', d = `LIVE STANDINGS  ·  ${DATE}`;
+  const Lr = r ? lay('PB', hs, 2, r).w + hs * 0.9 : 0;
+  text(g, d, CX + CW - 4 - Lr, base, 'PB', hs, PAGE_GREY, { ls: 2, align: 'right' });
+  if (r) text(g, r, CX + CW - 4, base, 'PB', hs, GOLD, { ls: 2, align: 'right' });
+  g.restore();
+  // the hook: black type straight on the page, pushed back and faded as the card arrives
+  const tIn = TL.x1 - BARS / 2;
+  if (t < tIn + 0.3) {
+    const out = E.inCubic(prog(t, tIn, 0.3)), sh = shake(t);
+    g.save(); g.globalAlpha = 1 - out;
+    g.translate(W / 2 + sh.x, H / 2 + HDR * 0.3 + sh.y); g.scale(1 - 0.08 * out, 1 - 0.08 * out); g.translate(-W / 2, -H / 2);
+    sceneHook(g, t); g.restore();
+  }
+  if (t < tIn) return;
+  // the card: springs up into place, dips a touch and settles on every later scene change
+  const u = prog(t, tIn, 0.55);
+  let sc = 0.55 + 0.45 * E.outBack(u, 1.25); const lift = (1 - E.outExpo(u)) * H * 0.75;   // rises in solid from below the frame
+  for (const tc of [TL.x2, TL.x3]) { const p = t - (tc - BARS / 2); if (p > 0 && p < 0.7) sc *= 1 - 0.018 * Math.sin(Math.min(1, p / 0.7) * Math.PI) * Math.exp(-p * 3); }
+  const cx = CX + CW / 2, cy = CY + CH / 2 + lift, w = CW * sc, h = CH * sc;
+  g.save(); g.shadowColor = 'rgba(0,0,0,0.22)'; g.shadowBlur = 60; g.shadowOffsetY = 22;
+  g.fillStyle = '#0B0B0B'; roundRect(g, cx - w / 2, cy - h / 2, w, h, CR); g.fill(); g.restore();
+  g.save(); roundRect(g, cx - w / 2, cy - h / 2, w, h, CR); g.clip(); g.drawImage(CARDC, cx - w / 2, cy - h / 2, w, h); g.restore();
+}
 function renderScene(g, t) {
+  if (LAUNCH) { if (t >= TL.x1 - BARS / 2) renderCard(CARDC.getContext('2d'), t); launchPage(g, t); return; }
+  renderCard(g, t);
+}
+function renderCard(g, t) {
   g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.filter = 'none'; g.shadowBlur = 0; g.shadowColor = 'rgba(0,0,0,0)';
   if (PLATE) g.clearRect(0, 0, W, H); else { g.fillStyle = '#000'; g.fillRect(0, 0, W, H); }
   const sh = shake(t); g.translate(W / 2 + sh.x, H / 2 + sh.y); g.rotate(sh.r); g.translate(-W / 2, -H / 2);
   const B = BARS / 2;
-  if (t < TL.x1 - B) sceneHook(g, t);
+  if (LAUNCH && t < TL.x2 - B) sceneBoard(g, t);
+  else if (t < TL.x1 - B) sceneHook(g, t);
   else if (t < TL.x1 + B) shutter(g, t, TL.x1, sceneHook, sceneBoard);
   else if (t < TL.x2 - B) sceneBoard(g, t);
   else if (t < TL.x2 + B) shutter(g, t, TL.x2, sceneBoard, sceneEnds);
