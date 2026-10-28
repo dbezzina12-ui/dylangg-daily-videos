@@ -3,5 +3,9 @@
   "id": "2026-09-28_Roo-s-VIP-Blackjack-2-live_1-24-00",
   "ig_drive_id": "1TL2032a-itnKf3_mC4dAgXPVlNH-iPsY",
   "duration": 40.5
+ },
+ {
+  "id": "2026-09-25_Retro-Sweets_1-32-04",
+  "failed": "source VOD no longer on Kick (the channel API only lists the 25 newest VODs, oldest now 2026-09-28), so the clip and stems can't be re-cut for the same EDL"
  }
 ]
