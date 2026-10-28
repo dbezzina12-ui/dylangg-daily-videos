@@ -31,5 +31,10 @@
  {
   "id": "2026-09-24_Ham-Busters_1-18-50",
   "failed": "source VOD no longer on Kick (the channel API only lists the 25 newest VODs, oldest now 2026-09-28), so the clip and stems can't be re-cut for the same EDL"
+ },
+ {
+  "id": "2026-09-28_Le-King_0-57-21",
+  "ig_drive_id": "1kZJYIrrqTv7jVFSHHKHvBOQJl-nCcju3",
+  "duration": 31.45
  }
 ]
