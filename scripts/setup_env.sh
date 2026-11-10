@@ -8,6 +8,9 @@ PIP="pip install -q --root-user-action=ignore"
 # reading the game (win reader), transcripts, voice/game separation, audio helpers
 $PIP rapidocr_onnxruntime "faster-whisper==1.2.*" "audio-separator[cpu]==0.47.*" audioread librosa pyloudnorm soundfile silero-vad
 python3 -c "from faster_whisper import WhisperModel; WhisperModel('small.en', device='cpu', compute_type='int8')"
+# captions behind him (hype_edit.py cuts him out with rembg isnet-general-use)
+$PIP --no-deps "rembg==2.0.87" "pymatting==1.1.16" pooch && $PIP scikit-image
+python3 -c "from rembg import new_session; new_session('isnet-general-use')"
 python3 - <<'EOF'
 from audio_separator.separator import Separator
 s = Separator(output_dir="/tmp", model_file_dir="/tmp/audio-separator-models"); s.load_model("UVR-MDX-NET-Voc_FT.onnx")
